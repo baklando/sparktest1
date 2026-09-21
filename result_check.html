@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1차 합격자 조회 | SPARK</title>
+<link rel="icon" type="image/png" href="favicon.png" sizes="64x64">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════
+   SPARK 합격자 조회 — index.html과 동일한 보드 시스템
+══════════════════════════════════════════════ */
+
+:root {
+    --board:        #e0e2dd;
+    --board-deep:   #d2d6d1;
+    --paper:        #ffffff;
+
+    --ink:          #132638;
+    --ink-mid:      #4a5a6b;
+    --ink-soft:     #7b8894;
+
+    --rule:         #dfe2de;
+    --rule-strong:  #c3c9c3;
+
+    --accent:       #15674c;
+    --accent-deep:  #0f4d38;
+    --accent-wash:  #eef3f0;
+
+    --alert:        #9c3a2a;
+
+    --lift:    0 1px 2px rgba(19,38,56,.05), 0 10px 28px rgba(19,38,56,.07);
+    --lift-hi: 0 2px 4px rgba(19,38,56,.07), 0 18px 44px rgba(19,38,56,.11);
+
+    --serif: 'Source Serif 4', 'Noto Serif KR', Georgia, serif;
+    --sans:  'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+    font-family: var(--sans);
+    background: var(--board);
+    color: var(--ink);
+    line-height: 1.75;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* ── 헤더 ─────────────────────────────────── */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule-strong);
+}
+.header-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px;
+    height: 66px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.header-logo { height: 36px; display: block; }
+.header-divider { width: 1px; height: 20px; background: var(--rule-strong); }
+.header-title { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--ink-mid); }
+.back-home {
+    margin-left: auto;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule-strong);
+    padding-bottom: 1px;
+    transition: color .18s ease, border-color .18s ease;
+}
+.back-home:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+@media (max-width: 560px) {
+    .header-inner { padding: 0 18px; gap: 10px; }
+    .header-title { font-size: 0.9rem; }
+    .back-home { font-size: 0.8rem; }
+}
+
+/* ── 히어로 ───────────────────────────────── */
+.hero {
+    background-color: var(--paper);
+    background-image:
+        linear-gradient(rgba(19,38,56,.038) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(19,38,56,.038) 1px, transparent 1px);
+    background-size: 30px 30px;
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 72px 0 60px;
+}
+.hero-inner { max-width: 640px; margin: 0 auto; padding: 0 28px; }
+.hero-kicker {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+}
+.hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5.4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    padding-bottom: 22px;
+    border-bottom: 4px solid var(--ink);
+    margin-bottom: 22px;
+}
+.hero-desc { font-size: 1rem; color: var(--ink-mid); }
+
+.period {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border: 1px solid var(--rule-strong);
+    border-radius: 3px;
+    background: var(--paper);
+    margin-top: 28px;
+}
+.period div { padding: 14px 20px; border-right: 1px solid var(--rule-strong); }
+.period div:last-child { border-right: none; }
+.period dt { font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 2px; }
+.period dd { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; }
+
+@media (max-width: 480px) {
+    .period { grid-template-columns: 1fr; }
+    .period div { border-right: none; border-bottom: 1px solid var(--rule-strong); }
+    .period div:last-child { border-bottom: none; }
+}
+
+.hero-kicker, .hero h1, .hero-desc, .period {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise .7s cubic-bezier(.2,.7,.3,1) forwards;
+}
+.hero h1   { animation-delay: .06s; }
+.hero-desc { animation-delay: .14s; }
+.period    { animation-delay: .22s; }
+@keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+/* ── 본문 ─────────────────────────────────── */
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 48px 28px 88px;
+}
+@media (max-width: 560px) { main { padding: 32px 18px 64px; } }
+
+.panel {
+    background: var(--paper);
+    border-radius: 3px;
+    box-shadow: var(--lift-hi);
+    padding: 36px 34px 30px;
+}
+@media (max-width: 560px) { .panel { padding: 28px 22px 24px; } }
+
+.state-screen { display: none; }
+.state-screen.show { display: block; }
+
+/* 로딩 */
+.skeleton-line {
+    height: 12px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #eef0ee 25%, #e2e6e2 37%, #eef0ee 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+}
+@keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+
+/* 상태 제목 */
+.state-head {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--ink);
+    margin-bottom: 16px;
+}
+.state-sub { font-size: 0.94rem; color: var(--ink-mid); line-height: 1.8; }
+
+/* 입력 */
+.form-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+.form-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    background: #fcfcfb;
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--paper);
+    box-shadow: 0 0 0 3px rgba(21,103,76,.12);
+}
+.form-input::placeholder { color: #bcc4cb; font-weight: 400; }
+.hint { font-size: 0.82rem; color: var(--ink-soft); margin: 8px 0 22px; }
+
+.cta-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 24px;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+.cta-button:hover:not(:disabled) { background: var(--accent-deep); }
+.cta-button:disabled { background: var(--board-deep); color: var(--ink-soft); cursor: not-allowed; }
+
+.spinner {
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    border: 2px solid rgba(123,136,148,.35);
+    border-top-color: var(--ink-soft);
+    display: none;
+    animation: spin .8s linear infinite;
+}
+.cta-button.loading .spinner { display: inline-block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 결과 */
+.result-label {
+    font-size: 0.84rem;
+    color: var(--ink-soft);
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 22px;
+}
+.result-name { font-size: 1rem; color: var(--ink-mid); margin-bottom: 4px; }
+.result-word {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 8vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    padding-bottom: 20px;
+    margin-bottom: 22px;
+    border-bottom: 4px solid currentColor;
+}
+.result-box.pass .result-word { color: var(--accent); }
+.result-box.fail .result-word { color: var(--ink); }
+
+.result-notice-text {
+    white-space: pre-line;
+    line-height: 1.95;
+    font-size: 0.95rem;
+    color: var(--ink-mid);
+    overflow-wrap: anywhere;
+}
+
+.foot-note {
+    margin-top: 26px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+}
+.foot-note a { color: var(--accent); }
+
+.fade-in { animation: fadeIn .4s ease both; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ── 토스트 ───────────────────────────────── */
+#toast {
+    position: fixed;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--ink);
+    color: #fff;
+    padding: 13px 26px;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity .3s ease, transform .3s ease;
+    pointer-events: none;
+    max-width: calc(100% - 40px);
+    text-align: center;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#toast.alert { background: var(--alert); }
+
+/* ── 푸터 ─────────────────────────────────── */
+footer {
+    background: var(--ink);
+    color: #9dabb8;
+    text-align: center;
+    padding: 30px 24px;
+    font-size: 0.85rem;
+}
+footer a { color: #9dabb8; text-decoration: none; }
+footer a:hover { color: #fff; text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-delay: 0ms !important;
+        transition-duration: .001ms !important;
+    }
+    .hero-kicker, .hero h1, .hero-desc, .period { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<header>
+    <div class="header-inner">
+        <a href="index.html" aria-label="SPARK 홈"><img src="logo.png" alt="SPARK" class="header-logo"></a>
+        <div class="header-divider"></div>
+        <span class="header-title">결과 조회</span>
+        <a href="index.html" class="back-home">메인으로</a>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="hero-inner">
+        <p class="hero-kicker">11th Cohort, First Round</p>
+        <h1>1차 합격자 조회</h1>
+        <p class="hero-desc">지원서에 적은 휴대폰 번호로 서류 전형 결과를 확인할 수 있습니다.</p>
+
+        <dl class="period">
+            <div>
+                <dt>조회 시작</dt>
+                <dd id="periodStart">-</dd>
+            </div>
+            <div>
+                <dt>조회 종료</dt>
+                <dd id="periodEnd">-</dd>
+            </div>
+        </dl>
+    </div>
+</section>
+
+<main>
+    <div class="panel">
+
+        <!-- 초기 로딩 -->
+        <div id="checking" class="state-screen show" aria-hidden="true">
+            <div class="skeleton-line" style="width:55%; margin-bottom:14px;"></div>
+            <div class="skeleton-line" style="width:85%; margin-bottom:10px;"></div>
+            <div class="skeleton-line" style="width:40%;"></div>
+        </div>
+
+        <!-- 조회 기간 아님 -->
+        <div id="closedState" class="state-screen">
+            <h2 class="state-head" id="closedHead">지금은 조회 기간이 아닙니다</h2>
+            <p class="state-sub" id="closedSub">위에 적힌 조회 기간 중에 다시 방문해 주세요.</p>
+        </div>
+
+        <!-- 입력 폼 -->
+        <div id="formState" class="state-screen">
+            <label class="form-label" for="phone">휴대폰 번호</label>
+            <input id="phone" class="form-input" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" maxlength="13">
+            <p class="hint">지원서에 기재한 번호와 같아야 조회됩니다.</p>
+            <button id="submitBtn" class="cta-button" type="button">
+                <span class="btn-text">결과 확인하기</span>
+                <span class="spinner" aria-hidden="true"></span>
+            </button>
+        </div>
+
+        <!-- 결과 -->
+        <div id="resultState" class="state-screen">
+            <div id="resultBox" class="result-box">
+                <p class="result-label">11기 1차 서류 전형 결과</p>
+                <p class="result-name" id="resultName"></p>
+                <p class="result-word" id="resultWord"></p>
+                <div id="resultNotice" class="result-notice-text"></div>
+            </div>
+        </div>
+
+        <p class="foot-note">
+            조회가 되지 않으면 <a href="https://pf.kakao.com/_hLbxeb" target="_blank" rel="noopener">카카오톡 채널</a>로 문의해 주세요.
+        </p>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2026 SPARK &nbsp;|&nbsp; <a href="mailto:officialspark@spark2021.com">officialspark@spark2021.com</a> &nbsp;|&nbsp; <a href="https://www.instagram.com/spark__2021/" target="_blank" rel="noopener">@spark__2021</a></p>
+</footer>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ── 토스트 ─────────────────────────────── */
+    function showToast(msg, isAlert) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.toggle('alert', !!isAlert);
+        t.classList.add('show');
+        clearTimeout(showToast._tid);
+        showToast._tid = setTimeout(() => t.classList.remove('show'), 3200);
+    }
+
+    /* ── 설정 ───────────────────────────────── */
+    // Apps Script 웹 앱 URL
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQhlnSrTRs3_ntaUJKXtuhR4mY2q_2iEEvNlWH30vGl_5sLuCMk5xBdsiAdDbV0_Bc/exec';
+
+    // 조회 기간은 여기서만 제어합니다. 시트에는 기간 검증이 없습니다.
+    const CONFIG = {
+        START_DATE: new Date('2026-09-08T18:00:00+09:00'),
+        END_DATE:   new Date('2026-09-14T00:00:00+09:00')
+    };
+
+    const screens = {
+        checking: document.getElementById('checking'),
+        closed:   document.getElementById('closedState'),
+        form:     document.getElementById('formState'),
+        result:   document.getElementById('resultState')
+    };
+    const phoneInput = document.getElementById('phone');
+    const submitBtn  = document.getElementById('submitBtn');
+
+    function showOnly(key) {
+        Object.values(screens).forEach(el => el.classList.remove('show', 'fade-in'));
+        screens[key].classList.add('show', 'fade-in');
+    }
+
+    function fmtDate(d) {
+        if (!(d instanceof Date)) d = new Date(d);
+        if (isNaN(d)) return '-';
+        const pad = n => String(n).padStart(2, '0');
+        return `${d.getMonth() + 1}월 ${d.getDate()}일 ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    document.getElementById('periodStart').textContent = fmtDate(CONFIG.START_DATE);
+    document.getElementById('periodEnd').textContent   = fmtDate(CONFIG.END_DATE);
+
+    /* ── 전화번호 자동 하이픈 ───────────────── */
+    phoneInput.addEventListener('input', () => {
+        let v = phoneInput.value.replace(/[^0-9]/g, '').slice(0, 11);
+        if (v.length > 3 && v.length <= 7) v = v.replace(/(\d{3})(\d+)/, '$1-$2');
+        else if (v.length > 7)             v = v.replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3');
+        phoneInput.value = v;
+    });
+
+    /* ── 기간 판단 ──────────────────────────── */
+    function showClosed() {
+        const now = new Date();
+        const head = document.getElementById('closedHead');
+        const sub  = document.getElementById('closedSub');
+        if (now < CONFIG.START_DATE) {
+            head.textContent = '아직 조회 기간이 아닙니다';
+            sub.textContent  = `결과는 ${fmtDate(CONFIG.START_DATE)}부터 확인할 수 있습니다.`;
+        } else {
+            head.textContent = '조회 기간이 끝났습니다';
+            sub.textContent  = '1차 결과 조회가 종료되었습니다. 이후 일정은 개별 연락과 공지사항으로 안내드립니다.';
+        }
+        showOnly('closed');
+    }
+
+    function isOpen() {
+        const now = new Date();
+        return now >= CONFIG.START_DATE && now <= CONFIG.END_DATE;
+    }
+
+    function checkPeriod() {
+        if (isOpen()) {
+            showOnly('form');
+            phoneInput.focus({ preventScroll: true });
+        } else {
+            showClosed();
+        }
+    }
+
+    /* ── 조회 ───────────────────────────────── */
+    async function lookup() {
+        if (!isOpen()) { showClosed(); return; }
+
+        const raw = phoneInput.value.trim();
+        if (raw.replace(/[^0-9]/g, '').length < 9) {
+            showToast('휴대폰 번호를 정확히 입력해 주세요.', true);
+            return;
+        }
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+
+        try {
+            const res  = await fetch(`${SCRIPT_URL}?action=lookup&phone=${encodeURIComponent(raw)}`);
+            const data = await res.json();
+
+            if (data.status === 'notfound') {
+                showToast('이 번호로 접수된 지원서를 찾지 못했습니다.', true);
+                return;
+            }
+            if (data.status === 'error') {
+                showToast(data.message || '오류가 발생했습니다. 다시 시도해 주세요.', true);
+                return;
+            }
+            if (data.status === 'found') renderResult(data);
+        } catch (err) {
+            showToast('네트워크 오류가 발생했습니다. 다시 시도해 주세요.', true);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+        }
+    }
+
+    function renderResult(data) {
+        const isPass = data.result === 'pass';
+        document.getElementById('resultBox').className = 'result-box ' + (isPass ? 'pass' : 'fail');
+
+        // 지원자가 입력한 이름이므로 HTML로 해석하지 않고 글자 그대로 넣습니다.
+        document.getElementById('resultName').textContent = (data.name || '지원자') + '님은';
+        document.getElementById('resultWord').textContent = isPass ? '1차 합격입니다' : '불합격입니다';
+        document.getElementById('resultNotice').textContent = data.notice || '별도 안내사항이 없습니다.';
+
+        showOnly('result');
+    }
+
+    submitBtn.addEventListener('click', lookup);
+    phoneInput.addEventListener('keydown', e => { if (e.key === 'Enter') lookup(); });
+
+    checkPeriod();
+})();
+</script>
+
+</body>
+</html>
