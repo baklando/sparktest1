@@ -227,15 +227,55 @@
 
     /* ── 히어로 = 포스터 타이틀 배너 ────────── */
     .hero {
-        background: var(--paper);
+        background-color: var(--paper);
+        background-image:
+            linear-gradient(rgba(19,38,56,.038) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(19,38,56,.038) 1px, transparent 1px);
+        background-size: 30px 30px;
         border-bottom: 1px solid var(--rule-strong);
-        padding: 104px 0 88px;
+        padding: 88px 0 80px;
     }
     .hero-inner {
         max-width: var(--col);
         margin: 0 auto;
         padding: 0 28px;
-        max-width: 860px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 56px;
+        align-items: center;
+    }
+    .hero-text { max-width: 44em; }
+
+    /* 히어로 도식 : A1 학술 포스터 */
+    .hero-figure { margin: 0; }
+    .poster-svg {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: drop-shadow(0 14px 32px rgba(19,38,56,.15));
+    }
+    .hero-figure figcaption {
+        margin-top: 18px;
+        font-size: 0.83rem;
+        line-height: 1.65;
+        color: var(--ink-soft);
+    }
+    .poster-svg .sheet   { fill: var(--paper); stroke: var(--rule-strong); }
+    .poster-svg .ln      { fill: #ccd4da; }
+    .poster-svg .ln-mid  { fill: #9aa6b1; }
+    .poster-svg .ln-dark { fill: var(--ink); }
+    .poster-svg .rule    { stroke: var(--ink); stroke-width: 2; }
+    .poster-svg .fig     { fill: #f2f4f2; stroke: var(--rule); }
+    .poster-svg .fig-hi  { fill: var(--accent-wash); stroke: rgba(21,103,76,.35); }
+    .poster-svg .mark    { fill: var(--accent); opacity: .5; }
+    .poster-svg .plot    { fill: none; stroke: var(--accent); stroke-width: 2; opacity: .6; }
+
+    @media (max-width: 940px) {
+        .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+        .hero-figure { max-width: 230px; }
+    }
+    @media (max-width: 640px) {
+        .hero-figure { display: none; }
     }
     .hero-slogan {
         font-family: var(--serif);
@@ -315,12 +355,25 @@
         transform: translateY(14px);
         animation: rise .7s cubic-bezier(.2,.7,.3,1) forwards;
     }
+    .hero-figure {
+        opacity: 0;
+        transform: translateY(14px);
+        animation: rise .7s cubic-bezier(.2,.7,.3,1) .34s forwards;
+    }
     .wordmark      { animation-delay: .06s; }
     .acronym       { animation-delay: .14s; }
     .hero-lede     { animation-delay: .22s; }
     .hero-meta     { animation-delay: .26s; }
     .hero-actions  { animation-delay: .32s; }
     @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+    /* 포스터 도식이 단 단위로 채워지는 연출 */
+    .poster-svg .col { opacity: 0; animation: ink .55s ease forwards; }
+    .poster-svg .col-head { animation-delay: .58s; }
+    .poster-svg .col-1    { animation-delay: .72s; }
+    .poster-svg .col-2    { animation-delay: .84s; }
+    .poster-svg .col-3    { animation-delay: .96s; }
+    @keyframes ink { to { opacity: 1; } }
 
     /* ── 섹션 공통 (포스터 섹션 헤더) ───────── */
     section { scroll-margin-top: 66px; }
@@ -614,9 +667,11 @@
             animation-delay: 0ms !important;
             transition-duration: .001ms !important;
         }
-        .hero-slogan, .wordmark, .acronym, .hero-lede, .hero-meta, .hero-actions {
+        .hero-slogan, .wordmark, .acronym, .hero-lede,
+        .hero-meta, .hero-actions, .hero-figure {
             opacity: 1; transform: none;
         }
+        .poster-svg .col { opacity: 1; }
     }
     </style>
 </head>
@@ -671,19 +726,138 @@
 <!-- ── 히어로 : 포스터 타이틀 배너 ── -->
 <section class="hero">
     <div class="hero-inner">
-        <p class="hero-slogan">Think, Spark, Grow</p>
-        <h1 class="wordmark">SPARK</h1>
-        <p class="acronym">
-            <b>S</b>cientific <b>P</b>oster on <b>A</b>nalysis of <b>R</b>esearch <b>K</b>nowledge
-        </p>
-        <p class="hero-lede">
-            생명과학 논문을 함께 읽고 분석해, 한 학기의 결과를 학술 포스터로 발표하는 연합 학술 동아리입니다.
-        </p>
-        <p class="hero-meta">2021년 창립, 전국 30여 개 대학 생명과학 전공 학부생이 함께합니다.</p>
-        <div class="hero-actions">
-            <a href="apply-session.html" class="cta-button" id="hero-cta">지금 지원하기</a>
-            <a href="poster-session.html" class="link-quiet">이번 학기 포스터 세션 보기</a>
+        <div class="hero-text">
+            <p class="hero-slogan">Think, Spark, Grow</p>
+            <h1 class="wordmark">SPARK</h1>
+            <p class="acronym">
+                <b>S</b>cientific <b>P</b>oster on <b>A</b>nalysis of <b>R</b>esearch <b>K</b>nowledge
+            </p>
+            <p class="hero-lede">
+                생명과학 논문을 함께 읽고 분석해, 한 학기의 결과를 학술 포스터로 발표하는 연합 학술 동아리입니다.
+            </p>
+            <p class="hero-meta">2021년 창립, 전국 30여 개 대학 생명과학 전공 학부생이 함께합니다.</p>
+            <div class="hero-actions">
+                <a href="apply-session.html" class="cta-button" id="hero-cta">지금 지원하기</a>
+                <a href="poster-session.html" class="link-quiet">이번 학기 포스터 세션 보기</a>
+            </div>
         </div>
+
+        <figure class="hero-figure">
+            <svg class="poster-svg" viewBox="0 0 300 424" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A1 규격 학술 포스터의 구성 도식">
+                <rect class="sheet" x="0.5" y="0.5" width="299" height="423"/>
+
+                <!-- 제목부 -->
+                <g class="col col-head">
+                    <rect class="ln-dark" x="18" y="26" width="196" height="11" rx="1"/>
+                    <rect class="ln-mid"  x="18" y="44" width="138" height="6" rx="1"/>
+                    <rect class="ln"      x="18" y="58" width="104" height="4" rx="1"/>
+                    <line class="rule" x1="18" y1="72" x2="282" y2="72"/>
+                </g>
+
+                <!-- 1단 -->
+                <g class="col col-1">
+                    <rect class="ln" x="18" y="86"  width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="94"  width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="102" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="110" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="118" width="58" height="3.5" rx="1"/>
+
+                    <rect class="fig" x="18" y="132" width="84" height="54"/>
+                    <rect class="mark" x="30" y="160" width="9" height="18"/>
+                    <rect class="mark" x="44" y="148" width="9" height="30"/>
+                    <rect class="mark" x="58" y="166" width="9" height="12"/>
+                    <rect class="mark" x="72" y="154" width="9" height="24"/>
+
+                    <rect class="ln" x="18" y="198" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="206" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="214" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="222" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="230" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="238" width="50" height="3.5" rx="1"/>
+
+                    <rect class="fig" x="18" y="252" width="84" height="44"/>
+                    <path class="plot" d="M26 288 C 40 264, 52 292, 64 270 S 84 258, 94 264"/>
+
+                    <rect class="ln" x="18" y="308" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="316" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="324" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="332" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="340" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="348" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="18" y="356" width="66" height="3.5" rx="1"/>
+                </g>
+
+                <!-- 2단 -->
+                <g class="col col-2">
+                    <rect class="fig" x="108" y="86" width="84" height="62"/>
+                    <circle class="mark" cx="126" cy="126" r="2.6"/>
+                    <circle class="mark" cx="136" cy="114" r="2.6"/>
+                    <circle class="mark" cx="145" cy="120" r="2.6"/>
+                    <circle class="mark" cx="152" cy="106" r="2.6"/>
+                    <circle class="mark" cx="162" cy="112" r="2.6"/>
+                    <circle class="mark" cx="171" cy="100" r="2.6"/>
+                    <circle class="mark" cx="180" cy="105" r="2.6"/>
+                    <circle class="mark" cx="133" cy="133" r="2.6"/>
+                    <circle class="mark" cx="157" cy="124" r="2.6"/>
+
+                    <rect class="ln" x="108" y="160" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="168" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="176" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="184" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="192" width="62" height="3.5" rx="1"/>
+
+                    <rect class="fig" x="108" y="206" width="84" height="50"/>
+                    <rect class="mark" x="118" y="216" width="64" height="5"/>
+                    <rect class="mark" x="118" y="228" width="44" height="5"/>
+                    <rect class="mark" x="118" y="240" width="54" height="5"/>
+
+                    <rect class="ln" x="108" y="268" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="276" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="284" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="292" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="300" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="308" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="316" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="324" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="332" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="340" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="348" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="108" y="356" width="52" height="3.5" rx="1"/>
+                </g>
+
+                <!-- 3단 -->
+                <g class="col col-3">
+                    <rect class="ln" x="198" y="86"  width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="94"  width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="102" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="110" width="70" height="3.5" rx="1"/>
+
+                    <rect class="fig" x="198" y="124" width="84" height="58"/>
+                    <path class="plot" d="M206 172 L 220 152 L 234 162 L 248 140 L 262 148 L 274 134"/>
+
+                    <rect class="ln" x="198" y="194" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="202" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="210" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="218" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="226" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="234" width="56" height="3.5" rx="1"/>
+
+                    <rect class="fig-hi" x="198" y="248" width="84" height="48"/>
+                    <rect class="ln-dark" x="208" y="258" width="40" height="5" rx="1"/>
+                    <rect class="mark" x="208" y="270" width="64" height="4"/>
+                    <rect class="mark" x="208" y="280" width="48" height="4"/>
+
+                    <rect class="ln" x="198" y="308" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="316" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="324" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="332" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="340" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="348" width="84" height="3.5" rx="1"/>
+                    <rect class="ln" x="198" y="356" width="44" height="3.5" rx="1"/>
+                </g>
+            </svg>
+            <figcaption>부원 한 명이 한 학기 동안 A1 한 장을 완성합니다.</figcaption>
+        </figure>
     </div>
 </section>
 
@@ -735,7 +909,7 @@
     <div class="wrap section-body" style="padding-top:0;">
         <div class="section-head">
             <h2>11기 일정</h2>
-            <p>OT부터 포스터 세션까지 약 6개월 과정입니다.</p>
+            <p>OT부터 포스터 세션까지 약 5개월 과정입니다.</p>
         </div>
 
         <div class="panel schedule">
@@ -779,7 +953,7 @@
                     <div class="plate"><img src="photo1.png" alt="정기 세미나 현장"></div>
                     <figcaption>
                         <span class="fig-no">Fig. 1</span>정기 세미나
-                        <span class="fig-sub">정기적으로 모여 논문을 발표합니다</span>
+                        <span class="fig-sub">격주로 모여 논문을 발제하고 토론합니다</span>
                     </figcaption>
                 </figure>
             </a>
@@ -799,7 +973,7 @@
                     <div class="plate"><img src="photo3.png" alt="외부 활동 현장"></div>
                     <figcaption>
                         <span class="fig-no">Fig. 3</span>외부 활동
-                        <span class="fig-sub">여러 활동과 기업 탐방</span>
+                        <span class="fig-sub">학회 참관과 연구 기관 탐방</span>
                     </figcaption>
                 </figure>
             </a>
