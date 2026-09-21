@@ -110,7 +110,11 @@ header {
 
 /* ── 히어로 : 포스터 타이틀 배너 ──────────── */
 .hero {
-    background: var(--paper);
+    background-color: var(--paper);
+    background-image:
+        linear-gradient(rgba(19,38,56,.038) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(19,38,56,.038) 1px, transparent 1px);
+    background-size: 30px 30px;
     border-bottom: 1px solid var(--rule-strong);
     padding: 76px 0 64px;
 }
@@ -118,6 +122,51 @@ header {
     max-width: 1120px;
     margin: 0 auto;
     padding: 0 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 56px;
+    align-items: center;
+}
+
+/* 히어로 도식 : 행사장 배치도 */
+.hero-figure { margin: 0; }
+.floorplan {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 14px 32px rgba(19,38,56,.14));
+}
+.floorplan .floor { fill: var(--paper); }
+.floorplan .wall  { fill: none; stroke: var(--ink); stroke-width: 2; }
+.floorplan .board { fill: var(--ink); }
+.floorplan .pres  { fill: var(--accent); }
+.floorplan .vis   { fill: #9aa6b1; }
+.floorplan .label { font-family: var(--sans); font-size: 9px; font-weight: 500; fill: var(--ink-soft); }
+
+.hero-figure figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin-top: 16px;
+    font-size: 0.83rem;
+    color: var(--ink-soft);
+}
+.legend { display: inline-flex; align-items: center; gap: 7px; }
+.legend::before {
+    content: '';
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: #9aa6b1;
+}
+.legend.is-pres::before { background: var(--accent); }
+.legend.is-board::before { width: 16px; height: 4px; border-radius: 0; background: var(--ink); }
+
+@media (max-width: 940px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 44px; }
+    .hero-figure { max-width: 300px; }
+}
+@media (max-width: 640px) {
+    .hero-figure { display: none; }
 }
 .hero-kicker {
     font-family: var(--serif);
@@ -188,7 +237,19 @@ header {
 .hero h1    { animation-delay: .06s; }
 .hero-desc  { animation-delay: .16s; }
 .fact-row   { animation-delay: .24s; }
+.hero-figure {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise .7s cubic-bezier(.2,.7,.3,1) .3s forwards;
+}
 @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+/* 참가자가 하나둘 모여드는 연출 */
+.floorplan .vis { opacity: 0; animation: arrive .5s ease forwards; }
+.floorplan .r1 { animation-delay: .75s; }
+.floorplan .r2 { animation-delay: .95s; }
+.floorplan .r3 { animation-delay: 1.15s; }
+@keyframes arrive { to { opacity: 1; } }
 
 /* ── 본문 2열 ─────────────────────────────── */
 .page-wrap {
@@ -514,7 +575,8 @@ footer a:hover { color: #fff; text-decoration: underline; }
         animation-delay: 0ms !important;
         transition-duration: .001ms !important;
     }
-    .hero-kicker, .hero h1, .hero-desc, .fact-row { opacity: 1; transform: none; }
+    .hero-kicker, .hero h1, .hero-desc, .fact-row, .hero-figure { opacity: 1; transform: none; }
+    .floorplan .vis { opacity: 1; }
 }
 </style>
 </head>
@@ -535,6 +597,7 @@ footer a:hover { color: #fff; text-decoration: underline; }
 <!-- ── 히어로 ── -->
 <section class="hero">
     <div class="hero-inner">
+      <div class="hero-text">
         <p class="hero-kicker">SPARK 10기 정기 학술 행사</p>
         <h1>제 10회 SPARK Poster Session</h1>
         <p class="hero-desc">
@@ -556,6 +619,73 @@ footer a:hover { color: #fff; text-decoration: underline; }
                 <dd>2026. 08. 18</dd>
             </div>
         </dl>
+      </div>
+
+      <figure class="hero-figure">
+        <svg class="floorplan" viewBox="0 0 300 244" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="포스터 세션 행사장 배치도: 세 줄로 놓인 포스터 보드 앞에 발표자와 참가자가 모여 있음">
+            <rect class="floor" x="0" y="0" width="300" height="244"/>
+            <path class="wall" d="M128 243 H1 V1 H299 V243 H172"/>
+            <text class="label" x="150" y="238" text-anchor="middle">입구</text>
+
+            <!-- 1열 -->
+            <rect class="board" x="24"  y="40" width="54" height="5"/>
+            <rect class="board" x="90"  y="40" width="54" height="5"/>
+            <rect class="board" x="156" y="40" width="54" height="5"/>
+            <rect class="board" x="222" y="40" width="54" height="5"/>
+            <circle class="pres" cx="34"  cy="56" r="4.5"/>
+            <circle class="pres" cx="100" cy="56" r="4.5"/>
+            <circle class="pres" cx="166" cy="56" r="4.5"/>
+            <circle class="pres" cx="232" cy="56" r="4.5"/>
+            <circle class="vis r1" cx="52"  cy="66" r="4"/>
+            <circle class="vis r1" cx="64"  cy="59" r="4"/>
+            <circle class="vis r1" cx="118" cy="67" r="4"/>
+            <circle class="vis r1" cx="182" cy="63" r="4"/>
+            <circle class="vis r1" cx="194" cy="70" r="4"/>
+            <circle class="vis r1" cx="205" cy="60" r="4"/>
+            <circle class="vis r1" cx="250" cy="66" r="4"/>
+            <circle class="vis r1" cx="263" cy="60" r="4"/>
+
+            <!-- 2열 -->
+            <rect class="board" x="24"  y="104" width="54" height="5"/>
+            <rect class="board" x="90"  y="104" width="54" height="5"/>
+            <rect class="board" x="156" y="104" width="54" height="5"/>
+            <rect class="board" x="222" y="104" width="54" height="5"/>
+            <circle class="pres" cx="34"  cy="120" r="4.5"/>
+            <circle class="pres" cx="100" cy="120" r="4.5"/>
+            <circle class="pres" cx="166" cy="120" r="4.5"/>
+            <circle class="pres" cx="232" cy="120" r="4.5"/>
+            <circle class="vis r2" cx="50"  cy="128" r="4"/>
+            <circle class="vis r2" cx="62"  cy="134" r="4"/>
+            <circle class="vis r2" cx="114" cy="126" r="4"/>
+            <circle class="vis r2" cx="127" cy="133" r="4"/>
+            <circle class="vis r2" cx="139" cy="124" r="4"/>
+            <circle class="vis r2" cx="184" cy="130" r="4"/>
+            <circle class="vis r2" cx="250" cy="128" r="4"/>
+
+            <!-- 3열 -->
+            <rect class="board" x="24"  y="168" width="54" height="5"/>
+            <rect class="board" x="90"  y="168" width="54" height="5"/>
+            <rect class="board" x="156" y="168" width="54" height="5"/>
+            <rect class="board" x="222" y="168" width="54" height="5"/>
+            <circle class="pres" cx="34"  cy="184" r="4.5"/>
+            <circle class="pres" cx="100" cy="184" r="4.5"/>
+            <circle class="pres" cx="166" cy="184" r="4.5"/>
+            <circle class="pres" cx="232" cy="184" r="4.5"/>
+            <circle class="vis r3" cx="54"  cy="194" r="4"/>
+            <circle class="vis r3" cx="116" cy="192" r="4"/>
+            <circle class="vis r3" cx="129" cy="199" r="4"/>
+            <circle class="vis r3" cx="183" cy="190" r="4"/>
+            <circle class="vis r3" cx="196" cy="197" r="4"/>
+            <circle class="vis r3" cx="248" cy="194" r="4"/>
+            <circle class="vis r3" cx="261" cy="188" r="4"/>
+            <circle class="vis r3" cx="272" cy="198" r="4"/>
+        </svg>
+        <figcaption>
+            <span class="legend is-board">포스터 보드</span>
+            <span class="legend is-pres">발표자</span>
+            <span class="legend">참가자</span>
+        </figcaption>
+      </figure>
     </div>
 </section>
 
