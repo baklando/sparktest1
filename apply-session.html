@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지원하기 | SPARK 생명과학연합학술동아리</title>
+    <link rel="icon" type="image/png" href="favicon.png" sizes="64x64">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════
+   SPARK 신입부원 모집 — index.html과 동일한 보드 시스템
+══════════════════════════════════════════════ */
+
+:root {
+    --board:        #e0e2dd;
+    --board-deep:   #d2d6d1;
+    --paper:        #ffffff;
+
+    --ink:          #132638;
+    --ink-mid:      #4a5a6b;
+    --ink-soft:     #7b8894;
+
+    --rule:         #dfe2de;
+    --rule-strong:  #c3c9c3;
+
+    --accent:       #15674c;
+    --accent-deep:  #0f4d38;
+    --accent-wash:  #eef3f0;
+
+    --alert:        #9c3a2a;
+    --alert-wash:   #f7eeec;
+
+    --lift:    0 1px 2px rgba(19,38,56,.05), 0 10px 28px rgba(19,38,56,.07);
+    --lift-hi: 0 2px 4px rgba(19,38,56,.07), 0 18px 44px rgba(19,38,56,.11);
+
+    --serif: 'Source Serif 4', 'Noto Serif KR', Georgia, serif;
+    --sans:  'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+    font-family: var(--sans);
+    background: var(--board);
+    color: var(--ink);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* ── 헤더 ─────────────────────────────────── */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule-strong);
+}
+.header-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px;
+    height: 66px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.header-logo { height: 36px; display: block; }
+.header-divider { width: 1px; height: 20px; background: var(--rule-strong); }
+.header-title { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--ink-mid); }
+.back-home {
+    margin-left: auto;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule-strong);
+    padding-bottom: 1px;
+    transition: color .18s ease, border-color .18s ease;
+}
+.back-home:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+@media (max-width: 560px) {
+    .header-inner { padding: 0 18px; gap: 10px; }
+    .header-title { font-size: 0.9rem; }
+    .back-home { font-size: 0.8rem; }
+}
+
+/* ── 히어로 ───────────────────────────────── */
+.hero {
+    background-color: var(--paper);
+    background-image:
+        linear-gradient(rgba(19,38,56,.038) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(19,38,56,.038) 1px, transparent 1px);
+    background-size: 30px 30px;
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 76px 0 64px;
+}
+.hero-inner { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+
+.hero-kicker {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+}
+.hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    max-width: 18em;
+    padding-bottom: 24px;
+    border-bottom: 4px solid var(--ink);
+    margin-bottom: 24px;
+}
+.hero-desc { font-size: 1.02rem; color: var(--ink-mid); max-width: 44em; }
+
+/* 모집 절차 트랙 */
+.process {
+    margin-top: 40px;
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    border-radius: 3px;
+}
+.process-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--rule-strong);
+}
+.process-head h2 { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; }
+.process-head p { font-size: 0.84rem; color: var(--ink-soft); }
+.process-head p b { color: var(--accent); font-weight: 500; }
+
+.process-track {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    list-style: none;
+}
+.step {
+    padding: 18px 20px 20px;
+    border-right: 1px solid var(--rule);
+    border-top: 3px solid transparent;
+    margin-top: -1px;
+}
+.step:last-child { border-right: none; }
+.step-no {
+    font-family: var(--serif);
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    display: block;
+    margin-bottom: 6px;
+}
+.step-date {
+    font-family: var(--serif);
+    font-size: 1.08rem;
+    font-weight: 600;
+    line-height: 1.35;
+    display: block;
+}
+.step-label { font-size: 0.88rem; color: var(--ink-mid); display: block; margin-top: 2px; }
+.step-note  { font-size: 0.78rem; color: var(--ink-soft); display: block; margin-top: 2px; }
+
+.step.done .step-date,
+.step.done .step-label { color: var(--ink-soft); }
+.step.done .step-no::after { content: ' 완료'; font-family: var(--sans); font-weight: 400; }
+
+.step.now { border-top-color: var(--accent); background: var(--accent-wash); }
+.step.now .step-no,
+.step.now .step-date { color: var(--accent); }
+.step.now .step-label { color: var(--ink); font-weight: 500; }
+
+@media (max-width: 860px) {
+    .process-track { grid-template-columns: 1fr; }
+    .step {
+        border-right: none;
+        border-top: none;
+        border-bottom: 1px solid var(--rule);
+        border-left: 3px solid transparent;
+        margin-top: 0;
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        column-gap: 14px;
+        padding: 14px 18px;
+    }
+    .step:last-child { border-bottom: none; }
+    .step.now { border-left-color: var(--accent); }
+    .step-no { grid-column: 1 / -1; margin-bottom: 2px; }
+    .step-date { font-size: 1rem; }
+    .step-label, .step-note { grid-column: 2; }
+    .step-date { grid-row: 2 / span 2; }
+}
+
+/* 히어로 등장 — 페이지당 한 번 */
+.hero-kicker, .hero h1, .hero-desc, .process {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise .7s cubic-bezier(.2,.7,.3,1) forwards;
+}
+.hero h1   { animation-delay: .06s; }
+.hero-desc { animation-delay: .16s; }
+.process   { animation-delay: .26s; }
+@keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+/* ── 본문 2열 ─────────────────────────────── */
+.page-wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 56px 28px 88px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 440px;
+    gap: 28px;
+    align-items: start;
+}
+@media (max-width: 940px) {
+    .page-wrap { grid-template-columns: 1fr; padding: 40px 20px 64px; }
+}
+
+.panel { background: var(--paper); border-radius: 3px; box-shadow: var(--lift); }
+
+.info-side { display: flex; flex-direction: column; gap: 20px; }
+.info-card { padding: 30px 28px 32px; }
+.card-head {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--ink);
+    margin-bottom: 20px;
+}
+
+/* 공지 */
+.callout {
+    padding: 16px 18px;
+    border-radius: 2px;
+    font-size: 0.92rem;
+    color: var(--ink-mid);
+    line-height: 1.8;
+    background: #f5f6f4;
+}
+.callout + .callout { margin-top: 12px; }
+.callout strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+}
+.callout.is-alert { background: var(--alert-wash); }
+.callout.is-alert strong { color: var(--alert); }
+.callout .fee {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* 활동 일정 */
+.card-sub { font-size: 0.88rem; color: var(--ink-soft); margin: -8px 0 16px; }
+.schedule-list { list-style: none; }
+.schedule-item {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+}
+.schedule-item:first-child { padding-top: 0; }
+.schedule-item:last-child { border-bottom: none; }
+.schedule-date { font-family: var(--serif); font-size: 1rem; font-weight: 600; }
+.schedule-date small {
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+}
+.schedule-body { font-size: 0.94rem; color: var(--ink-mid); }
+.schedule-item.done .schedule-date,
+.schedule-item.done .schedule-body { color: var(--ink-soft); }
+.schedule-item.next .schedule-date { color: var(--accent); }
+.schedule-item.next .schedule-body { color: var(--ink); font-weight: 500; }
+
+.place {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule-strong);
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 6px 16px;
+    font-size: 0.9rem;
+}
+.place dt { color: var(--ink-soft); }
+.place dd { color: var(--ink-mid); }
+
+@media (max-width: 520px) {
+    .schedule-item { grid-template-columns: 1fr; gap: 2px; }
+    .place { grid-template-columns: 1fr; gap: 0; }
+    .place dd { margin-bottom: 8px; }
+}
+
+/* 안내 */
+.guide-list { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+.guide-item {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 10px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--ink-mid);
+}
+.guide-no { font-family: var(--serif); font-weight: 700; color: var(--accent); line-height: 1.7; }
+.guide-item strong { color: var(--ink); }
+.guide-item a { color: var(--accent); font-weight: 500; }
+
+/* ── 제출 폼 ──────────────────────────────── */
+.form-card {
+    padding: 36px 34px 38px;
+    position: sticky;
+    top: 90px;
+    box-shadow: var(--lift-hi);
+}
+@media (max-width: 940px) {
+    .form-card { position: static; padding: 28px 22px 32px; }
+    .form-side { order: -1; }
+}
+
+.form-header {
+    padding-bottom: 20px;
+    border-bottom: 3px solid var(--ink);
+    margin-bottom: 22px;
+}
+.form-header h2 { font-family: var(--serif); font-size: 1.45rem; font-weight: 600; line-height: 1.3; }
+.form-header p { font-size: 0.9rem; color: var(--ink-soft); margin-top: 5px; }
+
+.phase-note {
+    display: none;
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    background: #f1f3f4;
+    color: var(--ink-mid);
+}
+.phase-note strong { display: block; font-family: var(--serif); font-size: 1rem; color: var(--ink); }
+.phase-note.is-closed { background: var(--alert-wash); }
+.phase-note.is-closed strong { color: var(--alert); }
+
+.download-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    border: 1px dashed var(--rule-strong);
+    border-radius: 2px;
+    margin-bottom: 24px;
+}
+.download-box p { font-size: 0.88rem; color: var(--ink-mid); }
+.btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid rgba(21,103,76,.4);
+    border-radius: 2px;
+    padding: 7px 13px;
+    transition: background .18s ease, color .18s ease;
+}
+.btn-download svg { width: 15px; height: 15px; }
+.btn-download:hover { background: var(--accent); color: var(--paper); }
+
+.form-group { margin-bottom: 20px; }
+.form-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+}
+.form-label .req { color: var(--alert); margin-left: 3px; }
+
+.form-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 0.94rem;
+    color: var(--ink);
+    background: #fcfcfb;
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--paper);
+    box-shadow: 0 0 0 3px rgba(21,103,76,.12);
+}
+.form-input::placeholder { color: #b6bfc7; }
+.form-input:disabled { background: #f3f4f3; color: var(--ink-soft); cursor: not-allowed; }
+
+input[type="file"].form-input { padding: 8px 10px; cursor: pointer; background: var(--paper); }
+input[type="file"].form-input::file-selector-button {
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: #f1f3f1;
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    padding: 6px 12px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+.hint { font-size: 0.8rem; color: var(--ink-soft); margin-top: 6px; }
+
+select.form-input {
+    appearance: none;
+    cursor: pointer;
+    padding-right: 38px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='none' stroke='%237b8894' stroke-width='1.5' d='M1 1l5 5 5-5'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+}
+select.form-input:invalid { color: #9aa3ad; }
+
+.radio-group { display: flex; gap: 8px; }
+.radio-item { flex: 1; position: relative; }
+.radio-item input { position: absolute; opacity: 0; width: 0; height: 0; }
+.radio-item label {
+    display: block;
+    text-align: center;
+    padding: 11px 6px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    background: #fcfcfb;
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: border-color .18s ease, background .18s ease, color .18s ease;
+}
+.radio-item input:checked + label {
+    border-color: var(--accent);
+    background: var(--accent-wash);
+    color: var(--accent);
+    font-weight: 500;
+}
+.radio-item input:focus-visible + label { box-shadow: 0 0 0 3px rgba(21,103,76,.15); }
+.radio-item input:disabled + label { cursor: not-allowed; opacity: .6; }
+
+.privacy-box {
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    padding: 14px;
+    background: #fafbfa;
+}
+.privacy-scroll {
+    height: 92px;
+    overflow-y: auto;
+    font-size: 0.83rem;
+    color: var(--ink-mid);
+    line-height: 1.9;
+    margin-bottom: 12px;
+    padding: 12px 13px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+}
+.privacy-scroll::-webkit-scrollbar { width: 4px; }
+.privacy-scroll::-webkit-scrollbar-thumb { background: var(--rule-strong); }
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    cursor: pointer;
+    user-select: none;
+}
+.checkbox-label input {
+    width: 16px; height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 5px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 6px;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+.submit-btn:hover { background: var(--accent-deep); }
+.submit-btn:disabled { background: var(--board-deep); color: var(--ink-soft); cursor: not-allowed; }
+
+#form-msg { text-align: center; font-size: 0.86rem; margin-top: 14px; min-height: 20px; font-weight: 500; }
+
+/* 제출 완료 */
+#success-view { display: none; padding: 8px 0 12px; }
+.state-mark {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+.state-mark svg { width: 22px; height: 22px; }
+#success-view h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; margin-bottom: 10px; }
+#success-view p { font-size: 0.92rem; color: var(--ink-mid); line-height: 1.85; }
+
+/* ── 토스트 ───────────────────────────────── */
+#toast {
+    position: fixed;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--ink);
+    color: #fff;
+    padding: 13px 26px;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity .3s ease, transform .3s ease;
+    pointer-events: none;
+    max-width: calc(100% - 40px);
+    text-align: center;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#toast.alert { background: var(--alert); }
+
+/* ── 푸터 ─────────────────────────────────── */
+footer {
+    background: var(--ink);
+    color: #9dabb8;
+    text-align: center;
+    padding: 30px 24px;
+    font-size: 0.85rem;
+}
+footer a { color: #9dabb8; text-decoration: none; }
+footer a:hover { color: #fff; text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-delay: 0ms !important;
+        transition-duration: .001ms !important;
+    }
+    .hero-kicker, .hero h1, .hero-desc, .process { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<header>
+    <div class="header-inner">
+        <a href="index.html" aria-label="SPARK 홈"><img src="logo.png" alt="SPARK" class="header-logo"></a>
+        <div class="header-divider"></div>
+        <span class="header-title">신입 기수 모집</span>
+        <a href="index.html" class="back-home">메인으로</a>
+    </div>
+</header>
+
+<!-- ── 히어로 ── -->
+<section class="hero">
+    <div class="hero-inner">
+        <p class="hero-kicker">Recruiting the 11th Cohort</p>
+        <h1>SPARK와 함께할 11기 신입 부원을 기다립니다</h1>
+        <p class="hero-desc">
+            최신 바이오 연구를 함께 읽는 논문 스터디부터, 한 학기의 성장을 공유하는 정기 학술 포스터 세션까지.
+            SPARK에서 생명과학의 더 넓은 가능성을 경험해 보세요.
+        </p>
+
+        <div class="process">
+            <div class="process-head">
+                <h2>11기 모집 절차</h2>
+                <p id="process-status">지원서 제출은 9월 5일 23:59:59에 마감됩니다.</p>
+            </div>
+            <ol class="process-track">
+                <li class="step" data-start="2026-08-19" data-end="2026-09-05">
+                    <span class="step-no">1</span>
+                    <span class="step-date">8월 19일 – 9월 5일</span>
+                    <span class="step-label">지원서 제출</span>
+                    <span class="step-note">9월 5일 23:59:59 마감</span>
+                </li>
+                <li class="step" data-start="2026-09-08" data-end="2026-09-08">
+                    <span class="step-no">2</span>
+                    <span class="step-date">9월 8일</span>
+                    <span class="step-label">1차 합격자 발표</span>
+                    <span class="step-note">면접 일정 개별 안내</span>
+                </li>
+                <li class="step" data-start="2026-09-11" data-end="2026-09-13">
+                    <span class="step-no">3</span>
+                    <span class="step-date">9월 11일 – 13일</span>
+                    <span class="step-label">비대면 면접</span>
+                </li>
+                <li class="step" data-start="2026-09-14" data-end="2026-09-14">
+                    <span class="step-no">4</span>
+                    <span class="step-date">9월 14일</span>
+                    <span class="step-label">최종 합격자 발표</span>
+                </li>
+                <li class="step" data-start="2026-09-17" data-end="2026-09-17">
+                    <span class="step-no">5</span>
+                    <span class="step-date">9월 17일</span>
+                    <span class="step-label">추가 합격자 발표 마감</span>
+                </li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<main class="page-wrap">
+
+    <aside class="info-side">
+
+        <div class="panel info-card">
+            <h2 class="card-head">공지사항</h2>
+
+            <div class="callout is-alert">
+                <strong>지원서 접수 마감 안내</strong>
+                9월 5일에서 6일로 넘어가는 자정에 제출 폼이 닫힙니다. 형평성을 위해 추가 지원은 받지 않습니다.
+                이 페이지에서 제출한 최종 PDF만 인정되며, 마감 직전에는 접속이 몰릴 수 있으니 여유를 두고 제출해 주세요.
+            </div>
+
+            <div class="callout">
+                <strong>회비</strong>
+                <span class="fee">45,000원</span>
+                9월 16일(수) 이후에는 추가 합격자 인계가 어려워 회비 환불이 불가합니다.
+                최종 합격자는 가입 전에 개인 일정을 반드시 확인해 주세요.
+            </div>
+        </div>
+
+        <div class="panel info-card">
+            <h2 class="card-head">11기 활동 일정</h2>
+            <p class="card-sub">아래 일정은 모두 전원 필참입니다.</p>
+            <ul class="schedule-list" id="activity-list">
+                <li class="schedule-item" data-date="2026-09-19">
+                    <div class="schedule-date">9월 19일<small>13:00 – 18:00</small></div>
+                    <div class="schedule-body">대면 OT</div>
+                </li>
+                <li class="schedule-item" data-date="2026-10-31">
+                    <div class="schedule-date">10월 31일<small>13:00 – 18:00</small></div>
+                    <div class="schedule-body">1차 대면 세미나</div>
+                </li>
+                <li class="schedule-item" data-date="2026-12-19">
+                    <div class="schedule-date">12월 19일<small>13:00 – 18:00</small></div>
+                    <div class="schedule-body">2차 대면 세미나</div>
+                </li>
+                <li class="schedule-item" data-date="2027-01-23">
+                    <div class="schedule-date">1월 23일<small>13:00 – 18:00</small></div>
+                    <div class="schedule-body">3차 대면 세미나</div>
+                </li>
+                <li class="schedule-item" data-date="2027-02-03">
+                    <div class="schedule-date">2월 3일<small>19:00 – 21:00</small></div>
+                    <div class="schedule-body">포스터 세션</div>
+                </li>
+                <li class="schedule-item" data-date="2027-02-13">
+                    <div class="schedule-date">2월 13일<small>16:00 – 18:00</small></div>
+                    <div class="schedule-body">수료식</div>
+                </li>
+            </ul>
+
+            <dl class="place">
+                <dt>정기 모임</dt>
+                <dd>이화여자대학교 학관, ECC (OT·세미나, 변동 가능)</dd>
+                <dt>포스터 세션</dt>
+                <dd>추후 공지</dd>
+            </dl>
+        </div>
+
+        <div class="panel info-card">
+            <h2 class="card-head">지원 안내</h2>
+            <ol class="guide-list">
+                <li class="guide-item"><span class="guide-no">1</span><span>제공된 서식을 복사하거나 내려받아, 분량 제한 안에서 작성해 주세요.</span></li>
+                <li class="guide-item"><span class="guide-no">2</span><span>최종 제출은 <strong>PDF</strong> 파일만 가능합니다. Word, HWP 파일은 접수되지 않습니다.</span></li>
+                <li class="guide-item"><span class="guide-no">3</span><span>기재한 연락처로 합격 여부와 면접 일정을 안내합니다. 제출 전에 번호를 한 번 더 확인해 주세요.</span></li>
+                <li class="guide-item"><span class="guide-no">4</span><span>문의는 <a href="https://pf.kakao.com/_hLbxeb" target="_blank" rel="noopener">카카오톡 채널</a>로 보내주세요.</span></li>
+            </ol>
+        </div>
+
+    </aside>
+
+    <section class="form-side">
+        <div class="panel form-card">
+
+            <div id="form-view">
+                <div class="form-header">
+                    <h2>지원 서류 제출</h2>
+                    <p>인적사항을 입력하고 작성한 지원서를 올려주세요.</p>
+                </div>
+
+                <div class="phase-note" id="phase-note"></div>
+
+                <div class="download-box">
+                    <p>아직 서식이 없으신가요?</p>
+                    <a href="https://docs.google.com/document/d/1Kve6OYu3iI6fCsT7NbVKLL1D3neSMXkR/export?format=docx" class="btn-download">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v8M4.5 6.5L8 10l3.5-3.5M3 13.5h10"/></svg>
+                        지원서 양식 받기
+                    </a>
+                </div>
+
+                <form id="spark-apply-form">
+                    <div class="form-group">
+                        <label class="form-label" for="inp-file">지원서 업로드 (PDF)<span class="req">*</span></label>
+                        <input type="file" id="inp-file" accept=".pdf" required class="form-input">
+                        <p class="hint">10MB 이하 PDF 파일</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="inp-name">이름<span class="req">*</span></label>
+                        <input type="text" id="inp-name" name="user_name" required class="form-input" placeholder="홍길동">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="inp-school">학교 / 학과<span class="req">*</span></label>
+                        <input type="text" id="inp-school" name="user_school" placeholder="예: 이화여자대학교 / 생명과학과" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="inp-studentid">학번 / 학년<span class="req">*</span></label>
+                        <input type="text" id="inp-studentid" name="user_studentid" placeholder="예: 23학번 / 4학년" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="inp-phone">연락처<span class="req">*</span></label>
+                        <input type="tel" id="inp-phone" name="user_phone" placeholder="010-0000-0000" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="inp-route">SPARK를 알게 된 경로<span class="req">*</span></label>
+                        <select id="inp-route" name="user_route" required class="form-input">
+                            <option value="" disabled selected>선택해 주세요</option>
+                            <option value="인스타그램">인스타그램</option>
+                            <option value="네이버 카페">네이버 카페</option>
+                            <option value="에브리타임">에브리타임</option>
+                            <option value="LinkedIn">LinkedIn</option>
+                            <option value="지인 소개">지인 소개</option>
+                            <option value="기타">기타</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <span class="form-label">10기 포스터 세션 참여 여부<span class="req">*</span></span>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="poster-yes" name="poster_join" value="참여함" required>
+                                <label for="poster-yes">참여함</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="poster-no" name="poster_join" value="참여하지 않음">
+                                <label for="poster-no">참여하지 않음</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group privacy-box">
+                        <span class="form-label">개인정보 수집·이용 동의<span class="req">*</span></span>
+                        <div class="privacy-scroll" tabindex="0">
+                            1. 수집 항목: 이름, 학교·학과, 학번, 연락처, 지원서 파일<br>
+                            2. 수집 목적: 신입 지원자 선발 심사, 면접 운영 및 결과 안내<br>
+                            3. 보유 기간: 해당 기수 선발 과정 종료 후 14일 이내 파기<br>
+                            4. 제3자 제공: 없음 (운영진 내부 심사 용도로만 사용)<br>
+                            * 동의를 거부할 권리가 있으나, 동의하지 않으면 지원서 접수가 불가합니다.
+                        </div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="privacy_agree" id="privacy_agree" required>
+                            <span>위 내용을 확인했으며 이에 동의합니다.</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="submit-btn">지원서 제출하기</button>
+                </form>
+                <p id="form-msg"></p>
+            </div>
+
+            <div id="success-view">
+                <div class="state-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
+                </div>
+                <h3>지원서가 접수되었습니다</h3>
+                <p>
+                    1차 결과와 면접 일정은 기재하신 연락처로 안내드립니다.<br>
+                    9월 8일 발표 전까지 공지사항도 함께 확인해 주세요.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 SPARK &nbsp;|&nbsp; <a href="mailto:officialspark@spark2021.com">officialspark@spark2021.com</a></p>
+</footer>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ── 지원 기간 (메인과 동일) ────────────── */
+    const CONFIG = {
+        START_DATE: new Date('2026-08-19T00:00:00+09:00'),
+        END_DATE:   new Date('2026-09-06T00:00:00+09:00')
+    };
+
+    const APPLY_API_URL = 'https://script.google.com/macros/s/AKfycbzrUAV0oP4MqN452g5L0e-R13RlpaGRKUrsTtfyf1MRBj3T1s8Rb8UeczSKWBpeIH4Nfg/exec';
+
+    /* ── 토스트 ─────────────────────────────── */
+    function toast(msg, isAlert) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.toggle('alert', !!isAlert);
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    const kst = (d, endOfDay) => new Date(d + (endOfDay ? 'T23:59:59' : 'T00:00:00') + '+09:00');
+
+    /* ── 모집 절차: 진행 단계 표시 ──────────── */
+    (function markProcess() {
+        const now = new Date();
+        const steps = [...document.querySelectorAll('.step')];
+        let marked = null;
+
+        steps.forEach(step => {
+            const s = kst(step.dataset.start, false);
+            const e = kst(step.dataset.end, true);
+            if (now > e) step.classList.add('done');
+            else if (!marked && now >= s) { step.classList.add('now'); marked = step; }
+        });
+        // 진행 중 단계가 없으면 다가오는 단계를 표시
+        if (!marked) {
+            marked = steps.find(s => !s.classList.contains('done'));
+            if (marked) marked.classList.add('now');
+        }
+
+        const status = document.getElementById('process-status');
+        if (!marked) {
+            status.textContent = '11기 모집 절차가 모두 끝났습니다.';
+        } else {
+            const label = marked.querySelector('.step-label').textContent;
+            const date  = marked.querySelector('.step-date').textContent;
+            const isNow = now >= kst(marked.dataset.start, false);
+            status.innerHTML = (isNow ? '지금은 <b>' : '다음 단계: <b>') + label + '</b> (' + date + ')';
+        }
+    })();
+
+    /* ── 활동 일정: 지난 일정 / 다음 일정 ───── */
+    (function markActivity() {
+        const now = new Date();
+        let found = false;
+        document.querySelectorAll('#activity-list .schedule-item').forEach(item => {
+            if (kst(item.dataset.date, true) < now) item.classList.add('done');
+            else if (!found) { item.classList.add('next'); found = true; }
+        });
+    })();
+
+    /* ── 전화번호 자동 하이픈 ───────────────── */
+    const phoneInput = document.getElementById('inp-phone');
+    phoneInput.addEventListener('input', () => {
+        const v = phoneInput.value.replace(/\D/g, '');
+        if (v.length <= 3)      phoneInput.value = v;
+        else if (v.length <= 7) phoneInput.value = v.slice(0,3) + '-' + v.slice(3);
+        else                    phoneInput.value = v.slice(0,3) + '-' + v.slice(3,7) + '-' + v.slice(7,11);
+    });
+
+    const applyForm = document.getElementById('spark-apply-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const msgArea   = document.getElementById('form-msg');
+    const phaseNote = document.getElementById('phase-note');
+
+    /* ── 지원 기간 체크 ─────────────────────── */
+    function setFormLocked(locked) {
+        applyForm.querySelectorAll('input, select').forEach(el => { el.disabled = locked; });
+    }
+
+    function checkApplyPeriod() {
+        const now = new Date();
+
+        if (now < CONFIG.START_DATE) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = '8월 19일에 접수가 시작됩니다';
+            phaseNote.className = 'phase-note';
+            phaseNote.innerHTML = '<strong>아직 접수 기간이 아닙니다</strong>8월 19일 00:00부터 제출할 수 있습니다. 서식은 미리 내려받아 작성해 두세요.';
+            phaseNote.style.display = 'block';
+            setFormLocked(true);
+            return false;
+        }
+        if (now > CONFIG.END_DATE) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = '모집이 마감되었습니다';
+            phaseNote.className = 'phase-note is-closed';
+            phaseNote.innerHTML = '<strong>11기 서류 접수가 마감되었습니다</strong>지원해 주신 모든 분께 감사드립니다. 다음 기수 모집 소식은 인스타그램과 카카오톡 채널로 안내합니다.';
+            phaseNote.style.display = 'block';
+            setFormLocked(true);
+            return false;
+        }
+        phaseNote.style.display = 'none';
+        setFormLocked(false);
+        return true;
+    }
+
+    checkApplyPeriod();
+
+    function resetButton() {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '지원서 제출하기';
+        checkApplyPeriod();
+    }
+
+    /* ── 제출 ───────────────────────────────── */
+    applyForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!checkApplyPeriod()) return;
+
+        const file = document.getElementById('inp-file').files[0];
+        if (!file) { toast('지원서 PDF 파일을 선택해 주세요.', true); return; }
+        if (file.size > 10 * 1024 * 1024) { toast('파일은 10MB 이하만 올릴 수 있습니다.', true); return; }
+
+        if (!/^010-\d{4}-\d{4}$/.test(phoneInput.value)) {
+            toast('연락처를 010-0000-0000 형식으로 입력해 주세요.', true);
+            return;
+        }
+
+        const routeVal = document.getElementById('inp-route').value;
+        if (!routeVal) { toast('SPARK를 알게 된 경로를 선택해 주세요.', true); return; }
+
+        const posterEl = document.querySelector('input[name="poster_join"]:checked');
+        if (!posterEl) { toast('10기 포스터 세션 참여 여부를 선택해 주세요.', true); return; }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = '제출 중';
+        msgArea.textContent = '파일을 전송하고 있습니다. 창을 닫지 말아 주세요.';
+        msgArea.style.color = 'var(--ink-mid)';
+
+        const reader = new FileReader();
+        reader.onload = function () {
+            const payload = {
+                fileBase64: reader.result.split(',')[1],
+                fileName:   file.name,
+                mimeType:   file.type,
+                name:       document.getElementById('inp-name').value.trim(),
+                school:     document.getElementById('inp-school').value.trim(),
+                studentId:  document.getElementById('inp-studentid').value.trim(),
+                route:      routeVal,
+                poster:     posterEl.value,
+                phone:      phoneInput.value.trim()
+            };
+
+            fetch(APPLY_API_URL, { method: 'POST', body: JSON.stringify(payload) })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.result === 'success') {
+                        document.getElementById('form-view').style.display = 'none';
+                        document.getElementById('success-view').style.display = 'block';
+                    } else { throw new Error(); }
+                })
+                .catch(() => {
+                    msgArea.textContent = '서버와 통신하지 못했습니다. 잠시 후 다시 시도해 주세요.';
+                    msgArea.style.color = 'var(--alert)';
+                    resetButton();
+                });
+        };
+        reader.onerror = function () {
+            msgArea.textContent = '파일을 읽지 못했습니다. 다시 선택해 주세요.';
+            msgArea.style.color = 'var(--alert)';
+            resetButton();
+        };
+        reader.readAsDataURL(file);
+    });
+
+})();
+</script>
+</body>
+</html>
