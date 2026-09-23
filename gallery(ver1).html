@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPARK | 활동 갤러리</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            padding: 50px 10%;
+            background: #f8f9fa;
+            color: #1a1a2e;
+        }
+
+        /* ── 뒤로가기 버튼 ── */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            background: #0a2342;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        .back-btn:hover { background: #1a3a5c; }
+
+        /* ── 제목 ── */
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        /* ── 그리드 ── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        /* ── 카드 ── */
+        .card {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+            cursor: pointer;
+            background: #ddd;
+            aspect-ratio: 4/3;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+        }
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.3s;
+        }
+        /* 이미지 로딩 전 skeleton */
+        .card img.loading { opacity: 0; }
+        .card img.loaded  { opacity: 1; }
+
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 35, 66, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .card:hover .card-overlay { opacity: 1; }
+        .card-overlay span {
+            color: white;
+            font-size: 2rem;
+        }
+
+        /* ── 로딩 스피너 ── */
+        .spinner-wrap {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            padding: 60px 0;
+        }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid #ddd;
+            border-top-color: #0a2342;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── 오류/빈 화면 ── */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 20px;
+            color: #888;
+        }
+        .empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
+        .empty-state p { font-size: 1.05rem; }
+
+        /* ── 라이트박스 ── */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .lightbox.active { display: flex; }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 85vh;
+            border-radius: 10px;
+            object-fit: contain;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .lb-close {
+            position: fixed;
+            top: 18px; right: 22px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            z-index: 1001;
+            background: none;
+            border: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .lb-close:hover { opacity: 1; }
+
+        .lb-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2.2rem;
+            cursor: pointer;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 50%;
+            width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+            z-index: 1001;
+        }
+        .lb-nav:hover { background: rgba(255,255,255,0.25); }
+        .lb-prev { left: 16px; }
+        .lb-next { right: 16px; }
+
+        .lb-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        /* ── 반응형 ── */
+        @media (max-width: 600px) {
+            body { padding: 30px 5%; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+            .lb-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#" class="back-btn" id="back-btn">← 돌아가기</a>
+    <h1 id="gallery-title">활동 사진</h1>
+    <p class="subtitle" id="gallery-subtitle"></p>
+    <div id="photo-grid" class="grid"></div>
+
+    <!-- 라이트박스 -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="사진 확대 보기">
+        <button class="lb-close" id="lb-close" aria-label="닫기">✕</button>
+        <button class="lb-nav lb-prev" id="lb-prev" aria-label="이전">&#8249;</button>
+        <img id="lb-img" src="" alt="확대 이미지">
+        <button class="lb-nav lb-next" id="lb-next" aria-label="다음">&#8250;</button>
+        <div class="lb-counter" id="lb-counter"></div>
+    </div>
+
+    <script>
+        // ════════════════════════════════════════════
+        //  활동 데이터 — 이미지 경로를 여기서 관리하세요
+        //  예) 이미지가 images/ 폴더 안에 있다면:
+        //      'images/semi1.jpg'
+        // ════════════════════════════════════════════
+        const activityData = {
+            seminar: {
+                title: "정기 세미나 현장",
+                subtitle: "SPARK 정기 세미나 활동 기록입니다.",
+                images: [
+                    { src: "semi1.jpg", alt: "세미나 현장 1" },
+                    { src: "semi2.jpg", alt: "세미나 현장 2" },
+                    { src: "semi3.jpg", alt: "세미나 현장 3" },
+                ]
+            },
+            poster: {
+                title: "포스터 세션",
+                subtitle: "팀별 공부 결과를 발표한 포스터 세션입니다.",
+                images: [
+                    { src: "poster1.jpg", alt: "포스터 세션 1" },
+                    { src: "poster2.jpg", alt: "포스터 세션 2" },
+                ]
+            },
+            external: {
+                title: "다양한 외부 활동",
+                subtitle: "학술, 친목 등 외부 활동 사진입니다.",
+                images: [
+                    { src: "ext1.jpg", alt: "외부 활동 1" },
+                    { src: "ext2.jpg", alt: "외부 활동 2" },
+                    { src: "ext3.jpg", alt: "외부 활동 3" },
+                    { src: "ext4.jpg", alt: "외부 활동 4" },
+                ]
+            }
+        };
+
+        // ── 뒤로가기: history가 있으면 back(), 없으면 index.html ──
+        const backBtn = document.getElementById('back-btn');
+        backBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (history.length > 1) history.back();
+            else location.href = 'index.html';
+        });
+
+        // ── URL 파라미터 파싱 ──
+        const params = new URLSearchParams(window.location.search);
+        const type   = params.get('type');
+        const grid   = document.getElementById('photo-grid');
+        const titleEl    = document.getElementById('gallery-title');
+        const subtitleEl = document.getElementById('gallery-subtitle');
+
+        // ── 라이트박스 상태 ──
+        let currentIndex = 0;
+        let currentImages = [];
+
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightbox();
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        function updateLightbox() {
+            const lb = document.getElementById('lb-img');
+            lb.src = currentImages[currentIndex].src;
+            lb.alt = currentImages[currentIndex].alt;
+            document.getElementById('lb-counter').textContent =
+                `${currentIndex + 1} / ${currentImages.length}`;
+        }
+
+        document.getElementById('lb-close').addEventListener('click', closeLightbox);
+        document.getElementById('lb-prev').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+            updateLightbox();
+        });
+        document.getElementById('lb-next').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % currentImages.length;
+            updateLightbox();
+        });
+        // 배경 클릭으로 닫기
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeLightbox();
+        });
+        // 키보드 네비게이션
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            if (e.key === 'Escape')       closeLightbox();
+            if (e.key === 'ArrowLeft')    document.getElementById('lb-prev').click();
+            if (e.key === 'ArrowRight')   document.getElementById('lb-next').click();
+        });
+
+        // ── 갤러리 렌더링 ──
+        function renderGallery(data) {
+            titleEl.textContent    = data.title;
+            subtitleEl.textContent = data.subtitle || '';
+            currentImages = data.images;
+
+            // 로딩 스피너
+            grid.innerHTML = `<div class="spinner-wrap"><div class="spinner"></div></div>`;
+
+            // 비동기로 이미지 카드 생성
+            setTimeout(() => {
+                grid.innerHTML = '';
+
+                if (!data.images || data.images.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">🖼️</div>
+                            <p>등록된 사진이 없습니다.</p>
+                        </div>`;
+                    return;
+                }
+
+                data.images.forEach((imgData, idx) => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
+                    card.setAttribute('aria-label', `${imgData.alt} - 확대 보기`);
+
+                    const img = document.createElement('img');
+                    img.alt = imgData.alt;
+                    img.className = 'loading';
+
+                    // 이미지 로드 성공
+                    img.onload = () => img.classList.replace('loading', 'loaded');
+                    // 이미지 로드 실패 → placeholder
+                    img.onerror = () => {
+                        img.src = `https://placehold.co/400x300/e0e0e0/999?text=이미지+없음`;
+                        img.classList.replace('loading', 'loaded');
+                    };
+                    img.src = imgData.src;
+
+                    const overlay = document.createElement('div');
+                    overlay.className = 'card-overlay';
+                    overlay.innerHTML = '<span>🔍</span>';
+
+                    card.appendChild(img);
+                    card.appendChild(overlay);
+
+                    // 클릭 / 키보드로 라이트박스 열기
+                    card.addEventListener('click', () => openLightbox(idx));
+                    card.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') openLightbox(idx);
+                    });
+
+                    grid.appendChild(card);
+                });
+            }, 300); // 스피너가 잠깐 보이도록 짧은 딜레이
+        }
+
+        // ── 진입점: type 유효성 검사 ──
+        if (type && activityData[type]) {
+            renderGallery(activityData[type]);
+        } else {
+            titleEl.textContent = '갤러리를 찾을 수 없습니다';
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <div class="icon">⚠️</div>
+                    <p>잘못된 접근이거나 존재하지 않는 갤러리입니다.<br>
+                       <a href="index.html" style="color:#0a2342;">메인으로 돌아가기</a>
+                    </p>
+                </div>`;
+        }
+    </script>
+</body>
+</html>
