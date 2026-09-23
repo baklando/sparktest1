@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1차 합격자 조회 | SPARK</title>
+<link rel="icon" type="image/png" href="favicon.png" sizes="64x64">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary:  #0a2342;
+        --primary-light: #123564;
+        --accent:   #2ecc71;
+        --accent-dark: #27ae60;
+        --accent-glow: rgba(46,204,113,0.45);
+        --cyan:     #00d2ff;
+        --fail:     #e5533d;
+        --fail-dark:#c9432f;
+        --text:     #333;
+        --bg:        #f8f9fa;
+        --white:    #ffffff;
+        --shadow:   0 4px 20px rgba(0,0,0,0.08);
+        --shadow-lg: 0 20px 50px rgba(10,35,66,0.12);
+        --radius:   16px;
+        --transition: 0.3s ease;
+        --font-display: 'Space Grotesk', 'Noto Sans KR', sans-serif;
+        --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+        font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        overflow-x: hidden;
+    }
+
+    #toast {
+        position: fixed;
+        bottom: 30px; left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: #222;
+        color: #fff;
+        padding: 14px 28px;
+        border-radius: 100px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        z-index: 9999;
+        opacity: 0;
+        transition: all 0.4s ease;
+        pointer-events: none;
+        white-space: nowrap;
+        max-width: 86vw;
+        text-align: center;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── 헤더 ── */
+    header {
+        background: rgba(255,255,255,0.72);
+        backdrop-filter: blur(18px) saturate(160%);
+        -webkit-backdrop-filter: blur(18px) saturate(160%);
+        padding: 0 8%;
+        height: 65px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 24px rgba(10,35,66,0.07);
+        border-bottom: 1px solid rgba(46,204,113,0.12);
+        position: sticky;
+        top: 0;
+        z-index: 200;
+    }
+    .logo-img { height: 42px; display: block; }
+
+    /* ── 배너(미니 히어로) ── */
+    .banner {
+        min-height: 42vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: linear-gradient(150deg, #050f1d 0%, #0a2342 50%, #0e3460 85%, #114a7a 100%);
+        color: var(--white);
+        padding: 64px 24px 56px;
+        position: relative;
+        overflow: hidden;
+    }
+    .banner::before {
+        content: '';
+        position: absolute; inset: 0;
+        background:
+            radial-gradient(ellipse 70% 50% at 22% 20%, rgba(0,210,255,0.10) 0%, transparent 60%),
+            radial-gradient(ellipse 80% 60% at 50% 45%, rgba(46,204,113,0.10) 0%, transparent 70%);
+        pointer-events: none;
+    }
+    .banner-content { position: relative; z-index: 1; animation: fadeUp 0.8s ease both; }
+    .banner-eyebrow {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+        color: rgba(255,255,255,0.65);
+        margin-bottom: 14px;
+    }
+    .banner-eyebrow .dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 0 rgba(46,204,113,0.6);
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0%{ box-shadow: 0 0 0 0 rgba(46,204,113,0.55); }
+        70%{ box-shadow: 0 0 0 8px rgba(46,204,113,0); }
+        100%{ box-shadow: 0 0 0 0 rgba(46,204,113,0); }
+    }
+    .banner h1 {
+        font-family: var(--font-display);
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 700; letter-spacing: -1px;
+        margin-bottom: 10px;
+    }
+    .banner p { font-size: clamp(0.9rem, 2vw, 1.05rem); opacity: 0.85; }
+
+    @keyframes fadeUp { from{opacity:0; transform:translateY(24px);} to{opacity:1; transform:translateY(0);} }
+
+    /* ── 본문 섹션 ── */
+    main { padding: 70px 8% 100px; }
+
+    .form-container {
+        max-width: 520px;
+        margin: -70px auto 0;
+        position: relative;
+        background: linear-gradient(165deg, rgba(255,255,255,0.94), rgba(255,255,255,0.8));
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.7);
+        padding: 40px 36px;
+        border-radius: 20px;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+    }
+    @media (max-width: 600px) { .form-container { padding: 30px 22px; } }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+        display: block; font-size: 0.82rem; font-weight: 600;
+        color: var(--primary); margin-bottom: 8px;
+    }
+    .form-input {
+        width: 100%;
+        padding: 13px 15px;
+        border: 1.5px solid #ddd;
+        border-radius: 10px;
+        box-sizing: border-box;
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+        color: var(--text);
+        background: #fafafa;
+        transition: var(--transition);
+    }
+    .form-input:focus {
+        outline: none; border-color: var(--accent); background: var(--white);
+        box-shadow: 0 0 0 3px rgba(46,204,113,0.12);
+    }
+    .form-input::placeholder { color: #b3b3b3; }
+
+    .cta-button {
+        width: 100%;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        color: var(--white);
+        padding: 15px 24px;
+        border-radius: 100px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1rem;
+        display: flex;
+        align-items: center; justify-content: center; gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 24px rgba(46,204,113,0.45), 0 0 0 1px rgba(46,204,113,0.3) inset;
+        border: none; cursor: pointer;
+    }
+    .cta-button:hover:not(:disabled) {
+        transform: translateY(-2px);
+        background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+        box-shadow: 0 12px 32px rgba(46,204,113,0.6), 0 0 0 1px rgba(46,204,113,0.4) inset;
+    }
+    .cta-button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .spinner {
+        width: 15px; height: 15px;
+        border-radius: 50%;
+        border: 2.5px solid rgba(255,255,255,0.45);
+        border-top-color: #fff;
+        display: none;
+        animation: spin 0.8s linear infinite;
+    }
+    .cta-button.loading .spinner { display: inline-block; }
+    .cta-button.loading .btn-text { opacity: 0.85; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* 상태 화면 전환 */
+    .state-screen { display: none; }
+    .state-screen.show { display: block; animation: fadeUp 0.5s ease both; }
+
+    .skeleton-line {
+        height: 14px; border-radius: 6px;
+        background: linear-gradient(90deg, #eef1f3 25%, #e2e7ea 37%, #eef1f3 63%);
+        background-size: 400% 100%;
+        animation: shimmer 1.4s ease infinite;
+    }
+    @keyframes shimmer { 0%{background-position:100% 0;} 100%{background-position:0 0;} }
+
+    .info-box {
+        background: rgba(10,35,66,0.04);
+        border: 1px solid rgba(10,35,66,0.1);
+        border-radius: 12px;
+        padding: 18px 20px;
+        font-family: var(--font-mono);
+        font-size: 0.86rem;
+        color: var(--primary);
+        line-height: 2;
+    }
+    .info-box b { font-weight: 700; }
+
+    .center-icon {
+        width: 58px; height: 58px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 18px;
+        font-family: var(--font-display); font-weight: 700; font-size: 1.4rem;
+    }
+    .center-icon.wait { background: rgba(0,210,255,0.1); color: #0a8fb8; border: 1px solid rgba(0,210,255,0.3); }
+
+    .state-heading {
+        text-align: center;
+        font-family: var(--font-display);
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 1.15rem;
+        margin-bottom: 8px;
+    }
+    .state-sub {
+        text-align: center;
+        color: #667;
+        font-size: 0.88rem;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    /* 결과 화면 */
+    .result-box {
+        border-radius: 16px;
+        padding: 32px 28px;
+        text-align: center;
+        margin-bottom: 20px;
+        overflow-wrap: break-word;
+        max-width: 100%;
+    }
+    .result-box.pass { background: rgba(46,204,113,0.08); border: 1px solid rgba(46,204,113,0.25); }
+    .result-box.fail { background: rgba(229,83,61,0.07); border: 1px solid rgba(229,83,61,0.22); }
+
+    .result-sentence {
+        font-family: 'Noto Sans KR', sans-serif;
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-bottom: 22px;
+    }
+    .result-sentence .mark {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+    .result-box.pass .result-sentence { color: var(--accent-dark); }
+    .result-box.fail .result-sentence { color: var(--fail-dark); }
+
+    .result-notice-text {
+        white-space: pre-line;
+        line-height: 2;
+        font-size: 0.95rem;
+        color: var(--text);
+        overflow-wrap: break-word;
+        word-break: break-all;
+    }
+
+    .foot-note { text-align: center; color: #b0b8bf; font-size: 0.76rem; margin-top: 22px; }
+
+    /* ── 푸터 ── */
+    .site-footer {
+        background: linear-gradient(165deg, #0d0d0d, #0a1420);
+        color: #888;
+        padding: 60px 8% 32px;
+        position: relative;
+    }
+    .site-footer::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent), var(--cyan), transparent);
+        opacity: 0.5;
+    }
+    .footer-container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px; margin-bottom: 40px; }
+    .footer-logo {
+        font-family: var(--font-display);
+        background: linear-gradient(90deg, #fff, var(--accent));
+        -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px;
+    }
+    .footer-info p { font-size: 0.88rem; line-height: 1.8; }
+    .footer-contact h4 { color: var(--white); margin-bottom: 10px; font-size: 0.95rem; }
+    .footer-contact p { font-size: 0.88rem; line-height: 2; }
+    .footer-contact a { color: var(--accent); text-decoration: none; }
+    .footer-contact a:hover { text-decoration: underline; }
+    .footer-bottom { border-top: 1px solid #2a2a2a; padding-top: 22px; text-align: center; font-size: 0.8rem; }
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<header>
+    <a href="index.html"><img src="logo.png" alt="SPARK Logo" class="logo-img"></a>
+</header>
+
+<section class="banner">
+    <div class="banner-content">
+        <div class="banner-eyebrow"><span class="dot"></span>SPARK ADMISSIONS</div>
+        <h1>1차 합격자 조회</h1>
+        <p>지원 시 입력하신 휴대폰 번호로 결과를 확인하세요</p>
+    </div>
+</section>
+
+<main>
+    <div class="form-container">
+
+        <!-- 초기 로딩 -->
+        <div id="checking" class="state-screen show">
+            <div class="skeleton-line" style="width:60%; margin: 4px auto 12px;"></div>
+            <div class="skeleton-line" style="width:40%; margin: 0 auto;"></div>
+        </div>
+
+        <!-- 조회 기간 아님 -->
+        <div id="closedState" class="state-screen">
+            <div class="center-icon wait">!</div>
+            <div class="state-heading">지금은 조회 기간이 아닙니다</div>
+            <div class="state-sub">아래 기간 중에 다시 방문해주세요.</div>
+            <div class="info-box">
+                시작&nbsp;&nbsp;<b id="periodStart">-</b><br>
+                종료&nbsp;&nbsp;<b id="periodEnd">-</b>
+            </div>
+        </div>
+
+        <!-- 입력 폼 -->
+        <div id="formState" class="state-screen">
+            <div class="form-group">
+                <label for="phone">휴대폰 번호</label>
+                <input id="phone" class="form-input" type="tel" inputmode="numeric" placeholder="010-0000-0000" maxlength="13">
+            </div>
+            <button id="submitBtn" class="cta-button">
+                <span class="btn-text">결과 확인하기</span>
+                <span class="spinner"></span>
+            </button>
+        </div>
+
+        <!-- 결과 -->
+        <div id="resultState" class="state-screen">
+            <div id="resultBox" class="result-box">
+                <div id="resultSentence" class="result-sentence"></div>
+                <div id="resultNotice" class="result-notice-text"></div>
+            </div>
+        </div>
+
+        <div class="foot-note">SPARK · 생명과학연합학술동아리</div>
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <div class="footer-info">
+            <div class="footer-logo">SPARK</div>
+            <p>Scientific Poster on Analysis of Research Knowledge</p>
+        </div>
+        <div class="footer-contact">
+            <h4>Contact</h4>
+            <p>Email: <a href="mailto:officialspark@spark2021.com">officialspark@spark2021.com</a></p>
+            <p>Instagram: <a href="https://www.instagram.com/spark__2021/" target="_blank">@spark__2021</a></p>
+        </div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 SPARK. All rights reserved.</p></div>
+</footer>
+
+<script>
+(function () {
+    /* ── 토스트 ── */
+    function showToast(msg, color) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.style.background = color || '#222';
+        t.classList.add('show');
+        clearTimeout(showToast._tid);
+        showToast._tid = setTimeout(() => t.classList.remove('show'), 3200);
+    }
+
+    /* ── 합격자 조회 로직 ── */
+    // ⚠️ 여기에 Apps Script 배포 후 나오는 웹 앱 URL을 붙여넣으세요.
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQhlnSrTRs3_ntaUJKXtuhR4mY2q_2iEEvNlWH30vGl_5sLuCMk5xBdsiAdDbV0_Bc/exec';
+
+    // ⚠️ 조회 기간은 여기(홈페이지 코드)에서만 제어합니다. 시트에는 기간 검증이 없습니다.
+    const CONFIG = {
+        START_DATE: new Date('2026-09-08T18:00:00+09:00'),
+        END_DATE:   new Date('2026-09-14T00:00:00+09:00')
+    };
+
+    const screens = {
+        checking: document.getElementById('checking'),
+        closed: document.getElementById('closedState'),
+        form: document.getElementById('formState'),
+        result: document.getElementById('resultState')
+    };
+    const phoneInput = document.getElementById('phone');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function showOnly(key) {
+        Object.values(screens).forEach(el => el.classList.remove('show'));
+        screens[key].classList.add('show');
+    }
+
+    function fmtDate(d) {
+        if (!(d instanceof Date)) d = new Date(d);
+        if (isNaN(d)) return '-';
+        const pad = n => String(n).padStart(2, '0');
+        return `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    phoneInput.addEventListener('input', () => {
+        let v = phoneInput.value.replace(/[^0-9]/g, '').slice(0, 11);
+        if (v.length > 3 && v.length <= 7) v = v.replace(/(\d{3})(\d+)/, '$1-$2');
+        else if (v.length > 7) v = v.replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3');
+        phoneInput.value = v;
+    });
+
+    function checkPeriod() {
+        // 코드에 적힌 CONFIG 기준으로 즉시 판단 (서버 왕복 없이 바로 표시)
+        const now = new Date();
+        const isOpen = now >= CONFIG.START_DATE && now <= CONFIG.END_DATE;
+        if (isOpen) {
+            showOnly('form');
+        } else {
+            document.getElementById('periodStart').textContent = fmtDate(CONFIG.START_DATE);
+            document.getElementById('periodEnd').textContent = fmtDate(CONFIG.END_DATE);
+            showOnly('closed');
+        }
+    }
+
+    async function lookup() {
+        const now = new Date();
+        if (now < CONFIG.START_DATE || now > CONFIG.END_DATE) {
+            document.getElementById('periodStart').textContent = fmtDate(CONFIG.START_DATE);
+            document.getElementById('periodEnd').textContent = fmtDate(CONFIG.END_DATE);
+            showOnly('closed');
+            return;
+        }
+
+        const raw = phoneInput.value.trim();
+        if (raw.replace(/[^0-9]/g, '').length < 9) {
+            showToast('전화번호를 정확히 입력해주세요.', 'var(--fail)');
+            return;
+        }
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+
+        try {
+            const res = await fetch(`${SCRIPT_URL}?action=lookup&phone=${encodeURIComponent(raw)}`);
+            const data = await res.json();
+
+            if (data.status === 'notfound') {
+                showToast('입력하신 번호로 접수된 지원 내역을 찾을 수 없습니다.', '#c9432f');
+                return;
+            }
+            if (data.status === 'error') {
+                showToast(data.message || '오류가 발생했습니다. 다시 시도해주세요.', '#c9432f');
+                return;
+            }
+            if (data.status === 'found') {
+                renderResult(data);
+            }
+        } catch (err) {
+            showToast('네트워크 오류가 발생했습니다. 다시 시도해주세요.', '#c9432f');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+        }
+    }
+
+    function renderResult(data) {
+        const isPass = data.result === 'pass';
+        const box = document.getElementById('resultBox');
+        const sentence = document.getElementById('resultSentence');
+
+        box.className = 'result-box ' + (isPass ? 'pass' : 'fail');
+
+        const namePart = data.name ? `${data.name}님은 ` : '지원자님은 ';
+        const resultWord = isPass ? '합격' : '불합격';
+        sentence.innerHTML = `${namePart}<span class="mark">[${resultWord}]</span>입니다.`;
+
+        document.getElementById('resultNotice').textContent = data.notice || '별도 안내사항이 없습니다.';
+
+        showOnly('result');
+    }
+
+    submitBtn.addEventListener('click', lookup);
+    phoneInput.addEventListener('keydown', e => { if (e.key === 'Enter') lookup(); });
+
+    checkPeriod();
+})();
+</script>
+
+</body>
+</html>
