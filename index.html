@@ -1,711 +1,954 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="naver-site-verification" content="4375b2bd968bffbd760c9f9140a34bc564f8868e" />
-    <title>SPARK | 생명과학연합학술동아리</title>
-    <link rel="icon" type="image/png" href="favicon.png" sizes="64x64">
-    <meta property="og:title" content="SPARK - 생명과학연합학술동아리">
-    <meta property="og:description" content="전국 30여 개 대학의 생명과학 전공 학부생이 논문을 읽고, 분석하고, 포스터로 발표합니다.">
-    <meta property="og:image" content="logo.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@300;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
-    <style>
-    /* ══════════════════════════════════════════════
-       SPARK — 포스터 보드 레이아웃
-       보드(회색) 위에 종이 패널(흰색)이 올라가는 구조
-    ══════════════════════════════════════════════ */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    :root {
-        /* 보드와 종이 */
-        --board:        #e0e2dd;
-        --board-deep:   #d2d6d1;
-        --paper:        #ffffff;
+<!--
+╔══════════════════════════════════════════════════════════════╗
+║  SPARK 홈페이지 — 수정 안내                                    ║
+║                                                              ║
+║  수정할 곳은 이 파일 위쪽의 두 군데뿐입니다.                      ║
+║    [수정 구역 1] 검색·카톡 공유 시 보이는 제목과 설명               ║
+║    [수정 구역 2] 홈페이지에 보이는 모든 글·날짜·링크·사진·색상       ║
+║                                                              ║
+║  "여기부터 아래는 수정하지 않아도 됩니다" 표시 이후는                ║
+║  디자인과 동작 코드이므로 건드리지 않아도 됩니다.                   ║
+╚══════════════════════════════════════════════════════════════╝
+-->
 
-        /* 잉크 */
-        --ink:          #132638;
-        --ink-mid:      #4a5a6b;
-        --ink-soft:     #7b8894;
 
-        /* 선 */
-        --rule:         #dfe2de;
-        --rule-strong:  #c3c9c3;
+<!-- ════════════════════════════════════════════
+     ✏️ [수정 구역 1] 검색·공유 정보
+     네이버/구글 검색 결과, 카톡·인스타 링크 미리보기에 나오는 내용입니다.
+     따옴표 " " 안의 글자만 바꾸세요.
+═════════════════════════════════════════════ -->
 
-        /* 강조 */
-        --accent:       #15674c;
-        --accent-deep:  #0f4d38;
-        --accent-wash:  #eef3f0;
+<!-- 브라우저 탭에 보이는 제목 -->
+<title>SPARK | 생명과학연합학술동아리</title>
 
-        /* 종이가 보드에 붙어 있는 그림자 */
-        --lift: 0 1px 2px rgba(19,38,56,.05), 0 10px 28px rgba(19,38,56,.07);
-        --lift-hi: 0 2px 4px rgba(19,38,56,.07), 0 18px 44px rgba(19,38,56,.11);
+<!-- 링크 공유 시 미리보기 제목 / 설명 / 이미지 -->
+<meta property="og:title" content="SPARK - 생명과학연합학술동아리">
+<meta property="og:description" content="전국 30여 개 대학의 생명과학 전공 학부생이 논문을 읽고, 분석하고, 포스터로 발표합니다.">
+<meta property="og:image" content="logo.png">
 
-        --serif: 'Source Serif 4', 'Noto Serif KR', Georgia, serif;
-        --sans:  'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+<!-- 탭 아이콘 이미지 파일 이름 -->
+<link rel="icon" type="image/png" href="favicon.png" sizes="64x64">
 
-        --col: 1120px;
-    }
+<!-- 네이버 검색 등록용 코드 (지우거나 바꾸지 마세요) -->
+<meta name="naver-site-verification" content="4375b2bd968bffbd760c9f9140a34bc564f8868e" />
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
-    body {
-        font-family: var(--sans);
-        font-weight: 400;
-        background: var(--board);
-        color: var(--ink);
-        line-height: 1.75;
-        overflow-x: hidden;
-        -webkit-font-smoothing: antialiased;
-    }
+<!-- ════════════════════════════════════════════
+     ✏️ [수정 구역 2] 홈페이지 내용 전체
+═════════════════════════════════════════════ -->
+<script>
+/*
+ ┌─────────────────── 수정 규칙 ───────────────────┐
+ │ 1. 따옴표 '  ' 안의 글자만 바꾸세요.                │
+ │ 2. 항목 끝에는 항상 쉼표( , )를 붙입니다.            │
+ │ 3. 괄호 { } [ ] 는 지우지 마세요.                   │
+ │ 4. 항목을 추가하려면 { ... }, 한 덩어리를 통째로     │
+ │    복사해서 바로 아래에 붙여넣고 글자만 바꾸세요.      │
+ │    삭제할 때도 { ... }, 한 덩어리를 통째로 지웁니다.  │
+ │ 5. 날짜는 항상 '2026-09-19' 형식(연-월-일)으로 씁니다.│
+ │ 6. 글 안에 작은따옴표 ' 를 넣고 싶으면 ‘ ’ 를 쓰세요.  │
+ │ 7. // 뒤의 회색 글씨는 설명이라 화면에 나오지 않습니다. │
+ │                                                  │
+ │ 수정 후 페이지 위에 빨간 경고가 뜨면,                 │
+ │ 방금 고친 곳에서 쉼표나 따옴표가 빠진 것입니다.         │
+ └──────────────────────────────────────────────────┘
+*/
+const SITE = {
 
-    a { color: inherit; }
+    /* ────────── 기본 정보 ────────── */
+    name:       'SPARK',
+    fullName:   'Scientific Poster on Analysis of Research Knowledge',   // 대문자로 시작하는 단어의 첫 글자가 자동으로 초록색 강조됩니다
+    koreanName: '생명과학 연합학술동아리',
+    slogan:     'Think, Spark, Grow',
+    logo:       'logo.png',   // 상단 로고 이미지 파일 이름
 
-    :focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: 3px;
-        border-radius: 2px;
-    }
 
-    .wrap {
-        max-width: var(--col);
-        margin: 0 auto;
-        padding: 0 28px;
-    }
+    /* ────────── 색상 ──────────
+       색상 코드는 구글에서 "color picker" 검색하면 고를 수 있습니다. */
+    colors: {
+        main:      '#15674c',   // 대표 색 (버튼, 강조 글씨)
+        mainDark:  '#0f4d38',   // 버튼에 마우스를 올렸을 때 색
+        mainLight: '#eef3f0',   // 연한 배경 색
+    },
 
-    /* ── 헤더 ───────────────────────────────── */
-    header {
-        position: sticky;
-        top: 0;
-        z-index: 200;
-        background: var(--paper);
-        border-bottom: 1px solid var(--rule-strong);
-    }
-    .header-inner {
-        max-width: var(--col);
-        margin: 0 auto;
-        padding: 0 28px;
-        height: 66px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .logo-img { height: 38px; display: block; }
 
-    nav.pc-nav { display: flex; align-items: center; gap: 26px; }
-    nav.pc-nav a {
-        text-decoration: none;
-        color: var(--ink-mid);
-        font-size: 0.92rem;
-        font-weight: 500;
-        padding: 4px 0;
-        border-bottom: 2px solid transparent;
-        transition: color .18s ease, border-color .18s ease;
-    }
-    nav.pc-nav a:hover { color: var(--ink); }
-    nav.pc-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
-    nav.pc-nav a.nav-apply {
-        color: var(--paper);
-        background: var(--accent);
-        padding: 7px 16px;
-        border-radius: 2px;
-        border-bottom: none;
-    }
-    nav.pc-nav a.nav-apply:hover { background: var(--accent-deep); color: var(--paper); }
+    /* ────────── 다른 페이지 주소 ────────── */
+    pages: {
+        apply:  'apply-session.html',    // 지원하기 버튼을 누르면 가는 페이지
+        poster: 'poster-session.html',   // 포스터 세션 페이지
+    },
 
-    .hamburger {
-        display: none;
-        flex-direction: column;
-        justify-content: space-between;
-        width: 24px; height: 16px;
-        background: none; border: none;
-        cursor: pointer; padding: 0;
-    }
-    .hamburger span {
-        display: block; height: 2px;
-        background: var(--ink);
-        transition: transform .25s ease, opacity .2s ease;
-    }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    .mobile-menu {
-        display: none;
-        position: fixed;
-        top: 66px; left: 0; right: 0;
-        background: var(--paper);
-        border-bottom: 1px solid var(--rule-strong);
-        padding: 10px 28px 18px;
-        z-index: 150;
-        flex-direction: column;
-    }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a {
-        text-decoration: none;
-        color: var(--ink);
-        font-size: 1rem;
-        font-weight: 500;
-        padding: 14px 2px;
-        border-bottom: 1px solid var(--rule);
-    }
-    .mobile-menu a:last-child { border-bottom: none; }
+    /* ────────── 모집 기간 ──────────
+       날짜만 바꾸면 버튼 문구, 버튼 숨김, 모집 안내 공지가 자동으로 바뀝니다.
+       - 시작일 전: "8월 19일 11기 모집 시작" (버튼 비활성)
+       - 모집 중  : "지금 지원하기"
+       - 마감 후  : "11기 모집 마감", 상단 '신입부원모집' 메뉴 자동 숨김 */
+    recruit: {
+        generation: 11,              // 기수 (숫자만, 따옴표 없이)
+        start:      '2026-08-19',    // 모집 시작일 (이 날 0시부터)
+        end:        '2026-09-05',    // 모집 마지막 날 (이 날 밤 23:59까지 지원 가능)
+        menuText:   '신입부원모집',   // 상단 메뉴 버튼 글자
+        buttonText: '지금 지원하기',   // 모집 중일 때 큰 버튼 글자
+    },
 
-    @media (max-width: 860px) {
-        nav.pc-nav { display: none; }
-        .hamburger { display: flex; }
-    }
 
-    /* ── 좌측 소셜 (보드에 붙은 작은 종이) ──── */
+    /* ────────── 맨 위 첫 화면 ────────── */
+    hero: {
+        intro: '생명과학 논문을 함께 읽고 분석해, 한 학기의 결과를 학술 포스터로 발표하는 연합 학술 동아리입니다.',
+        meta:  '2021년 창립, 전국 30여 개 대학 생명과학 전공 학부생이 함께합니다.',   // 대학 수를 바꾸면 [수정 구역 1]의 og:description도 같이 바꿔 주세요
+        posterLinkText: '이번 학기 포스터 세션 보기',
+        figureCaption:  '부원 한 명이 한 학기 동안 A1 한 장을 완성합니다.',        // 포스터 그림 아래 설명
+    },
+
+
+    /* ────────── 소개 (무엇을 하나요) ──────────
+       icon 은 'paper'(문서), 'poster'(모니터), 'network'(연결) 중 하나를 고르세요. */
+    about: {
+        title:    '무엇을 하나요',
+        subtitle: '논문 읽기에서 포스터 발표까지, 한 학기를 함께 완주합니다.',
+        cards: [
+            {
+                icon:  'paper',
+                title: '논문 스터디',
+                text:  '최신 바이오 연구 동향을 따라가며, 원문 논문을 문단 단위로 깊게 읽습니다.',
+            },
+            {
+                icon:  'poster',
+                title: '포스터 세션',
+                text:  '학기 말마다 직접 제작한 학술 포스터를 걸고, 서로의 연구 앞에서 질문을 주고받습니다.',
+            },
+            {
+                icon:  'network',
+                title: '대학 간 네트워크',
+                text:  '30여 개 대학의 전공자가 한자리에 모여, 학교 밖에서 만날 수 있는 관점을 나눕니다.',
+            },
+        ],
+    },
+
+
+    /* ────────── 일정 ──────────
+       제목("11기 일정")은 위 모집 기수로 자동 생성됩니다.
+       날짜가 지나면 자동으로 회색, 다가오는 일정은 초록색으로 표시됩니다.
+       화면에는 "9월 19일"처럼 자동으로 바뀌어 보입니다. */
+    schedule: {
+        subtitle: 'OT부터 포스터 세션까지 약 5개월 과정입니다.',
+        events: [
+            { date: '2026-09-19', label: 'OT' },
+            { date: '2026-10-31', label: '1차 세미나' },
+            { date: '2026-12-19', label: '2차 세미나' },
+            { date: '2027-01-23', label: '3차 세미나' },
+            { date: '2027-02-03', label: '포스터 세션' },
+        ],
+    },
+
+
+    /* ────────── 활동 기록 (사진 카드) ──────────
+       "Fig. 1, 2, 3" 번호는 순서대로 자동으로 붙습니다. */
+    activity: {
+        title:    '활동 기록',
+        subtitle: '지난 기수들이 남긴 세미나와 포스터 세션의 기록입니다.',
+        cards: [
+            {
+                image: 'photo1.png',
+                title: '정기 세미나',
+                sub:   '격주로 모여 논문을 발제하고 토론합니다',
+                link:  'gallery.html?type=seminar',
+            },
+            {
+                image: 'photo2.png',
+                title: '포스터 세션',
+                sub:   '학기 말 학술 포스터 발표회',
+                link:  'gallery.html?type=poster',
+            },
+            {
+                image: 'photo3.png',
+                title: '외부 활동',
+                sub:   '학회 참관과 연구 기관 탐방',
+                link:  'gallery.html?type=external',
+            },
+        ],
+    },
+
+
+    /* ────────── 공지사항 ──────────
+       content 는 여러 줄로 쓸 수 있도록 ` (백틱, 키보드 숫자 1 왼쪽 키)으로 감쌉니다.
+       줄바꿈한 그대로 화면에 표시됩니다. */
+    notice: {
+        title:    '공지사항',
+        subtitle: '지원 전에 확인해 주세요.',
+        items: [
+            {
+                title: '동아리 소개',
+                content: `
+                    생명과학 연합학술동아리 SPARK(Scientific Poster on Analysis of Research Knowledge)는 과학 분야의 논문 분석을 기반으로 한 과학 포스터 제작 활동을 중심으로, 학생들의 폭넓은 과학적 지식 함양을 목표로 하고 있습니다.
+                `,
+            },
+            {
+                title: '출석 인정 기준',
+                content: `
+                    예시: 세미나 시작 시간이 13:00인 경우
+                    ~13:00 → 출석
+                    13:00~13:30 → 지각
+                    13:30~ → 결석
+
+                    결석 1회 또는 지각 2회 이상 시 수료 불가
+                `,
+            },
+        ],
+        // true 이면 맨 아래에 "11기 모집 안내" 공지가 날짜에 맞춰 자동으로 붙습니다. 끄려면 false
+        showRecruitNotice: true,
+    },
+
+
+    /* ────────── 왼쪽(모바일은 아래쪽) SNS 버튼 ────────── */
+    social: [
+        { name: 'Instagram',   url: 'https://www.instagram.com/spark__2021/', icon: 'news1.jpg' },
+        { name: '네이버 카페',  url: 'https://cafe.naver.com/spark0326',       icon: 'news2.jpg' },
+        { name: 'LinkedIn',    url: 'https://www.linkedin.com/in/spark-%EC%83%9D%EB%AA%85%EA%B3%BC%ED%95%99-%EC%97%B0%ED%95%A9%ED%95%99%EC%88%A0%EB%8F%99%EC%95%84%EB%A6%AC-2748612b2/', icon: 'news3.jpg' },
+        { name: '카카오톡',     url: 'https://pf.kakao.com/_hLbxeb',          icon: 'news4.png', iconBg: '#FEE500' },   // iconBg: 아이콘 뒤 배경색 (필요할 때만)
+    ],
+
+
+    /* ────────── 맨 아래 (푸터) ────────── */
+    footer: {
+        docs: [
+            { name: 'SPARK 정관', url: 'https://drive.google.com/file/d/1hW7ntwTEwc0d7TYEUUa7mszsoIHRJRvX/view?usp=sharing' },
+            { name: '출석 기준',  url: 'https://drive.google.com/file/d/16KdDOAhdM01TcNyG_7t-rmwygA86GA21/view?usp=sharing' },
+        ],
+        email: 'officialspark@spark2021.com',
+        contacts: [
+            { text: '@spark__2021', url: 'https://www.instagram.com/spark__2021/' },
+        ],
+    },
+
+};
+</script>
+<!-- ════════════════ ✏️ 수정 구역 끝 ════════════════ -->
+
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     ⛔ 여기부터 아래는 수정하지 않아도 됩니다 (디자인·동작 코드)
+═══════════════════════════════════════════════════════════════ -->
+
+<script>
+/* 위에서 정한 색상을 디자인에 적용 */
+(function () {
+    if (typeof SITE === 'undefined' || !SITE.colors) return;
+    var root = document.documentElement.style, c = SITE.colors;
+    if (c.main)      root.setProperty('--accent', c.main);
+    if (c.mainDark)  root.setProperty('--accent-deep', c.mainDark);
+    if (c.mainLight) root.setProperty('--accent-wash', c.mainLight);
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@300;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════
+   SPARK — 포스터 보드 레이아웃
+   보드(회색) 위에 종이 패널(흰색)이 올라가는 구조
+   ※ 대표 색상은 [수정 구역 2]의 colors 에서 바꿉니다.
+══════════════════════════════════════════════ */
+
+:root {
+    --board:        #e0e2dd;
+    --board-deep:   #d2d6d1;
+    --paper:        #ffffff;
+
+    --ink:          #132638;
+    --ink-mid:      #4a5a6b;
+    --ink-soft:     #7b8894;
+
+    --rule:         #dfe2de;
+    --rule-strong:  #c3c9c3;
+
+    --accent:       #15674c;
+    --accent-deep:  #0f4d38;
+    --accent-wash:  #eef3f0;
+
+    --lift: 0 1px 2px rgba(19,38,56,.05), 0 10px 28px rgba(19,38,56,.07);
+    --lift-hi: 0 2px 4px rgba(19,38,56,.07), 0 18px 44px rgba(19,38,56,.11);
+
+    --serif: 'Source Serif 4', 'Noto Serif KR', Georgia, serif;
+    --sans:  'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    --col: 1120px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+    font-family: var(--sans);
+    font-weight: 400;
+    background: var(--board);
+    color: var(--ink);
+    line-height: 1.75;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+.wrap {
+    max-width: var(--col);
+    margin: 0 auto;
+    padding: 0 28px;
+}
+
+/* ── 설정 오류 경고 ─────────────────────── */
+#config-error {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 10000;
+    background: #b3261e;
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+#config-error[hidden] { display: none; }
+
+/* ── 헤더 ───────────────────────────────── */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule-strong);
+}
+.header-inner {
+    max-width: var(--col);
+    margin: 0 auto;
+    padding: 0 28px;
+    height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo-img { height: 38px; display: block; }
+
+nav.pc-nav { display: flex; align-items: center; gap: 26px; }
+nav.pc-nav a {
+    text-decoration: none;
+    color: var(--ink-mid);
+    font-size: 0.92rem;
+    font-weight: 500;
+    padding: 4px 0;
+    border-bottom: 2px solid transparent;
+    transition: color .18s ease, border-color .18s ease;
+}
+nav.pc-nav a:hover { color: var(--ink); }
+nav.pc-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+nav.pc-nav a.nav-apply {
+    color: var(--paper);
+    background: var(--accent);
+    padding: 7px 16px;
+    border-radius: 2px;
+    border-bottom: none;
+}
+nav.pc-nav a.nav-apply:hover { background: var(--accent-deep); color: var(--paper); }
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px; height: 16px;
+    background: none; border: none;
+    cursor: pointer; padding: 0;
+}
+.hamburger span {
+    display: block; height: 2px;
+    background: var(--ink);
+    transition: transform .25s ease, opacity .2s ease;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 66px; left: 0; right: 0;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 10px 28px 18px;
+    z-index: 150;
+    flex-direction: column;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 14px 2px;
+    border-bottom: 1px solid var(--rule);
+}
+.mobile-menu a:last-child { border-bottom: none; }
+
+@media (max-width: 860px) {
+    nav.pc-nav { display: none; }
+    .hamburger { display: flex; }
+}
+
+/* ── 좌측 소셜 ──────────────────────────── */
+#social-float {
+    position: fixed;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    z-index: 120;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    border-left: none;
+    border-radius: 0 3px 3px 0;
+    box-shadow: var(--lift);
+    overflow: hidden;
+}
+#social-float a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    text-decoration: none;
+    color: var(--ink-mid);
+    font-size: 0.78rem;
+    font-weight: 500;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 44px;
+    transition: max-width .28s ease, background .2s ease, color .2s ease;
+}
+#social-float a:last-child { border-bottom: none; }
+#social-float a img {
+    width: 20px; height: 20px;
+    object-fit: cover;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+#social-float a span {
+    opacity: 0;
+    transition: opacity .2s ease;
+}
+#social-float:hover a { max-width: 170px; }
+#social-float:hover a span { opacity: 1; }
+#social-float a:hover { background: var(--accent-wash); color: var(--accent); }
+
+@media (max-width: 860px) {
     #social-float {
-        position: fixed;
-        left: 0; top: 50%;
-        transform: translateY(-50%);
-        z-index: 120;
-        display: flex;
-        flex-direction: column;
-        background: var(--paper);
-        border: 1px solid var(--rule-strong);
-        border-left: none;
-        border-radius: 0 3px 3px 0;
-        box-shadow: var(--lift);
-        overflow: hidden;
+        top: auto; bottom: 0; left: 0; right: 0;
+        transform: none;
+        flex-direction: row;
+        border: none;
+        border-top: 1px solid var(--rule-strong);
+        border-radius: 0;
     }
     #social-float a {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 11px 12px;
-        text-decoration: none;
-        color: var(--ink-mid);
-        font-size: 0.78rem;
-        font-weight: 500;
-        border-bottom: 1px solid var(--rule);
-        white-space: nowrap;
-        overflow: hidden;
-        max-width: 44px;
-        transition: max-width .28s ease, background .2s ease, color .2s ease;
+        flex: 1;
+        max-width: none;
+        justify-content: center;
+        padding: 12px 0;
+        border-bottom: none;
+        border-right: 1px solid var(--rule);
     }
-    #social-float a:last-child { border-bottom: none; }
-    #social-float a img {
-        width: 20px; height: 20px;
-        object-fit: cover;
-        border-radius: 3px;
-        flex-shrink: 0;
-    }
-    #social-float a span {
-        opacity: 0;
-        transition: opacity .2s ease;
-    }
-    #social-float:hover a { max-width: 170px; }
-    #social-float:hover a span { opacity: 1; }
-    #social-float a:hover { background: var(--accent-wash); color: var(--accent); }
+    #social-float a:last-child { border-right: none; }
+    #social-float a span { display: none; }
+    #social-float:hover a { max-width: none; }
+}
 
-    @media (max-width: 860px) {
-        #social-float {
-            top: auto; bottom: 0; left: 0; right: 0;
-            transform: none;
-            flex-direction: row;
-            border: none;
-            border-top: 1px solid var(--rule-strong);
-            border-radius: 0;
-        }
-        #social-float a {
-            flex: 1;
-            max-width: none;
-            justify-content: center;
-            padding: 12px 0;
-            border-bottom: none;
-            border-right: 1px solid var(--rule);
-        }
-        #social-float a:last-child { border-right: none; }
-        #social-float a span { display: none; }
-        #social-float:hover a { max-width: none; }
-    }
+/* ── 히어로 ─────────────────────────────── */
+.hero {
+    background-color: var(--paper);
+    background-image:
+        linear-gradient(rgba(19,38,56,.038) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(19,38,56,.038) 1px, transparent 1px);
+    background-size: 30px 30px;
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 88px 0 80px;
+}
+.hero-inner {
+    max-width: var(--col);
+    margin: 0 auto;
+    padding: 0 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 56px;
+    align-items: center;
+}
+.hero-text { max-width: 44em; }
 
-    /* ── 히어로 = 포스터 타이틀 배너 ────────── */
-    .hero {
-        background-color: var(--paper);
-        background-image:
-            linear-gradient(rgba(19,38,56,.038) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(19,38,56,.038) 1px, transparent 1px);
-        background-size: 30px 30px;
-        border-bottom: 1px solid var(--rule-strong);
-        padding: 88px 0 80px;
-    }
-    .hero-inner {
-        max-width: var(--col);
-        margin: 0 auto;
-        padding: 0 28px;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 280px;
-        gap: 56px;
-        align-items: center;
-    }
-    .hero-text { max-width: 44em; }
+.hero-figure { margin: 0; }
+.poster-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 14px 32px rgba(19,38,56,.15));
+}
+.hero-figure figcaption {
+    margin-top: 18px;
+    font-size: 0.83rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+}
+.poster-svg .sheet   { fill: var(--paper); stroke: var(--rule-strong); }
+.poster-svg .ln      { fill: #ccd4da; }
+.poster-svg .ln-mid  { fill: #9aa6b1; }
+.poster-svg .ln-dark { fill: var(--ink); }
+.poster-svg .rule    { stroke: var(--ink); stroke-width: 2; }
+.poster-svg .fig     { fill: #f2f4f2; stroke: var(--rule); }
+.poster-svg .fig-hi  { fill: var(--accent-wash); stroke: var(--accent); stroke-opacity: .35; }
+.poster-svg .mark    { fill: var(--accent); opacity: .5; }
+.poster-svg .plot    { fill: none; stroke: var(--accent); stroke-width: 2; opacity: .6; }
 
-    /* 히어로 도식 : A1 학술 포스터 */
-    .hero-figure { margin: 0; }
-    .poster-svg {
-        width: 100%;
-        height: auto;
-        display: block;
-        filter: drop-shadow(0 14px 32px rgba(19,38,56,.15));
-    }
-    .hero-figure figcaption {
-        margin-top: 18px;
-        font-size: 0.83rem;
-        line-height: 1.65;
-        color: var(--ink-soft);
-    }
-    .poster-svg .sheet   { fill: var(--paper); stroke: var(--rule-strong); }
-    .poster-svg .ln      { fill: #ccd4da; }
-    .poster-svg .ln-mid  { fill: #9aa6b1; }
-    .poster-svg .ln-dark { fill: var(--ink); }
-    .poster-svg .rule    { stroke: var(--ink); stroke-width: 2; }
-    .poster-svg .fig     { fill: #f2f4f2; stroke: var(--rule); }
-    .poster-svg .fig-hi  { fill: var(--accent-wash); stroke: rgba(21,103,76,.35); }
-    .poster-svg .mark    { fill: var(--accent); opacity: .5; }
-    .poster-svg .plot    { fill: none; stroke: var(--accent); stroke-width: 2; opacity: .6; }
+@media (max-width: 940px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+    .hero-figure { max-width: 230px; }
+}
+@media (max-width: 640px) {
+    .hero-figure { display: none; }
+}
+.hero-slogan {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+}
+.wordmark {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(3.6rem, 11vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    margin-bottom: 20px;
+}
+.acronym {
+    font-family: var(--serif);
+    font-size: clamp(1.05rem, 2.6vw, 1.5rem);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    font-weight: 400;
+    padding-bottom: 26px;
+    border-bottom: 4px solid var(--ink);
+    margin-bottom: 26px;
+}
+.acronym b { color: var(--accent); font-weight: 700; }
 
-    @media (max-width: 940px) {
-        .hero-inner { grid-template-columns: 1fr; gap: 48px; }
-        .hero-figure { max-width: 230px; }
-    }
-    @media (max-width: 640px) {
-        .hero-figure { display: none; }
-    }
-    .hero-slogan {
-        font-family: var(--serif);
-        font-style: italic;
-        font-size: 1.05rem;
-        color: var(--ink-soft);
-        margin-bottom: 14px;
-    }
-    .wordmark {
-        font-family: var(--serif);
-        font-weight: 700;
-        font-size: clamp(3.6rem, 11vw, 7rem);
-        line-height: 0.95;
-        letter-spacing: 0.04em;
-        color: var(--ink);
-        margin-bottom: 20px;
-    }
-    .acronym {
-        font-family: var(--serif);
-        font-size: clamp(1.05rem, 2.6vw, 1.5rem);
-        line-height: 1.5;
-        color: var(--ink-soft);
-        font-weight: 400;
-        padding-bottom: 26px;
-        border-bottom: 4px solid var(--ink);
-        margin-bottom: 26px;
-    }
-    .acronym b { color: var(--accent); font-weight: 700; }
+.hero-lede {
+    font-size: 1.06rem;
+    color: var(--ink-mid);
+    max-width: 46em;
+    margin-bottom: 8px;
+}
+.hero-meta {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin-bottom: 34px;
+}
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
 
-    .hero-lede {
-        font-size: 1.06rem;
-        color: var(--ink-mid);
-        max-width: 46em;
-        margin-bottom: 8px;
-    }
-    .hero-meta {
-        font-size: 0.9rem;
-        color: var(--ink-soft);
-        margin-bottom: 34px;
-    }
-    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+.cta-button {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 15px 38px;
+    border-radius: 2px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+.cta-button:hover { background: var(--accent-deep); }
+.cta-button.is-closed {
+    background: var(--board-deep);
+    color: var(--ink-soft);
+    pointer-events: none;
+}
+.link-quiet {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule-strong);
+    padding-bottom: 2px;
+    transition: color .18s ease, border-color .18s ease;
+}
+.link-quiet:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
-    .cta-button {
-        display: inline-block;
-        background: var(--accent);
-        color: var(--paper);
-        font-family: var(--sans);
-        font-size: 1rem;
-        font-weight: 700;
-        padding: 15px 38px;
-        border-radius: 2px;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        transition: background .2s ease;
-    }
-    .cta-button:hover { background: var(--accent-deep); }
-    .cta-button.is-closed {
-        background: var(--board-deep);
-        color: var(--ink-soft);
-        pointer-events: none;
-    }
-    .link-quiet {
-        font-size: 0.95rem;
-        font-weight: 500;
-        color: var(--ink-mid);
-        text-decoration: none;
-        border-bottom: 1px solid var(--rule-strong);
-        padding-bottom: 2px;
-        transition: color .18s ease, border-color .18s ease;
-    }
-    .link-quiet:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.hero-slogan, .wordmark, .acronym, .hero-lede, .hero-meta, .hero-actions {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise .7s cubic-bezier(.2,.7,.3,1) forwards;
+}
+.hero-figure {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise .7s cubic-bezier(.2,.7,.3,1) .34s forwards;
+}
+.wordmark      { animation-delay: .06s; }
+.acronym       { animation-delay: .14s; }
+.hero-lede     { animation-delay: .22s; }
+.hero-meta     { animation-delay: .26s; }
+.hero-actions  { animation-delay: .32s; }
+@keyframes rise { to { opacity: 1; transform: translateY(0); } }
 
-    /* 히어로 등장 — 페이지당 단 한 번의 연출 */
-    .hero-slogan, .wordmark, .acronym, .hero-lede, .hero-meta, .hero-actions {
-        opacity: 0;
-        transform: translateY(14px);
-        animation: rise .7s cubic-bezier(.2,.7,.3,1) forwards;
-    }
-    .hero-figure {
-        opacity: 0;
-        transform: translateY(14px);
-        animation: rise .7s cubic-bezier(.2,.7,.3,1) .34s forwards;
-    }
-    .wordmark      { animation-delay: .06s; }
-    .acronym       { animation-delay: .14s; }
-    .hero-lede     { animation-delay: .22s; }
-    .hero-meta     { animation-delay: .26s; }
-    .hero-actions  { animation-delay: .32s; }
-    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+.poster-svg .col { opacity: 0; animation: ink .55s ease forwards; }
+.poster-svg .col-head { animation-delay: .58s; }
+.poster-svg .col-1    { animation-delay: .72s; }
+.poster-svg .col-2    { animation-delay: .84s; }
+.poster-svg .col-3    { animation-delay: .96s; }
+@keyframes ink { to { opacity: 1; } }
 
-    /* 포스터 도식이 단 단위로 채워지는 연출 */
-    .poster-svg .col { opacity: 0; animation: ink .55s ease forwards; }
-    .poster-svg .col-head { animation-delay: .58s; }
-    .poster-svg .col-1    { animation-delay: .72s; }
-    .poster-svg .col-2    { animation-delay: .84s; }
-    .poster-svg .col-3    { animation-delay: .96s; }
-    @keyframes ink { to { opacity: 1; } }
+/* ── 섹션 공통 ──────────────────────────── */
+section { scroll-margin-top: 66px; }
+.section-body { padding: 84px 0; }
+.section-body.no-top { padding-top: 0; }
 
-    /* ── 섹션 공통 (포스터 섹션 헤더) ───────── */
-    section { scroll-margin-top: 66px; }
-    .section-body { padding: 84px 0; }
+.section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    border-bottom: 4px solid var(--ink);
+    padding-bottom: 12px;
+    margin-bottom: 40px;
+}
+.section-head h2 {
+    font-family: var(--serif);
+    font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+.section-head p {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+}
 
-    .section-head {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 20px;
-        flex-wrap: wrap;
-        border-bottom: 4px solid var(--ink);
-        padding-bottom: 12px;
-        margin-bottom: 40px;
-    }
-    .section-head h2 {
-        font-family: var(--serif);
-        font-size: clamp(1.7rem, 3.4vw, 2.3rem);
-        font-weight: 600;
-        line-height: 1.2;
-        letter-spacing: -0.01em;
-    }
-    .section-head p {
-        font-size: 0.92rem;
-        color: var(--ink-soft);
-    }
+.panel {
+    background: var(--paper);
+    border-radius: 3px;
+    box-shadow: var(--lift);
+}
 
-    /* ── 패널 (보드 위의 종이) ──────────────── */
-    .panel {
-        background: var(--paper);
-        border-radius: 3px;
-        box-shadow: var(--lift);
-    }
+/* ── About ──────────────────────────────── */
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+.about-card { padding: 34px 30px 36px; border-top: 3px solid var(--accent); }
+.about-card svg {
+    width: 38px; height: 38px;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: block;
+}
+.about-card h3 {
+    font-family: var(--serif);
+    font-size: 1.24rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.about-card p { font-size: 0.95rem; color: var(--ink-mid); }
 
-    /* ── About : 포스터 3단 ─────────────────── */
-    .about-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-    }
-    .about-card { padding: 34px 30px 36px; border-top: 3px solid var(--accent); }
-    .about-card svg {
-        width: 38px; height: 38px;
-        color: var(--accent);
-        margin-bottom: 20px;
-        display: block;
-    }
-    .about-card h3 {
-        font-family: var(--serif);
-        font-size: 1.24rem;
-        font-weight: 600;
-        margin-bottom: 10px;
-    }
-    .about-card p { font-size: 0.95rem; color: var(--ink-mid); }
+@media (max-width: 860px) {
+    .about-grid { grid-template-columns: 1fr; }
+}
 
-    @media (max-width: 860px) {
-        .about-grid { grid-template-columns: 1fr; }
-    }
+/* ── 일정 ───────────────────────────────── */
+.schedule { padding: 40px 36px 44px; }
+.schedule-track {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    position: relative;
+}
+.schedule-track::before {
+    content: '';
+    position: absolute;
+    left: 10%; right: 10%;
+    top: 6px;
+    height: 2px;
+    background: var(--rule-strong);
+}
+.stop { text-align: center; position: relative; }
+.stop::before {
+    content: '';
+    display: block;
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--rule-strong);
+    margin: 0 auto 18px;
+    position: relative;
+    z-index: 1;
+}
+.stop .date {
+    font-family: var(--serif);
+    font-size: 1.18rem;
+    font-weight: 600;
+    display: block;
+    line-height: 1.3;
+}
+.stop .label { font-size: 0.88rem; color: var(--ink-soft); }
+.stop.done .date, .stop.done .label { color: var(--ink-soft); }
+.stop.done::before { background: var(--rule-strong); border-color: var(--rule-strong); }
+.stop.next::before { background: var(--accent); border-color: var(--accent); }
+.stop.next .date { color: var(--accent); }
+.stop.next .label { color: var(--accent); font-weight: 500; }
 
-    /* ── 일정 : 포스터의 타임라인 ───────────── */
-    .schedule { padding: 40px 36px 44px; }
-    .schedule-track {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        position: relative;
-    }
+@media (max-width: 860px) {
+    .schedule { padding: 28px 24px 30px; }
+    .schedule-track { grid-template-columns: 1fr; grid-auto-flow: row; }
     .schedule-track::before {
-        content: '';
-        position: absolute;
-        left: 10%; right: 10%;
-        top: 6px;
-        height: 2px;
-        background: var(--rule-strong);
+        left: 6px; right: auto;
+        top: 6px; bottom: 14px;
+        width: 2px; height: auto;
     }
-    .stop { text-align: center; position: relative; padding-top: 0; }
-    .stop::before {
-        content: '';
-        display: block;
-        width: 13px; height: 13px;
-        border-radius: 50%;
-        background: var(--paper);
-        border: 2px solid var(--rule-strong);
-        margin: 0 auto 18px;
-        position: relative;
-        z-index: 1;
-    }
-    .stop .date {
-        font-family: var(--serif);
-        font-size: 1.18rem;
-        font-weight: 600;
-        display: block;
-        line-height: 1.3;
-    }
-    .stop .label { font-size: 0.88rem; color: var(--ink-soft); }
-    .stop.done .date, .stop.done .label { color: var(--ink-soft); }
-    .stop.done::before { background: var(--rule-strong); border-color: var(--rule-strong); }
-    .stop.next::before { background: var(--accent); border-color: var(--accent); }
-    .stop.next .date { color: var(--accent); }
-    .stop.next .label { color: var(--accent); font-weight: 500; }
-
-    @media (max-width: 860px) {
-        .schedule { padding: 28px 24px 30px; }
-        .schedule-track { grid-template-columns: 1fr; }
-        .schedule-track::before {
-            left: 6px; right: auto;
-            top: 6px; bottom: 14px;
-            width: 2px; height: auto;
-        }
-        .stop {
-            text-align: left;
-            display: grid;
-            grid-template-columns: 13px 1fr;
-            gap: 16px;
-            align-items: start;
-            padding: 10px 0;
-        }
-        .stop::before { margin: 5px 0 0; }
-        .stop .date { font-size: 1.05rem; }
-    }
-
-    /* ── Archive : 도판 패널 ────────────────── */
-    .figure-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-    }
-    .figure-card {
-        display: block;
-        text-decoration: none;
-        color: inherit;
-        overflow: hidden;
-        transition: box-shadow .25s ease, transform .25s ease;
-    }
-    .figure-card:hover { box-shadow: var(--lift-hi); transform: translateY(-3px); }
-    .figure-card .plate {
-        aspect-ratio: 4 / 3;
-        overflow: hidden;
-        background: var(--board-deep);
-    }
-    .figure-card img {
-        width: 100%; height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-    .figure-card figcaption {
-        padding: 16px 20px 20px;
-        border-top: 1px solid var(--rule);
-        font-size: 0.95rem;
-    }
-    .figure-card .fig-no {
-        font-family: var(--serif);
-        font-weight: 700;
-        color: var(--accent);
-        margin-right: 8px;
-    }
-    .figure-card .fig-sub {
-        display: block;
-        font-size: 0.85rem;
-        color: var(--ink-soft);
-        margin-top: 3px;
-    }
-
-    @media (max-width: 860px) {
-        .figure-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ── 공지사항 아코디언 ──────────────────── */
-    .notice { max-width: 820px; }
-    .faq-item { border-bottom: 1px solid var(--rule); }
-    .faq-item:last-child { border-bottom: none; }
-    .faq-question {
-        width: 100%;
-        padding: 22px 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 16px;
-        background: none;
-        border: none;
-        cursor: pointer;
+    .stop {
         text-align: left;
-        font-family: var(--serif);
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--ink);
-        transition: color .18s ease;
-    }
-    .faq-question:hover { color: var(--accent); }
-    .sign {
-        position: relative;
-        width: 14px; height: 14px;
-        flex-shrink: 0;
-    }
-    .sign::before, .sign::after {
-        content: '';
-        position: absolute;
-        background: var(--ink-soft);
-        transition: transform .28s ease, background .18s ease;
-    }
-    .sign::before { top: 6px; left: 0; width: 14px; height: 2px; }
-    .sign::after  { left: 6px; top: 0; width: 2px; height: 14px; }
-    .faq-item.active .sign::after { transform: scaleY(0); }
-    .faq-item.active .sign::before { background: var(--accent); }
-
-    .faq-answer {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height .35s ease;
-    }
-    .faq-answer .inner {
-        padding: 0 30px 26px;
-        color: var(--ink-mid);
-        font-size: 0.95rem;
-        line-height: 1.95;
-        white-space: pre-line;
-        max-width: 62ch;
-    }
-    .faq-item.active .faq-answer { max-height: 620px; }
-
-    /* ── 푸터 ───────────────────────────────── */
-    .site-footer {
-        background: var(--ink);
-        color: #9dabb8;
-        padding: 64px 0 28px;
-    }
-    .footer-grid {
         display: grid;
-        grid-template-columns: 1.4fr 1fr 1fr;
-        gap: 40px;
-        padding-bottom: 40px;
+        grid-template-columns: 13px 1fr;
+        gap: 16px;
+        align-items: start;
+        padding: 10px 0;
     }
-    .footer-mark {
-        font-family: var(--serif);
-        font-size: 1.6rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        color: #fff;
-        margin-bottom: 8px;
-    }
-    .site-footer h4 {
-        font-size: 0.9rem;
-        font-weight: 700;
-        color: #fff;
-        margin-bottom: 14px;
-    }
-    .site-footer p, .site-footer li { font-size: 0.88rem; line-height: 1.95; }
-    .site-footer ul { list-style: none; }
-    .site-footer a { color: #9dabb8; text-decoration: none; }
-    .site-footer a:hover { color: #fff; text-decoration: underline; }
-    .footer-bottom {
-        border-top: 1px solid #2b3c4e;
-        padding-top: 22px;
-        font-size: 0.8rem;
-        color: #6d7d8c;
-    }
-    @media (max-width: 860px) {
-        .footer-grid { grid-template-columns: 1fr; gap: 30px; }
-        .site-footer { padding-bottom: 78px; } /* 모바일 하단 소셜바 여유 */
-    }
+    .stop::before { margin: 5px 0 0; }
+    .stop .date { font-size: 1.05rem; }
+}
 
-    /* ── 토스트 ─────────────────────────────── */
-    #toast {
-        position: fixed;
-        bottom: 30px; left: 50%;
-        transform: translateX(-50%) translateY(16px);
-        background: var(--ink);
-        color: #fff;
-        padding: 13px 26px;
-        border-radius: 2px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        z-index: 9999;
-        opacity: 0;
-        transition: opacity .3s ease, transform .3s ease;
-        pointer-events: none;
-        white-space: nowrap;
-    }
-    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* ── Archive ────────────────────────────── */
+.figure-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+.figure-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+    transition: box-shadow .25s ease, transform .25s ease;
+}
+.figure-card:hover { box-shadow: var(--lift-hi); transform: translateY(-3px); }
+.figure-card figure { margin: 0; }
+.figure-card .plate {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--board-deep);
+}
+.figure-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.figure-card figcaption {
+    padding: 16px 20px 20px;
+    border-top: 1px solid var(--rule);
+    font-size: 0.95rem;
+}
+.figure-card .fig-no {
+    font-family: var(--serif);
+    font-weight: 700;
+    color: var(--accent);
+    margin-right: 8px;
+}
+.figure-card .fig-sub {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin-top: 3px;
+}
 
-    /* ── 반응형 여백 ────────────────────────── */
-    @media (max-width: 860px) {
-        .hero { padding: 66px 0 58px; }
-        .section-body { padding: 58px 0; }
-        .wrap, .header-inner, .hero-inner { padding: 0 20px; }
-    }
+@media (max-width: 860px) {
+    .figure-grid { grid-template-columns: 1fr; }
+}
 
-    @media (prefers-reduced-motion: reduce) {
-        html { scroll-behavior: auto; }
-        *, *::before, *::after {
-            animation-duration: .001ms !important;
-            animation-delay: 0ms !important;
-            transition-duration: .001ms !important;
-        }
-        .hero-slogan, .wordmark, .acronym, .hero-lede,
-        .hero-meta, .hero-actions, .hero-figure {
-            opacity: 1; transform: none;
-        }
-        .poster-svg .col { opacity: 1; }
+/* ── 공지사항 아코디언 ──────────────────── */
+.notice { max-width: 820px; }
+.faq-item { border-bottom: 1px solid var(--rule); }
+.faq-item:last-child { border-bottom: none; }
+.faq-question {
+    width: 100%;
+    padding: 22px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    transition: color .18s ease;
+}
+.faq-question:hover { color: var(--accent); }
+.sign {
+    position: relative;
+    width: 14px; height: 14px;
+    flex-shrink: 0;
+}
+.sign::before, .sign::after {
+    content: '';
+    position: absolute;
+    background: var(--ink-soft);
+    transition: transform .28s ease, background .18s ease;
+}
+.sign::before { top: 6px; left: 0; width: 14px; height: 2px; }
+.sign::after  { left: 6px; top: 0; width: 2px; height: 14px; }
+.faq-item.active .sign::after { transform: scaleY(0); }
+.faq-item.active .sign::before { background: var(--accent); }
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .35s ease;
+}
+.faq-answer .inner {
+    padding: 0 30px 26px;
+    color: var(--ink-mid);
+    font-size: 0.95rem;
+    line-height: 1.95;
+    white-space: pre-line;
+    max-width: 62ch;
+}
+
+/* ── 푸터 ───────────────────────────────── */
+.site-footer {
+    background: var(--ink);
+    color: #9dabb8;
+    padding: 64px 0 28px;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+}
+.footer-mark {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.site-footer h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 14px;
+}
+.site-footer p, .site-footer li { font-size: 0.88rem; line-height: 1.95; }
+.site-footer ul { list-style: none; }
+.site-footer a { color: #9dabb8; text-decoration: none; }
+.site-footer a:hover { color: #fff; text-decoration: underline; }
+.footer-bottom {
+    border-top: 1px solid #2b3c4e;
+    padding-top: 22px;
+    font-size: 0.8rem;
+    color: #6d7d8c;
+}
+@media (max-width: 860px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+    .site-footer { padding-bottom: 78px; }
+}
+
+/* ── 토스트 ─────────────────────────────── */
+#toast {
+    position: fixed;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--ink);
+    color: #fff;
+    padding: 13px 26px;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity .3s ease, transform .3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 860px) {
+    .hero { padding: 66px 0 58px; }
+    .section-body { padding: 58px 0; }
+    .wrap, .header-inner, .hero-inner { padding: 0 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-delay: 0ms !important;
+        transition-duration: .001ms !important;
     }
-    </style>
+    .hero-slogan, .wordmark, .acronym, .hero-lede,
+    .hero-meta, .hero-actions, .hero-figure {
+        opacity: 1; transform: none;
+    }
+    .poster-svg .col { opacity: 1; }
+}
+</style>
 </head>
 <body>
 
-<!-- 좌측 소셜 -->
-<div id="social-float">
-    <a href="https://www.instagram.com/spark__2021/" target="_blank" rel="noopener" aria-label="Instagram">
-        <img src="news1.jpg" alt=""><span>Instagram</span>
-    </a>
-    <a href="https://cafe.naver.com/spark0326" target="_blank" rel="noopener" aria-label="네이버 카페">
-        <img src="news2.jpg" alt=""><span>네이버 카페</span>
-    </a>
-    <a href="https://www.linkedin.com/in/spark-%EC%83%9D%EB%AA%85%EA%B3%BC%ED%95%99-%EC%97%B0%ED%95%A9%ED%95%99%EC%88%A0%EB%8F%99%EC%95%84%EB%A6%AC-2748612b2/" target="_blank" rel="noopener" aria-label="LinkedIn">
-        <img src="news3.jpg" alt=""><span>LinkedIn</span>
-    </a>
-    <a href="https://pf.kakao.com/_hLbxeb" target="_blank" rel="noopener" aria-label="카카오톡 채널">
-        <img src="news4.png" alt="" style="background:#FEE500;"><span>카카오톡</span>
-    </a>
+<!--
+  ⛔ 아래 HTML은 '틀'입니다. 글자는 [수정 구역 2]에서 자동으로 채워집니다.
+     여기에 직접 글을 써도 반영되지 않으니 위쪽 SITE 설정을 고쳐 주세요.
+-->
+
+<div id="config-error" hidden>
+    ⚠️ 홈페이지 내용 설정(SITE)에 오류가 있어 내용을 불러오지 못했습니다.
+    최근에 고친 곳에서 쉼표( , ), 따옴표( ' ), 괄호( { } [ ] )가 빠지거나 남지 않았는지 확인해 주세요.
+    (PC에서 F12 → Console 탭을 열면 오류가 난 줄 번호가 보입니다.)
 </div>
 
+<div id="social-float"></div>
 <div id="toast"></div>
 
 <header>
     <div class="header-inner">
-        <a href="#" aria-label="SPARK 홈"><img src="logo.png" alt="SPARK" class="logo-img"></a>
+        <a href="#" aria-label="홈으로"><img id="logo" class="logo-img" alt=""></a>
 
         <nav class="pc-nav" id="pc-nav">
             <a href="#about">소개</a>
             <a href="#schedule">일정</a>
             <a href="#activity">활동</a>
             <a href="#news">공지사항</a>
-            <a href="poster-session.html">포스터 세션</a>
-            <a href="apply-session.html" id="nav-apply" class="nav-apply">신입부원모집</a>
+            <a id="nav-poster">포스터 세션</a>
+            <a id="nav-apply" class="nav-apply"></a>
         </nav>
 
         <button class="hamburger" id="hamburger" aria-label="메뉴 열기" aria-expanded="false">
@@ -715,69 +958,57 @@
 </header>
 
 <div class="mobile-menu" id="mobile-menu">
-    <a href="#about" onclick="closeMobileMenu()">소개</a>
-    <a href="#schedule" onclick="closeMobileMenu()">일정</a>
-    <a href="#activity" onclick="closeMobileMenu()">활동</a>
-    <a href="#news" onclick="closeMobileMenu()">공지사항</a>
-    <a href="poster-session.html">포스터 세션</a>
-    <a href="apply-session.html" id="mob-apply">신입부원모집</a>
+    <a href="#about">소개</a>
+    <a href="#schedule">일정</a>
+    <a href="#activity">활동</a>
+    <a href="#news">공지사항</a>
+    <a id="mob-poster">포스터 세션</a>
+    <a id="mob-apply"></a>
 </div>
 
-<!-- ── 히어로 : 포스터 타이틀 배너 ── -->
+<!-- 히어로 -->
 <section class="hero">
     <div class="hero-inner">
         <div class="hero-text">
-            <p class="hero-slogan">Think, Spark, Grow</p>
-            <h1 class="wordmark">SPARK</h1>
-            <p class="acronym">
-                <b>S</b>cientific <b>P</b>oster on <b>A</b>nalysis of <b>R</b>esearch <b>K</b>nowledge
-            </p>
-            <p class="hero-lede">
-                생명과학 논문을 함께 읽고 분석해, 한 학기의 결과를 학술 포스터로 발표하는 연합 학술 동아리입니다.
-            </p>
-            <p class="hero-meta">2021년 창립, 전국 30여 개 대학 생명과학 전공 학부생이 함께합니다.</p>
+            <p class="hero-slogan" id="hero-slogan"></p>
+            <h1 class="wordmark" id="wordmark"></h1>
+            <p class="acronym" id="acronym"></p>
+            <p class="hero-lede" id="hero-lede"></p>
+            <p class="hero-meta" id="hero-meta"></p>
             <div class="hero-actions">
-                <a href="apply-session.html" class="cta-button" id="hero-cta">지금 지원하기</a>
-                <a href="poster-session.html" class="link-quiet">이번 학기 포스터 세션 보기</a>
+                <a class="cta-button" id="hero-cta"></a>
+                <a class="link-quiet" id="hero-poster-link"></a>
             </div>
         </div>
 
         <figure class="hero-figure">
             <svg class="poster-svg" viewBox="0 0 300 424" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A1 규격 학술 포스터의 구성 도식">
                 <rect class="sheet" x="0.5" y="0.5" width="299" height="423"/>
-
-                <!-- 제목부 -->
                 <g class="col col-head">
                     <rect class="ln-dark" x="18" y="26" width="196" height="11" rx="1"/>
                     <rect class="ln-mid"  x="18" y="44" width="138" height="6" rx="1"/>
                     <rect class="ln"      x="18" y="58" width="104" height="4" rx="1"/>
                     <line class="rule" x1="18" y1="72" x2="282" y2="72"/>
                 </g>
-
-                <!-- 1단 -->
                 <g class="col col-1">
                     <rect class="ln" x="18" y="86"  width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="18" y="94"  width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="18" y="102" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="18" y="110" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="18" y="118" width="58" height="3.5" rx="1"/>
-
                     <rect class="fig" x="18" y="132" width="84" height="54"/>
                     <rect class="mark" x="30" y="160" width="9" height="18"/>
                     <rect class="mark" x="44" y="148" width="9" height="30"/>
                     <rect class="mark" x="58" y="166" width="9" height="12"/>
                     <rect class="mark" x="72" y="154" width="9" height="24"/>
-
                     <rect class="ln" x="18" y="198" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="18" y="206" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="18" y="214" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="18" y="222" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="18" y="230" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="18" y="238" width="50" height="3.5" rx="1"/>
-
                     <rect class="fig" x="18" y="252" width="84" height="44"/>
                     <path class="plot" d="M26 288 C 40 264, 52 292, 64 270 S 84 258, 94 264"/>
-
                     <rect class="ln" x="18" y="308" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="18" y="316" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="18" y="324" width="84" height="3.5" rx="1"/>
@@ -786,8 +1017,6 @@
                     <rect class="ln" x="18" y="348" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="18" y="356" width="66" height="3.5" rx="1"/>
                 </g>
-
-                <!-- 2단 -->
                 <g class="col col-2">
                     <rect class="fig" x="108" y="86" width="84" height="62"/>
                     <circle class="mark" cx="126" cy="126" r="2.6"/>
@@ -799,18 +1028,15 @@
                     <circle class="mark" cx="180" cy="105" r="2.6"/>
                     <circle class="mark" cx="133" cy="133" r="2.6"/>
                     <circle class="mark" cx="157" cy="124" r="2.6"/>
-
                     <rect class="ln" x="108" y="160" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="108" y="168" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="108" y="176" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="108" y="184" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="108" y="192" width="62" height="3.5" rx="1"/>
-
                     <rect class="fig" x="108" y="206" width="84" height="50"/>
                     <rect class="mark" x="118" y="216" width="64" height="5"/>
                     <rect class="mark" x="118" y="228" width="44" height="5"/>
                     <rect class="mark" x="118" y="240" width="54" height="5"/>
-
                     <rect class="ln" x="108" y="268" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="108" y="276" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="108" y="284" width="84" height="3.5" rx="1"/>
@@ -824,29 +1050,23 @@
                     <rect class="ln" x="108" y="348" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="108" y="356" width="52" height="3.5" rx="1"/>
                 </g>
-
-                <!-- 3단 -->
                 <g class="col col-3">
                     <rect class="ln" x="198" y="86"  width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="198" y="94"  width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="198" y="102" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="198" y="110" width="70" height="3.5" rx="1"/>
-
                     <rect class="fig" x="198" y="124" width="84" height="58"/>
                     <path class="plot" d="M206 172 L 220 152 L 234 162 L 248 140 L 262 148 L 274 134"/>
-
                     <rect class="ln" x="198" y="194" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="198" y="202" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="198" y="210" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="198" y="218" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="198" y="226" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="198" y="234" width="56" height="3.5" rx="1"/>
-
                     <rect class="fig-hi" x="198" y="248" width="84" height="48"/>
                     <rect class="ln-dark" x="208" y="258" width="40" height="5" rx="1"/>
                     <rect class="mark" x="208" y="270" width="64" height="4"/>
                     <rect class="mark" x="208" y="280" width="48" height="4"/>
-
                     <rect class="ln" x="198" y="308" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="198" y="316" width="84" height="3.5" rx="1"/>
                     <rect class="ln" x="198" y="324" width="84" height="3.5" rx="1"/>
@@ -856,166 +1076,54 @@
                     <rect class="ln" x="198" y="356" width="44" height="3.5" rx="1"/>
                 </g>
             </svg>
-            <figcaption>부원 한 명이 한 학기 동안 A1 한 장을 완성합니다.</figcaption>
+            <figcaption id="hero-caption"></figcaption>
         </figure>
     </div>
 </section>
 
-<!-- ── About ── -->
+<!-- 소개 -->
 <section id="about">
     <div class="wrap section-body">
         <div class="section-head">
-            <h2>무엇을 하나요</h2>
-            <p>논문 읽기에서 포스터 발표까지, 한 학기를 함께 완주합니다.</p>
+            <h2 id="about-title"></h2>
+            <p id="about-sub"></p>
         </div>
-
-        <div class="about-grid">
-            <div class="panel about-card">
-                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M10 5h14l6 6v24H10z"/>
-                    <path d="M24 5v6h6"/>
-                    <path d="M15 20h10M15 25h10M15 30h6"/>
-                </svg>
-                <h3>논문 스터디</h3>
-                <p>최신 바이오 연구 동향을 따라가며, 원문 논문을 문단 단위로 깊게 읽습니다.</p>
-            </div>
-
-            <div class="panel about-card">
-                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="6" y="6" width="28" height="21"/>
-                    <path d="M11 22l6-8 4 5 3-3 5 6"/>
-                    <path d="M20 27v7M14 34h12"/>
-                </svg>
-                <h3>포스터 세션</h3>
-                <p>학기 말마다 직접 제작한 학술 포스터를 걸고, 서로의 연구 앞에서 질문을 주고받습니다.</p>
-            </div>
-
-            <div class="panel about-card">
-                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="20" cy="9" r="4"/>
-                    <circle cx="8" cy="29" r="4"/>
-                    <circle cx="32" cy="29" r="4"/>
-                    <path d="M17.6 12.4L10.4 25M22.4 12.4L29.6 25M12 29h16"/>
-                </svg>
-                <h3>대학 간 네트워크</h3>
-                <p>30여 개 대학의 전공자가 한자리에 모여, 학교 밖에서 만날 수 있는 관점을 나눕니다.</p>
-            </div>
-        </div>
+        <div class="about-grid" id="about-grid"></div>
     </div>
 </section>
 
-<!-- ── 일정 ── -->
+<!-- 일정 -->
 <section id="schedule">
-    <div class="wrap section-body" style="padding-top:0;">
+    <div class="wrap section-body no-top">
         <div class="section-head">
-            <h2>11기 일정</h2>
-            <p>OT부터 포스터 세션까지 약 5개월 과정입니다.</p>
+            <h2 id="schedule-title"></h2>
+            <p id="schedule-sub"></p>
         </div>
-
         <div class="panel schedule">
-            <div class="schedule-track" id="schedule-track">
-                <div class="stop" data-date="2026-09-19">
-                    <span class="date">9월 19일</span>
-                    <span class="label">OT</span>
-                </div>
-                <div class="stop" data-date="2026-10-31">
-                    <span class="date">10월 31일</span>
-                    <span class="label">1차 세미나</span>
-                </div>
-                <div class="stop" data-date="2026-12-19">
-                    <span class="date">12월 19일</span>
-                    <span class="label">2차 세미나</span>
-                </div>
-                <div class="stop" data-date="2027-01-23">
-                    <span class="date">1월 23일</span>
-                    <span class="label">3차 세미나</span>
-                </div>
-                <div class="stop" data-date="2027-02-03">
-                    <span class="date">2월 3일</span>
-                    <span class="label">포스터 세션</span>
-                </div>
-            </div>
+            <div class="schedule-track" id="schedule-track"></div>
         </div>
     </div>
 </section>
 
-<!-- ── Archive ── -->
+<!-- 활동 기록 -->
 <section id="activity">
-    <div class="wrap section-body" style="padding-top:0;">
+    <div class="wrap section-body no-top">
         <div class="section-head">
-            <h2>활동 기록</h2>
-            <p>지난 기수들이 남긴 세미나와 포스터 세션의 기록입니다.</p>
+            <h2 id="activity-title"></h2>
+            <p id="activity-sub"></p>
         </div>
-
-        <div class="figure-grid">
-            <a href="gallery.html?type=seminar" class="panel figure-card">
-                <figure>
-                    <div class="plate"><img src="photo1.png" alt="정기 세미나 현장"></div>
-                    <figcaption>
-                        <span class="fig-no">Fig. 1</span>정기 세미나
-                        <span class="fig-sub">격주로 모여 논문을 발제하고 토론합니다</span>
-                    </figcaption>
-                </figure>
-            </a>
-
-            <a href="gallery.html?type=poster" class="panel figure-card">
-                <figure>
-                    <div class="plate"><img src="photo2.png" alt="포스터 세션 현장"></div>
-                    <figcaption>
-                        <span class="fig-no">Fig. 2</span>포스터 세션
-                        <span class="fig-sub">학기 말 학술 포스터 발표회</span>
-                    </figcaption>
-                </figure>
-            </a>
-
-            <a href="gallery.html?type=external" class="panel figure-card">
-                <figure>
-                    <div class="plate"><img src="photo3.png" alt="외부 활동 현장"></div>
-                    <figcaption>
-                        <span class="fig-no">Fig. 3</span>외부 활동
-                        <span class="fig-sub">학회 참관과 연구 기관 탐방</span>
-                    </figcaption>
-                </figure>
-            </a>
-        </div>
+        <div class="figure-grid" id="activity-grid"></div>
     </div>
 </section>
 
-<!-- ── 공지사항 ── -->
+<!-- 공지사항 -->
 <section id="news">
-    <div class="wrap section-body" style="padding-top:0;">
+    <div class="wrap section-body no-top">
         <div class="section-head">
-            <h2>공지사항</h2>
-            <p>지원 전에 확인해 주세요.</p>
+            <h2 id="notice-title"></h2>
+            <p id="notice-sub"></p>
         </div>
-
-        <div class="panel notice">
-            <div class="faq-item">
-                <button class="faq-question">
-                    <span>동아리 소개</span><i class="sign" aria-hidden="true"></i>
-                </button>
-                <div class="faq-answer"><div class="inner">생명과학 연합학술동아리 SPARK(Scientific Poster on Analysis of Research Knowledge)는 과학 분야의 논문 분석을 기반으로 한 과학 포스터 제작 활동을 중심으로, 학생들의 폭넓은 과학적 지식 함양을 목표로 하고 있습니다.</div></div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question">
-                    <span>출석 인정 기준</span><i class="sign" aria-hidden="true"></i>
-                </button>
-                <div class="faq-answer"><div class="inner">예시: 세미나 시작 시간이 13:00인 경우
-~13:00 → 출석
-13:00~13:30 → 지각
-13:30~ → 결석
-
-결석 1회 또는 지각 2회 이상 시 수료 불가</div></div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question">
-                    <span>11기 모집 안내</span><i class="sign" aria-hidden="true"></i>
-                </button>
-                <div class="faq-answer"><div class="inner">현재 11기 서류 모집이 마감되었습니다.</div></div>
-            </div>
-        </div>
+        <div class="panel notice" id="notice-list"></div>
     </div>
 </section>
 
@@ -1023,75 +1131,215 @@
     <div class="wrap">
         <div class="footer-grid">
             <div>
-                <div class="footer-mark">SPARK</div>
-                <p>Scientific Poster on Analysis of Research Knowledge<br>생명과학 연합학술동아리</p>
+                <div class="footer-mark" id="footer-mark"></div>
+                <p id="footer-desc"></p>
             </div>
             <div>
                 <h4>문서</h4>
-                <ul>
-                    <li><a href="https://drive.google.com/file/d/1hW7ntwTEwc0d7TYEUUa7mszsoIHRJRvX/view?usp=sharing" target="_blank" rel="noopener">SPARK 정관</a></li>
-                    <li><a href="https://drive.google.com/file/d/16KdDOAhdM01TcNyG_7t-rmwygA86GA21/view?usp=sharing" target="_blank" rel="noopener">출석 기준</a></li>
-                </ul>
+                <ul id="footer-docs"></ul>
             </div>
             <div>
                 <h4>연락처</h4>
-                <ul>
-                    <li><a href="mailto:officialspark@spark2021.com">officialspark@spark2021.com</a></li>
-                    <li><a href="https://www.instagram.com/spark__2021/" target="_blank" rel="noopener">@spark__2021</a></li>
-                </ul>
+                <ul id="footer-contacts"></ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 SPARK. All rights reserved.</p>
+            <p id="footer-copy"></p>
         </div>
     </div>
 </footer>
 
 <script>
+/* ══════════════════════════════════════════════
+   ⛔ 동작 코드 — 수정하지 않아도 됩니다.
+   [수정 구역 2]의 SITE 내용을 읽어 화면에 채워 넣습니다.
+══════════════════════════════════════════════ */
 (function () {
     'use strict';
 
-    /* ── 지원 기간 설정 ─────────────────────── */
-    const CONFIG = {
-        START_DATE: new Date('2026-08-19T00:00:00+09:00'),
-        END_DATE:   new Date('2026-09-06T00:00:00+09:00')
+    /* 설정에 문법 오류가 있으면 경고만 띄우고 멈춤 */
+    if (typeof SITE === 'undefined') {
+        document.getElementById('config-error').hidden = false;
+        return;
+    }
+
+    /* ── 도우미 함수 ────────────────────────── */
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+    const setText  = (id, text) => { const el = $(id); if (el) el.textContent = text == null ? '' : text; };
+    const setHref  = (ids, url) => ids.forEach(id => { const el = $(id); if (el) el.href = url; });
+    const toKST    = (dateStr, time) => new Date(dateStr + 'T' + time + '+09:00');
+    const monthDay = dateStr => { const p = String(dateStr).split('-').map(Number); return p[1] + '월 ' + p[2] + '일'; };
+    const tidy     = s => String(s == null ? '' : s).split('\n').map(l => l.trim()).join('\n').trim();
+    const now      = new Date();
+
+    const ICONS = {
+        paper: '<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5h14l6 6v24H10z"/><path d="M24 5v6h6"/><path d="M15 20h10M15 25h10M15 30h6"/></svg>',
+        poster: '<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="28" height="21"/><path d="M11 22l6-8 4 5 3-3 5 6"/><path d="M20 27v7M14 34h12"/></svg>',
+        network: '<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="9" r="4"/><circle cx="8" cy="29" r="4"/><circle cx="32" cy="29" r="4"/><path d="M17.6 12.4L10.4 25M22.4 12.4L29.6 25M12 29h16"/></svg>'
     };
 
-    /* ── 토스트 ─────────────────────────────── */
-    function showToast(msg) {
-        const t = document.getElementById('toast');
+    /* ── 모집 상태 계산 ─────────────────────── */
+    const R   = SITE.recruit || {};
+    const gen = R.generation;
+    const openAt  = toKST(R.start, '00:00:00');
+    const closeAt = toKST(R.end,   '23:59:59');
+    const status  = now < openAt ? 'before' : (now > closeAt ? 'after' : 'open');
+
+    /* ── 헤더 · 메뉴 ────────────────────────── */
+    const logo = $('logo');
+    logo.src = SITE.logo;
+    logo.alt = SITE.name;
+    setHref(['nav-poster', 'mob-poster', 'hero-poster-link'], SITE.pages.poster);
+    setHref(['nav-apply', 'mob-apply', 'hero-cta'], SITE.pages.apply);
+    setText('nav-apply', R.menuText);
+    setText('mob-apply', R.menuText);
+
+    /* ── 히어로 ─────────────────────────────── */
+    setText('hero-slogan', SITE.slogan);
+    setText('wordmark', SITE.name);
+    $('acronym').innerHTML = String(SITE.fullName).split(' ').map(w =>
+        /^[A-Z]/.test(w) ? '<b>' + esc(w[0]) + '</b>' + esc(w.slice(1)) : esc(w)
+    ).join(' ');
+    setText('hero-lede', SITE.hero.intro);
+    setText('hero-meta', SITE.hero.meta);
+    setText('hero-poster-link', SITE.hero.posterLinkText);
+    setText('hero-caption', SITE.hero.figureCaption);
+
+    const cta = $('hero-cta');
+    if (status === 'open') {
+        cta.textContent = R.buttonText;
+    } else {
+        cta.textContent = status === 'before'
+            ? monthDay(R.start) + ' ' + gen + '기 모집 시작'
+            : gen + '기 모집 마감';
+        cta.classList.add('is-closed');
+        cta.setAttribute('aria-disabled', 'true');
+        cta.removeAttribute('href');
+        if (status === 'after') {
+            $('nav-apply').style.display = 'none';
+            $('mob-apply').style.display = 'none';
+        }
+    }
+
+    /* ── 소개 ───────────────────────────────── */
+    setText('about-title', SITE.about.title);
+    setText('about-sub', SITE.about.subtitle);
+    $('about-grid').innerHTML = SITE.about.cards.map(c =>
+        '<div class="panel about-card">' +
+            (ICONS[c.icon] || ICONS.paper) +
+            '<h3>' + esc(c.title) + '</h3>' +
+            '<p>' + esc(c.text) + '</p>' +
+        '</div>'
+    ).join('');
+
+    /* ── 일정 ───────────────────────────────── */
+    setText('schedule-title', gen + '기 일정');
+    setText('schedule-sub', SITE.schedule.subtitle);
+    let nextFound = false;
+    $('schedule-track').innerHTML = SITE.schedule.events.map(ev => {
+        let cls = 'stop';
+        if (toKST(ev.date, '23:59:59') < now) cls += ' done';
+        else if (!nextFound) { cls += ' next'; nextFound = true; }
+        return '<div class="' + cls + '"><div>' +
+                   '<span class="date">' + monthDay(ev.date) + '</span>' +
+                   '<span class="label">' + esc(ev.label) + '</span>' +
+               '</div></div>';
+    }).join('');
+
+    /* ── 활동 기록 ──────────────────────────── */
+    setText('activity-title', SITE.activity.title);
+    setText('activity-sub', SITE.activity.subtitle);
+    $('activity-grid').innerHTML = SITE.activity.cards.map((c, i) =>
+        '<a href="' + esc(c.link) + '" class="panel figure-card"><figure>' +
+            '<div class="plate"><img src="' + esc(c.image) + '" alt="' + esc(c.title) + ' 현장" loading="lazy"></div>' +
+            '<figcaption>' +
+                '<span class="fig-no">Fig. ' + (i + 1) + '</span>' + esc(c.title) +
+                '<span class="fig-sub">' + esc(c.sub) + '</span>' +
+            '</figcaption>' +
+        '</figure></a>'
+    ).join('');
+
+    /* ── 공지사항 ───────────────────────────── */
+    setText('notice-title', SITE.notice.title);
+    setText('notice-sub', SITE.notice.subtitle);
+
+    const notices = SITE.notice.items.slice();
+    if (SITE.notice.showRecruitNotice) {
+        const msg = {
+            before: gen + '기 모집은 ' + monthDay(R.start) + '부터 ' + monthDay(R.end) + '까지 진행됩니다.',
+            open:   '현재 ' + gen + '기 서류 모집 중입니다.\n지원 마감: ' + monthDay(R.end) + ' 23:59',
+            after:  '현재 ' + gen + '기 서류 모집이 마감되었습니다.'
+        }[status];
+        notices.push({ title: gen + '기 모집 안내', content: msg });
+    }
+
+    $('notice-list').innerHTML = notices.map(n =>
+        '<div class="faq-item">' +
+            '<button class="faq-question" aria-expanded="false">' +
+                '<span>' + esc(n.title) + '</span><i class="sign" aria-hidden="true"></i>' +
+            '</button>' +
+            '<div class="faq-answer"><div class="inner">' + esc(tidy(n.content)) + '</div></div>' +
+        '</div>'
+    ).join('');
+
+    /* ── SNS 버튼 ───────────────────────────── */
+    $('social-float').innerHTML = SITE.social.map(s =>
+        '<a href="' + esc(s.url) + '" target="_blank" rel="noopener" aria-label="' + esc(s.name) + '">' +
+            '<img src="' + esc(s.icon) + '" alt=""' + (s.iconBg ? ' style="background:' + esc(s.iconBg) + ';"' : '') + '>' +
+            '<span>' + esc(s.name) + '</span>' +
+        '</a>'
+    ).join('');
+
+    /* ── 푸터 ───────────────────────────────── */
+    const F = SITE.footer;
+    setText('footer-mark', SITE.name);
+    $('footer-desc').innerHTML = esc(SITE.fullName) + '<br>' + esc(SITE.koreanName);
+    $('footer-docs').innerHTML = F.docs.map(d =>
+        '<li><a href="' + esc(d.url) + '" target="_blank" rel="noopener">' + esc(d.name) + '</a></li>'
+    ).join('');
+    $('footer-contacts').innerHTML =
+        (F.email ? '<li><a href="mailto:' + esc(F.email) + '">' + esc(F.email) + '</a></li>' : '') +
+        F.contacts.map(c =>
+            '<li><a href="' + esc(c.url) + '" target="_blank" rel="noopener">' + esc(c.text) + '</a></li>'
+        ).join('');
+    setText('footer-copy', '© ' + now.getFullYear() + ' ' + SITE.name + '. All rights reserved.');
+
+
+    /* ══════════ 화면 동작 ══════════ */
+
+    /* 토스트 */
+    window.showToast = function (msg) {
+        const t = $('toast');
         t.textContent = msg;
         t.classList.add('show');
         setTimeout(() => t.classList.remove('show'), 3200);
-    }
-    window.showToast = showToast;
+    };
 
-    /* ── 모바일 메뉴 ────────────────────────── */
-    const hamburger  = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobile-menu');
-
+    /* 모바일 메뉴 */
+    const hamburger  = $('hamburger');
+    const mobileMenu = $('mobile-menu');
+    const closeMobileMenu = () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        hamburger.setAttribute('aria-label', '메뉴 열기');
+    };
     hamburger.addEventListener('click', () => {
         const isOpen = hamburger.classList.toggle('open');
         mobileMenu.classList.toggle('open', isOpen);
         hamburger.setAttribute('aria-expanded', String(isOpen));
         hamburger.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴 열기');
     });
-
-    window.closeMobileMenu = function () {
-        hamburger.classList.remove('open');
-        mobileMenu.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-    };
-
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileMenu));
     document.addEventListener('click', e => {
-        if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
-            window.closeMobileMenu();
-        }
+        if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) closeMobileMenu();
     });
 
-    /* ── 현재 섹션 표시 ─────────────────────── */
+    /* 현재 보고 있는 섹션을 메뉴에 표시 */
     const navLinks = document.querySelectorAll('nav.pc-nav a[href^="#"]');
-    const sections = document.querySelectorAll('section[id]');
     if ('IntersectionObserver' in window) {
         const obs = new IntersectionObserver(entries => {
             entries.forEach(e => {
@@ -1101,56 +1349,25 @@
                 }
             });
         }, { rootMargin: '-45% 0px -50% 0px' });
-        sections.forEach(s => obs.observe(s));
+        document.querySelectorAll('section[id]').forEach(s => obs.observe(s));
     }
 
-    /* ── 일정: 지난 일정 / 다음 일정 표시 ──── */
-    (function markSchedule() {
-        const now = new Date();
-        const stops = [...document.querySelectorAll('.stop')];
-        let nextFound = false;
-        stops.forEach(stop => {
-            const d = new Date(stop.dataset.date + 'T23:59:59+09:00');
-            if (d < now) {
-                stop.classList.add('done');
-            } else if (!nextFound) {
-                stop.classList.add('next');
-                nextFound = true;
-            }
-        });
-    })();
-
-    /* ── 지원 버튼 상태 ─────────────────────── */
-    (function checkDate() {
-        const now      = new Date();
-        const heroCta  = document.getElementById('hero-cta');
-        const navApply = document.getElementById('nav-apply');
-        const mobApply = document.getElementById('mob-apply');
-
-        if (now > CONFIG.END_DATE) {
-            if (navApply) navApply.style.display = 'none';
-            if (mobApply) mobApply.style.display = 'none';
-            if (heroCta) {
-                heroCta.textContent = '11기 모집 마감';
-                heroCta.classList.add('is-closed');
-            }
-        } else if (now < CONFIG.START_DATE) {
-            if (heroCta) {
-                heroCta.textContent = '8월 19일 11기 모집 시작';
-                heroCta.classList.add('is-closed');
-            }
-        } else if (heroCta) {
-            heroCta.textContent = '지금 지원하기';
-            heroCta.classList.remove('is-closed');
-        }
-    })();
-
-    /* ── 공지사항 아코디언 ──────────────────── */
-    document.querySelectorAll('.faq-item').forEach(item => {
+    /* 공지사항 펼치기/접기 (글 길이에 맞춰 자동으로 높이 조절) */
+    const items = document.querySelectorAll('.faq-item');
+    items.forEach(item => {
         item.querySelector('.faq-question').addEventListener('click', () => {
             const wasActive = item.classList.contains('active');
-            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-            if (!wasActive) item.classList.add('active');
+            items.forEach(i => {
+                i.classList.remove('active');
+                i.querySelector('.faq-answer').style.maxHeight = '';
+                i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+            });
+            if (!wasActive) {
+                const answer = item.querySelector('.faq-answer');
+                item.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+                item.querySelector('.faq-question').setAttribute('aria-expanded', 'true');
+            }
         });
     });
 
