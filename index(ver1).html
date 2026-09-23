@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="naver-site-verification" content="4375b2bd968bffbd760c9f9140a34bc564f8868e" />
+    <title>SPARK | 생명과학연합학술동아리</title>
+    <link rel="icon" type="image/png" href="favicon.png" sizes="64x64">
+    <meta property="og:title" content="SPARK - 생명과학연합학술동아리">
+    <meta property="og:description" content="생명과학의 경이로움을 탐구하는 학술 공동체, SPARK에 지원하세요.">
+    <meta property="og:image" content="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ── 1. CSS 변수 & 리셋 ── */
+        :root {
+            --primary:  #0a2342;
+            --primary-light: #123564;
+            --accent:   #2ecc71;
+            --accent-dark: #27ae60;
+            --accent-glow: rgba(46,204,113,0.45);
+            --cyan:     #00d2ff;
+            --text:     #333;
+            --bg:        #f8f9fa;
+            --white:    #ffffff;
+            --glass-bg: rgba(255,255,255,0.65);
+            --glass-border: rgba(255,255,255,0.5);
+            --shadow:   0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 50px rgba(10,35,66,0.12);
+            --radius:   16px;
+            --transition: 0.3s ease;
+            --font-display: 'Space Grotesk', 'Noto Sans KR', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-hand: 'Caveat', 'Comic Sans MS', 'Segoe Print', cursive;
+        }
+
+        /* ── 플로팅 소셜 사이드바 ── */
+#social-float {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.6);
+    border-left: none;
+    border-radius: 0 14px 14px 0;
+    box-shadow: 3px 0 24px rgba(10,35,66,0.12);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+#social-float a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    text-decoration: none;
+    color: var(--primary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.25s ease, padding-left 0.25s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 46px;  /* 아이콘만 보이는 기본 너비 */
+}
+
+#social-float a:last-child {
+    border-bottom: none;
+}
+
+#social-float a img {
+    width: 22px;
+    height: 22px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+#social-float a span {
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    font-size: 0.78rem;
+    color: var(--primary);
+}
+
+#social-float:hover {
+    box-shadow: 4px 0 24px rgba(0,0,0,0.14);
+}
+
+#social-float:hover a {
+    max-width: 160px;
+    padding-left: 16px;
+    background: rgba(46,204,113,0.06);
+}
+
+#social-float:hover a span {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+#social-float a:hover {
+    background: rgba(46,204,113,0.13) !important;
+    color: var(--accent-dark);
+}
+
+@media (max-width: 768px) {
+    #social-float {
+        top: auto;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
+        border-radius: 100px;
+        background: rgba(255,255,255,0.97);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+
+    #social-float a {
+        max-width: none;
+        padding: 10px 16px;
+        border-bottom: none;
+        border-right: 1px solid #f0f0f0;
+        justify-content: center;
+    }
+
+    #social-float a:last-child {
+        border-right: none;
+    }
+
+    #social-float a span {
+        display: none;
+    }
+
+    #social-float:hover a {
+        max-width: none;
+        padding-left: 16px;
+    }
+}
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ── 2. 스크롤 진행 바 ── */
+        #scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), #00d2ff);
+            z-index: 9999;
+            transition: width 0.1s linear;
+        }
+
+        /* ── 3. 헤더 & 네비게이션 ── */
+        header {
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            padding: 0 8%;
+            height: 65px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 24px rgba(10,35,66,0.07);
+            border-bottom: 1px solid rgba(46,204,113,0.12);
+            position: sticky;
+            top: 0;
+            z-index: 200;
+        }
+
+        .logo-img { height: 42px; display: block; }
+
+        /* PC 네비 */
+        nav.pc-nav { display: flex; align-items: center; gap: 6px; }
+        nav.pc-nav a {
+            text-decoration: none;
+            color: var(--text);
+            padding: 7px 14px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            position: relative;
+        }
+        nav.pc-nav a:hover,
+        nav.pc-nav a.active {
+            color: var(--accent-dark);
+            background: rgba(46,204,113,0.1);
+            box-shadow: 0 0 0 1px rgba(46,204,113,0.18) inset;
+        }
+
+        /* 모바일 햄버거 */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 26px;
+            height: 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 300;
+        }
+        .hamburger span {
+            display: block;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: var(--transition);
+            transform-origin: center;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* 모바일 드롭다운 메뉴 */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 65px; left: 0; right: 0;
+            background: var(--white);
+            padding: 20px 8%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            z-index: 150;
+            flex-direction: column;
+            gap: 4px;
+            animation: slideDown 0.25s ease;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            padding: 13px 16px;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        .mobile-menu a:hover { background: rgba(46,204,113,0.1); color: var(--accent-dark); }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            nav.pc-nav { display: none; }
+            .hamburger { display: flex; }
+        }
+
+        /* ── 4. 히어로 섹션 ── */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(150deg, #050f1d 0%, #0a2342 50%, #0e3460 85%, #114a7a 100%);
+            color: var(--white);
+            padding: 60px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 배경 글로우 */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 70% 50% at 22% 20%, rgba(0,210,255,0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 80% 60% at 50% 45%, rgba(46,204,113,0.10) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        /* 생명과학 모티프 캔버스 (DNA + 분자 + 세포) */
+        #hero-network {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .hero-logo {
+            height: 260px;
+            width: auto;
+            margin-bottom: -20px;
+            filter: drop-shadow(0 10px 30px rgba(46,204,113,0.25));
+            animation: fadeUp 0.8s ease 0.1s both;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.9rem, 4vw, 3.4rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            animation: fadeUp 0.8s ease 0.2s both;
+            color: var(--white);
+        }
+
+        .hero p {
+            font-size: clamp(0.95rem, 2vw, 1.15rem);
+            opacity: 0.85;
+            margin-bottom: 40px;
+            animation: fadeUp 0.8s ease 0.3s both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── 5. CTA 버튼 ── */
+        .cta-button {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: var(--white);
+            padding: 16px 52px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 24px rgba(46,204,113,0.45), 0 0 0 1px rgba(46,204,113,0.3) inset;
+            border: none;
+            cursor: pointer;
+            animation: fadeUp 0.8s ease 0.4s both;
+            position: relative;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+            box-shadow: 0 12px 32px rgba(46,204,113,0.6), 0 0 0 1px rgba(46,204,113,0.4) inset;
+        }
+        .cta-button:active { transform: translateY(-1px); }
+
+        /* ── 6. 섹션 공통 ── */
+        section { padding: 100px 8%; scroll-margin-top: 65px; }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary);
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 55px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 48px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--cyan));
+            border-radius: 2px;
+            margin: 14px auto 0;
+        }
+
+        /* ── 7. About 카드 ── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+        .about-card {
+            background: linear-gradient(165deg, rgba(255,255,255,0.9), rgba(255,255,255,0.65));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px 28px;
+            border-radius: var(--radius);
+            text-align: center;
+            border: 1.5px solid transparent;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .about-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(46,204,113,0.35);
+            background:
+                linear-gradient(165deg, rgba(255,255,255,0.95), rgba(255,255,255,0.75));
+        }
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 18px;
+            filter: drop-shadow(0 4px 10px rgba(46,204,113,0.25));
+        }
+        .about-card h4 { font-family: var(--font-display); color: var(--primary); font-size: 1.1rem; margin-bottom: 10px; }
+
+        /* ── 8. 사진 그리드 ── */
+        .insta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .insta-item {
+            position: relative;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            border-radius: var(--radius);
+            display: block;
+            box-shadow: var(--shadow);
+        }
+        .insta-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .insta-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(165deg, rgba(10,35,66,0.55), rgba(10,35,66,0.85));
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: var(--transition);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+        .insta-item:hover .insta-overlay { opacity: 1; }
+        .insta-item:hover img { transform: scale(1.07); }
+
+        /* ── 9. FAQ / 공지사항 ── */
+        .faq-container { display: flex; flex-direction: column; gap: 10px; }
+        .faq-item {
+            border: 1px solid rgba(10,35,66,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.5);
+        }
+        .faq-question {
+            width: 100%;
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            transition: background 0.3s;
+            font-family: inherit;
+        }
+        .faq-question:hover { background: rgba(46,204,113,0.05); }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+            background: rgba(253,253,253,0.6);
+            padding: 0 22px;
+        }
+        .faq-answer p {
+            margin: 18px 0;
+            color: #555;
+            font-size: 0.92rem;
+            line-height: 1.9;
+            white-space: pre-line;
+        }
+        .faq-item.active { border-color: var(--accent); box-shadow: 0 5px 18px rgba(46,204,113,0.12); }
+        .faq-item.active .faq-answer {
+            max-height: 600px;
+            padding: 0 22px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .faq-item.active .arrow-icon { transform: rotate(180deg); color: var(--accent); }
+        .arrow-icon { font-style: normal; font-size: 0.75rem; transition: transform 0.3s; color: #ccc; }
+
+        /* ── 10. 폼 컨테이너 (공지사항 카드 등 공통) ── */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: linear-gradient(165deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78));
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,0.7);
+            padding: 44px 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+        @media (max-width: 600px) {
+            .form-container { padding: 28px 20px; }
+        }
+        .form-group { margin-bottom: 22px; }
+        .form-input {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1.5px solid #ddd;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            color: var(--text);
+            background: #fafafa;
+        }
+        .form-input:focus { outline: none; border-color: var(--accent); background: var(--white); box-shadow: 0 0 0 3px rgba(46,204,113,0.12); }
+
+        /* ── 11. Toast 알림 ── */
+        #toast {
+            position: fixed;
+            bottom: 30px; left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #222;
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ── 12. 푸터 ── */
+        .site-footer {
+            background: linear-gradient(165deg, #0d0d0d, #0a1420);
+            color: #888;
+            padding: 60px 8% 32px;
+            position: relative;
+        }
+        .site-footer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--cyan), transparent);
+            opacity: 0.5;
+        }
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+        .footer-logo {
+            font-family: var(--font-display);
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .footer-info p { font-size: 0.88rem; line-height: 1.8; }
+        .footer-contact h4 { color: var(--white); margin-bottom: 10px; font-size: 0.95rem; }
+        .footer-contact p { font-size: 0.88rem; line-height: 2; }
+        .footer-contact a { color: var(--accent); text-decoration: none; }
+        .footer-contact a:hover { text-decoration: underline; }
+        .footer-info a { color: #888; font-size: 0.85rem; }
+        .footer-info a:hover { color: var(--accent); }
+        .footer-bottom {
+            border-top: 1px solid #2a2a2a;
+            padding-top: 22px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        /* ── 13. 섹션 페이드인 애니메이션 ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px) scale(0.98);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* ── 14. 반응형 ── */
+        @media (max-width: 768px) {
+            section { padding: 70px 5%; }
+            .hero { min-height: 85vh; }
+            .hero-logo { height: 190px; }
+        }
+    </style>
+</head>
+<body>
+<!-- 좌측 플로팅 소셜 바 -->
+<div id="social-float">
+    <a href="https://www.instagram.com/spark__2021/" target="_blank" aria-label="Instagram">
+        <img src="news1.jpg" alt="Instagram">
+        <span>Instagram</span>
+    </a>
+    <a href="https://cafe.naver.com/spark0326" target="_blank" aria-label="네이버 카페">
+        <img src="news2.jpg" alt="네이버 카페">
+        <span>네이버 카페</span>
+    </a>
+    <a href="https://www.linkedin.com/in/spark-%EC%83%9D%EB%AA%85%EA%B3%BC%ED%95%99-%EC%97%B0%ED%95%A9%ED%95%99%EC%88%A0%EB%8F%99%EC%95%84%EB%A6%AC-2748612b2/" target="_blank" aria-label="LinkedIn">
+        <img src="news3.jpg" alt="LinkedIn">
+        <span>LinkedIn</span>
+    </a>
+    <a href="https://pf.kakao.com/_hLbxeb" target="_blank" aria-label="카카오톡 채널">
+    <img src="news4.png" alt="카카오톡" style="background:#FEE500; border-radius:6px;">
+    <span>카카오톡</span>
+</a>
+</div>
+    <div id="scroll-progress"></div>
+
+    <div id="toast"></div>
+
+    <header>
+        <a href="#"><img src="logo.png" alt="SPARK Logo" class="logo-img"></a>
+
+        <nav class="pc-nav" id="pc-nav">
+            <a href="#about">소개</a>
+            <a href="#activity">활동</a>
+            <a href="#news">공지사항</a>
+            <a href="apply-session.html" id="nav-apply">신입부원모집</a>
+            <a href="poster-session.html">포스터 세션</a>
+          <!--  <a href="result-check.html">1차 합격자 조회</a> -->
+        </nav>
+
+        <button class="hamburger" id="hamburger" aria-label="메뉴 열기">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+<!-- 주석 -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#about"       onclick="closeMobileMenu()">소개</a>
+        <a href="#activity"    onclick="closeMobileMenu()">활동</a>
+        <a href="#news"        onclick="closeMobileMenu()">공지사항</a>
+        <a href="apply-session.html" id="mob-apply">신입부원모집</a>
+        <a href="poster-session.html" onclick="closeMobileMenu()">포스터 세션</a>
+       <!-- <a href="result-check.html" onclick="closeMobileMenu()">1차 합격자 조회</a> -->
+    </div>
+
+    <section class="hero">
+        <canvas id="hero-network"></canvas>
+        <div class="hero-content">
+            <img src="logo1.png" alt="SPARK 로고" class="hero-logo">
+            <h1>Think, Spark, Grow</h1>
+            <p>생명과학의 경이로움을 탐구하는 학술 공동체, SPARK</p>
+            <a href="apply-session.html" class="cta-button" id="hero-cta">지금 지원하기</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title reveal">About SPARK</h2>
+        <div class="about-grid">
+            <div class="about-card reveal">
+                <div class="card-icon">🎓</div>
+                <h4>다양한 네트워크</h4>
+                <p>30여 개 대학의 생명과학 전공자들이 모여<br>만드는 시너지</p>
+            </div>
+            <div class="about-card reveal">
+                <div class="card-icon">🔬</div>
+                <h4>논문 스터디</h4>
+                <p>최신 바이오 트렌드 분석 및 심층 논문 리딩</p>
+            </div>
+            <div class="about-card reveal">
+                <div class="card-icon">🖼️</div>
+                <h4>포스터 세션</h4>
+                <p>매 학기 말 진행되는 정기 학술 포스터 발표회</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="activity" style="background: linear-gradient(165deg, #f4f6f8 0%, #eef6f1 50%, #eef9fb 100%);">
+        <h2 class="section-title reveal">Archive</h2>
+        <div class="insta-grid">
+            <a href="gallery.html?type=seminar" class="insta-item reveal">
+                <img src="photo1.png" alt="정기 세미나">
+                <div class="insta-overlay">정기 세미나</div>
+            </a>
+            <a href="gallery.html?type=poster" class="insta-item reveal">
+                <img src="photo2.png" alt="포스터 세션">
+                <div class="insta-overlay">포스터 세션</div>
+            </a>
+            <a href="gallery.html?type=external" class="insta-item reveal">
+                <img src="photo3.png" alt="외부 활동">
+                <div class="insta-overlay">외부 활동</div>
+            </a>
+        </div>
+    </section>
+
+    
+    <section id="news" style="background: var(--white);">
+        <h2 class="section-title reveal">공지사항</h2>
+        <div class="form-container reveal" style="max-width: 800px;">
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>동아리 소개</span>
+                        <i class="arrow-icon">▼</i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>생명과학 연합학술동아리 SPARK(Scientific Poster on Analysis of Research Knowledge)는 과학 분야의 논문 분석을 기반으로 한 과학 포스터 제작 활동을 중심으로, 학생들의 폭넓은 과학적 지식 함양을 목표로 하고 있습니다.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>출석 인정 기준</span>
+                        <i class="arrow-icon">▼</i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>예시: 세미나 시작 시간이 13:00인 경우
+~13:00 → 출석
+13:00~13:30 → 지각
+13:30~ → 결석
+
+결석 1회 또는 지각 2회 이상 시 수료 불가</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>11기 일정</span>
+                        <i class="arrow-icon">▼</i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>OT — 9월 19일
+1차 세미나 — 10월 31일
+2차 세미나 — 12월 19일
+3차 세미나 — 1월 23일
+포스터 세션 — 2월 3일</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>12기 모집 안내</span>
+                        <i class="arrow-icon">▼</i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>11기 포스터 세션이 마감되는 2월 3일 부터 12기 모집이 시작됩니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-info">
+                <div class="footer-logo">SPARK</div>
+                <p>Scientific Poster on Analysis of Research Knowledge</p>
+                <a href="https://drive.google.com/file/d/1hW7ntwTEwc0d7TYEUUa7mszsoIHRJRvX/view?usp=sharing" target="_blank">SPARK 정관 보기 →</a><br>
+                <a href="https://drive.google.com/file/d/16KdDOAhdM01TcNyG_7t-rmwygA86GA21/view?usp=sharing" target="_blank">출석 기준 보기 →</a>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p>Email: <a href="mailto:officialspark@spark2021.com">officialspark@spark2021.com</a></p>
+                <p>Instagram: <a href="https://www.instagram.com/spark__2021/" target="_blank">@spark__2021</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 SPARK. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    (function () {
+        /* ──────────────────────────────────────────
+           히어로 배경: 생명과학 모티프
+           (3D DNA 이중나선 + 분자 구조 + 부유 세포 입자)
+        ────────────────────────────────────────── */
+        (function initScienceScene() {
+            const canvas = document.getElementById('hero-network');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const heroEl = canvas.parentElement;
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            let w, h, dpr;
+            let cells = [];
+            let molecules = [];
+            let dnaBundles = [];
+            let t = 0;
+
+            const GREEN  = [120, 230, 175];
+            const CYAN   = [120, 210, 255];
+            const PALE   = [200, 240, 220];
+
+            function rand(min, max) { return Math.random() * (max - min) + min; }
+
+            /* 부유하는 세포 입자 */
+            function makeCells(count) {
+                return Array.from({ length: count }, () => ({
+                    x: rand(0, w),
+                    y: rand(0, h),
+                    vx: rand(-0.06, 0.06),
+                    vy: rand(-0.05, 0.05),
+                    r: rand(3, 9),
+                    wobble: rand(0, Math.PI * 2),
+                    wobbleSpeed: rand(0.003, 0.008),
+                    hue: Math.random() < 0.7 ? GREEN : CYAN,
+                    alpha: rand(0.12, 0.32)
+                }));
+            }
+
+            /* 떠다니는 분자 구조 (육각형 고리) */
+            function makeMolecules(count) {
+                return Array.from({ length: count }, () => {
+                    const sides = Math.random() < 0.6 ? 6 : 5;
+                    return {
+                        cx: rand(0, w),
+                        cy: rand(0, h),
+                        radius: rand(20, 38),
+                        sides,
+                        rot: rand(0, Math.PI * 2),
+                        rotSpeed: rand(-0.0008, 0.0008),
+                        vx: rand(-0.04, 0.04),
+                        vy: rand(-0.03, 0.03),
+                        hue: Math.random() < 0.5 ? GREEN : CYAN,
+                        alpha: rand(0.16, 0.30)
+                    };
+                });
+            }
+
+            /* DNA 이중나선 - 세로축 둘레로 회전하며 떠다님 */
+            function makeDNABundles(count) {
+                return Array.from({ length: count }, () => ({
+                    cx: rand(0, w),
+                    cy: rand(0, h),
+                    turns: rand(2.4, 3.4),          // 세로로 감기는 횟수
+                    radius: rand(15, 22),           // 나선 반지름
+                    height: rand(150, 230),         // 나선 전체 길이
+                    vx: rand(-0.05, 0.05),
+                    vy: rand(-0.04, 0.04),
+                    tilt: rand(-0.35, 0.35),        // 살짝 기울인 각도 (라디안)
+                    spin: rand(0, Math.PI * 2),     // 현재 회전 위상
+                    spinSpeed: rand(0.004, 0.009) * (Math.random() < 0.5 ? 1 : -1), // 축 둘레 회전
+                    alpha: rand(0.5, 0.8),
+                    hueA: Math.random() < 0.5 ? GREEN : [150, 240, 200],
+                    hueB: Math.random() < 0.5 ? CYAN : [140, 220, 255]
+                }));
+            }
+
+            /* DNA 이중나선 렌더링 (세로축 둘레로 회전) */
+            function drawDNA(dna) {
+                const steps = Math.ceil(dna.height / 4);   // 촘촘하게
+                const cosT = Math.cos(dna.tilt);
+                const sinT = Math.sin(dna.tilt);
+                const ptsA = [];
+                const ptsB = [];
+
+                for (let i = 0; i <= steps; i++) {
+                    const ratio = i / steps;
+                    const localY = dna.height * ratio - dna.height / 2;
+                    const angle = ratio * dna.turns * Math.PI * 2 + dna.spin;
+
+                    /* A 가닥 */
+                    const ax = Math.cos(angle) * dna.radius;
+                    const azDepth = Math.sin(angle);          // -1(뒤) ~ 1(앞)
+                    /* B 가닥은 축 반대편 (180도) */
+                    const bx = Math.cos(angle + Math.PI) * dna.radius;
+                    const bzDepth = Math.sin(angle + Math.PI);
+
+                    /* tilt 만큼 기울여 화면 좌표로 (x,y 평면 회전) */
+                    const axR = ax * cosT - localY * sinT;
+                    const ayR = ax * sinT + localY * cosT;
+                    const bxR = bx * cosT - localY * sinT;
+                    const byR = bx * sinT + localY * cosT;
+
+                    ptsA.push({ x: dna.cx + axR, y: dna.cy + ayR, depth: azDepth });
+                    ptsB.push({ x: dna.cx + bxR, y: dna.cy + byR, depth: bzDepth });
+                }
+
+                /* 염기쌍 사다리 (가로대) - 가닥보다 먼저 그려 뒤에 깔림 */
+                for (let i = 0; i < ptsA.length; i += 2) {
+                    const a = ptsA[i], b = ptsB[i];
+                    const midDepth = (a.depth + b.depth) / 2;
+                    const la = dna.alpha * (0.22 + 0.3 * (midDepth + 1) / 2);
+                    ctx.strokeStyle = `rgba(${PALE.join(',')},${la})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.stroke();
+                }
+
+                /* 두 가닥 곡선 (각 세그먼트를 깊이에 따라 굵기/투명도 다르게) */
+                [{ pts: ptsA, hue: dna.hueA }, { pts: ptsB, hue: dna.hueB }].forEach(({ pts, hue }) => {
+                    for (let i = 0; i < pts.length - 1; i++) {
+                        const p = pts[i], q = pts[i + 1];
+                        const d = (p.depth + 1) / 2;          // 0(뒤)~1(앞)
+                        ctx.strokeStyle = `rgba(${hue.join(',')},${dna.alpha * (0.4 + 0.6 * d)})`;
+                        ctx.lineWidth = 1.2 + 1.8 * d;        // 앞쪽이 더 굵게
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(q.x, q.y);
+                        ctx.stroke();
+                    }
+                });
+
+                /* 가닥 위 원자 점 (앞쪽일수록 크고 진하게) */
+                [{ pts: ptsA, hue: dna.hueA }, { pts: ptsB, hue: dna.hueB }].forEach(({ pts, hue }) => {
+                    pts.forEach((p, i) => {
+                        if (i % 4 !== 0) return;
+                        const d = (p.depth + 1) / 2;
+                        const r = 1 + 2 * d;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(${hue.join(',')},${Math.min(dna.alpha * (0.5 + 0.5 * d) + 0.1, 0.95)})`;
+                        ctx.fill();
+                    });
+                });
+            }
+
+            function drawMolecule(m) {
+                const pts = [];
+                for (let i = 0; i < m.sides; i++) {
+                    const a = m.rot + (i / m.sides) * Math.PI * 2;
+                    pts.push({
+                        x: m.cx + Math.cos(a) * m.radius,
+                        y: m.cy + Math.sin(a) * m.radius
+                    });
+                }
+                ctx.beginPath();
+                pts.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+                ctx.closePath();
+                ctx.strokeStyle = `rgba(${m.hue.join(',')},${m.alpha})`;
+                ctx.lineWidth = 1.2;
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(pts[0].x, pts[0].y);
+                ctx.lineTo(m.cx, m.cy);
+                ctx.lineTo(pts[Math.floor(m.sides / 2)].x, pts[Math.floor(m.sides / 2)].y);
+                ctx.strokeStyle = `rgba(${m.hue.join(',')},${m.alpha * 0.6})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                pts.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${m.hue.join(',')},${Math.min(m.alpha + 0.25, 0.7)})`;
+                    ctx.fill();
+                });
+            }
+
+            function drawCell(c) {
+                const wobbleR = c.r + Math.sin(c.wobble) * 0.6;
+                ctx.beginPath();
+                ctx.arc(c.x, c.y, wobbleR, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(${c.hue.join(',')},${c.alpha})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(c.x, c.y, Math.max(wobbleR * 0.32, 1), 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${c.hue.join(',')},${Math.min(c.alpha + 0.25, 0.55)})`;
+                ctx.fill();
+            }
+
+            function step() {
+                t += 1;
+                ctx.clearRect(0, 0, w, h);
+
+                dnaBundles.forEach(dna => {
+                    dna.cx += dna.vx;
+                    dna.cy += dna.vy;
+                    dna.spin += dna.spinSpeed;
+                    if (dna.cx < -80) dna.cx = w + 80;
+                    if (dna.cx > w + 80) dna.cx = -80;
+                    if (dna.cy < -150) dna.cy = h + 150;
+                    if (dna.cy > h + 150) dna.cy = -150;
+                    drawDNA(dna);
+                });
+
+                molecules.forEach(m => {
+                    m.cx += m.vx;
+                    m.cy += m.vy;
+                    m.rot += m.rotSpeed;
+                    if (m.cx < -40) m.cx = w + 40;
+                    if (m.cx > w + 40) m.cx = -40;
+                    if (m.cy < -40) m.cy = h + 40;
+                    if (m.cy > h + 40) m.cy = -40;
+                    drawMolecule(m);
+                });
+
+                cells.forEach(c => {
+                    c.x += c.vx;
+                    c.y += c.vy;
+                    c.wobble += c.wobbleSpeed;
+                    if (c.x < -20) c.x = w + 20;
+                    if (c.x > w + 20) c.x = -20;
+                    if (c.y < -20) c.y = h + 20;
+                    if (c.y > h + 20) c.y = -20;
+                    drawCell(c);
+                });
+
+                if (!prefersReducedMotion) requestAnimationFrame(step);
+            }
+
+            function resize() {
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                w = heroEl.offsetWidth;
+                h = heroEl.offsetHeight;
+                canvas.width = w * dpr;
+                canvas.height = h * dpr;
+                canvas.style.width = w + 'px';
+                canvas.style.height = h + 'px';
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+                const area = w * h;
+                cells = makeCells(Math.min(34, Math.floor(area / 34000)));
+                molecules = makeMolecules(Math.min(7, Math.floor(area / 130000) + 2));
+                dnaBundles = makeDNABundles(Math.min(3, Math.floor(area / 200000) + 1));
+            }
+
+            resize();
+            window.addEventListener('resize', resize, { passive: true });
+            step();
+        })();
+
+        /* ──────────────────────────────────────────
+           설정
+        ────────────────────────────────────────── */
+        const CONFIG = {
+    START_DATE: new Date('2026-08-19T00:00:00+09:00'),  // KST 8/19 00:00
+    END_DATE:   new Date('2026-09-06T00:00:00+09:00')   // KST 9/6 00:00 (9/5 끝까지 포함)
+};
+        /* ──────────────────────────────────────────
+           Toast 유틸
+        ────────────────────────────────────────── */
+        function showToast(msg, color) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.background = color || '#222';
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3200);
+        }
+
+        /* ──────────────────────────────────────────
+           스크롤 진행 바
+        ────────────────────────────────────────── */
+        const progressBar = document.getElementById('scroll-progress');
+        window.addEventListener('scroll', () => {
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            progressBar.style.width = (window.scrollY / max * 100) + '%';
+        }, { passive: true });
+
+        /* ──────────────────────────────────────────
+           스크롤 reveal 애니메이션
+        ────────────────────────────────────────── */
+        const revealEls = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    const siblings = [...e.target.parentElement.querySelectorAll('.reveal')];
+                    const idx = siblings.indexOf(e.target);
+                    e.target.style.transitionDelay = (idx * 0.07) + 's';
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        revealEls.forEach(el => observer.observe(el));
+
+        /* ──────────────────────────────────────────
+           활성 섹션 nav 하이라이트
+        ────────────────────────────────────────── */
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav.pc-nav a');
+        const sectionObserver = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    navLinks.forEach(a => {
+                        a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+                    });
+                }
+            });
+        }, { rootMargin: '-40% 0px -55% 0px' });
+        sections.forEach(s => sectionObserver.observe(s));
+
+        /* ──────────────────────────────────────────
+           모바일 햄버거 메뉴
+        ────────────────────────────────────────── */
+        const hamburger    = document.getElementById('hamburger');
+        const mobileMenu   = document.getElementById('mobile-menu');
+
+        hamburger.addEventListener('click', () => {
+            const isOpen = hamburger.classList.toggle('open');
+            mobileMenu.classList.toggle('open', isOpen);
+            hamburger.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴 열기');
+        });
+
+        window.closeMobileMenu = function () {
+            hamburger.classList.remove('open');
+            mobileMenu.classList.remove('open');
+        };
+
+        // 바깥 클릭 시 닫기
+        document.addEventListener('click', e => {
+            if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        /* ──────────────────────────────────────────
+           지원 기간 표시 제어
+        ────────────────────────────────────────── */
+        function checkDate() {
+            const now = new Date();
+            const heroCta       = document.getElementById('hero-cta');
+            const navApply      = document.getElementById('nav-apply');
+            const mobApply      = document.getElementById('mob-apply');
+
+            // [지원 버튼 타임 제어 연동]
+            if (now > CONFIG.END_DATE) {
+                if (navApply)      navApply.style.display       = 'none';
+                if (mobApply)      mobApply.style.display       = 'none';
+                if (heroCta) {
+                    heroCta.textContent = '지원 마감';
+                    heroCta.style.pointerEvents = 'none';
+                    heroCta.style.background    = '#888';
+                    heroCta.style.boxShadow     = 'none';
+                }
+            } else if (now < CONFIG.START_DATE) {
+                // 오픈 전에도 안내 페이지(apply-session.html)는 열람 가이드가 뜨므로 버튼 클릭 허용 가능 (원할 경우 비활성화 유지)
+                if (heroCta) {
+                    heroCta.textContent = '8월 19일 11기 신입부원 모집';
+                    heroCta.style.pointerEvents = 'none';
+                    heroCta.style.background    = '#888';
+                    heroCta.style.boxShadow     = 'none';
+                }
+            } else {
+                // 지원 기간 중 정상 복구
+                if (heroCta) {
+                    heroCta.textContent = '지금 지원하기';
+                    heroCta.style.pointerEvents = 'auto';
+                    heroCta.style.background    = 'var(--accent)';
+                }
+            }
+        }
+
+        checkDate();
+
+        /* ──────────────────────────────────────────
+           FAQ 아코디언
+        ────────────────────────────────────────── */
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                if (!isActive) item.classList.add('active');
+            });
+        });
+
+    })();
+    </script>
+</body>
+</html>
