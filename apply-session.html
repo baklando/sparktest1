@@ -1,16 +1,226 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지원하기 | SPARK 생명과학연합학술동아리</title>
-    <link rel="icon" type="image/png" href="favicon.png" sizes="64x64">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!--
+╔══════════════════════════════════════════════════════════════╗
+║  SPARK 신입부원 지원 페이지 — 수정 안내                          ║
+║                                                              ║
+║  수정할 곳은 이 파일 위쪽의 두 군데뿐입니다.                      ║
+║    [수정 구역 1] 브라우저 탭 제목                                ║
+║    [수정 구역 2] 모집 기간, 모집 절차, 공지, 활동 일정, 지원 안내,   ║
+║                 지원서 양식 링크, 선택지, 개인정보 동의문           ║
+║                                                              ║
+║  "여기부터 아래는 수정하지 않아도 됩니다" 표시 이후는                ║
+║  디자인과 동작 코드이므로 건드리지 않아도 됩니다.                   ║
+╚══════════════════════════════════════════════════════════════╝
+-->
+
+
+<!-- ════════════════════════════════════════════
+     ✏️ [수정 구역 1] 브라우저 탭 제목 · 아이콘
+═════════════════════════════════════════════ -->
+<title>지원하기 | SPARK 생명과학연합학술동아리</title>
+<link rel="icon" type="image/png" href="favicon.png" sizes="64x64">
+
+
+<!-- ════════════════════════════════════════════
+     ✏️ [수정 구역 2] 페이지 내용 전체
+═════════════════════════════════════════════ -->
+<script>
+/*
+ ┌─────────────────── 수정 규칙 ───────────────────┐
+ │ 1. 따옴표 '  ' 안의 글자만 바꾸세요.                │
+ │ 2. 항목 끝에는 항상 쉼표( , )를 붙입니다.            │
+ │ 3. 괄호 { } [ ] 는 지우지 마세요.                   │
+ │ 4. 항목을 추가/삭제할 때는 한 줄(또는 { ... }, 한     │
+ │    덩어리)을 통째로 복사하거나 지우세요.               │
+ │ 5. 날짜는 항상 '2026-09-08' 형식(연-월-일)으로 씁니다.│
+ │    화면에는 "9월 8일"처럼 자동으로 바뀌어 보입니다.     │
+ │ 6. 글 안에 작은따옴표 ' 를 넣고 싶으면 ‘ ’ 를 쓰세요.  │
+ │ 7. // 뒤의 설명은 화면에 나오지 않습니다.             │
+ │                                                  │
+ │ ★ 글 꾸미기 (제목·공지·안내·동의문 등에서 사용 가능)    │
+ │   **굵게 할 글자**    → 굵은 글씨                     │
+ │   [보일 글자](주소)   → 누르면 이동하는 링크             │
+ │   {기수}             → 11     (아래 generation 숫자)  │
+ │   {이전기수}          → 10     (generation - 1)       │
+ │   {마감일}            → 9월 5일 (아래 apply.end 날짜)  │
+ │                                                  │
+ │ 수정 후 페이지 위에 빨간 경고가 뜨면,                 │
+ │ 방금 고친 곳에서 쉼표나 따옴표가 빠진 것입니다.         │
+ └──────────────────────────────────────────────────┘
+*/
+const SITE = {
+
+    /* ────────── 모집 기수 ──────────
+       영어 문구 "Recruiting the 11th Cohort", "11기 모집 절차",
+       "10기 포스터 세션 참여 여부" 는 이 숫자로 자동 생성됩니다. */
+    generation: 11,     // 숫자만, 따옴표 없이
+
+
+    /* ────────── 지원서 접수 기간 ──────────
+       날짜만 바꾸면 제출 폼 열림/잠김, 안내 문구, 모집 절차 1단계가 자동으로 바뀝니다.
+       ※ 메인 페이지(index.html)의 모집 기간과 같게 맞춰 주세요. */
+    apply: {
+        start: '2026-08-19',   // 접수 시작일 (이 날 0시부터)
+        end:   '2026-09-05',   // 접수 마지막 날 (이 날 밤 23:59:59까지 제출 가능)
+    },
+
+
+    /* ────────── 첫 화면 ────────── */
+    hero: {
+        title: 'SPARK와 함께할 {기수}기 신입 부원을 기다립니다',
+        intro: '최신 바이오 연구를 함께 읽는 논문 스터디부터, 한 학기의 성장을 공유하는 정기 학술 포스터 세션까지. SPARK에서 생명과학의 더 넓은 가능성을 경험해 보세요.',
+    },
+
+
+    /* ────────── 모집 절차 (지원서 제출 이후 단계) ──────────
+       1단계 "지원서 제출"은 위 접수 기간으로 자동으로 만들어지므로 여기엔 적지 않습니다.
+       - 하루짜리 일정은 start 만 적으면 됩니다.
+       - 며칠에 걸친 일정은 start 와 end 를 모두 적습니다.
+       - note(작은 설명)는 없어도 됩니다.
+       진행 중인 단계는 초록색, 지난 단계는 "완료"로 자동 표시됩니다. */
+    process: [
+        { start: '2026-09-08',                     label: '1차 합격자 발표', note: '면접 일정 개별 안내' },
+        { start: '2026-09-11', end: '2026-09-13',  label: '비대면 면접' },
+        { start: '2026-09-14',                     label: '최종 합격자 발표' },
+        { start: '2026-09-17',                     label: '추가 합격자 발표 마감' },
+    ],
+
+
+    /* ────────── 공지사항 박스 ──────────
+       alert: true  → 붉은 강조 박스
+       big: '...'   → 큰 글씨로 보여줄 내용 (회비 금액 등, 필요할 때만) */
+    notices: [
+        {
+            title: '지원서 접수 마감 안내',
+            alert: true,
+            text:  '{마감일}에서 다음 날로 넘어가는 자정에 제출 폼이 닫힙니다. 형평성을 위해 추가 지원은 받지 않습니다. 이 페이지에서 제출한 최종 PDF만 인정되며, 마감 직전에는 접속이 몰릴 수 있으니 여유를 두고 제출해 주세요.',
+        },
+        {
+            title: '회비',
+            big:   '45,000원',
+            text:  '9월 16일(수) 이후에는 추가 합격자 인계가 어려워 회비 환불이 불가합니다. 최종 합격자는 가입 전에 개인 일정을 반드시 확인해 주세요.',
+        },
+    ],
+
+
+    /* ────────── 기수 활동 일정 ──────────
+       지난 일정은 회색, 다가오는 일정은 초록색으로 자동 표시됩니다.
+       ※ 메인 페이지(index.html)의 일정과 같게 맞춰 주세요. */
+    activity: {
+        subtitle: '아래 일정은 모두 전원 필참입니다.',
+        events: [
+            { date: '2026-09-19', time: '13:00 – 18:00', label: '대면 OT' },
+            { date: '2026-10-31', time: '13:00 – 18:00', label: '1차 대면 세미나' },
+            { date: '2026-12-19', time: '13:00 – 18:00', label: '2차 대면 세미나' },
+            { date: '2027-01-23', time: '13:00 – 18:00', label: '3차 대면 세미나' },
+            { date: '2027-02-03', time: '19:00 – 21:00', label: '포스터 세션' },
+            { date: '2027-02-13', time: '16:00 – 18:00', label: '수료식' },
+        ],
+        places: [
+            { name: '정기 모임',   text: '이화여자대학교 학관, ECC (OT·세미나, 변동 가능)' },
+            { name: '포스터 세션', text: '추후 공지' },
+        ],
+    },
+
+
+    /* ────────── 지원 안내 ──────────
+       번호(1, 2, 3…)는 순서대로 자동으로 붙습니다. */
+    guides: [
+        '제공된 서식을 복사하거나 내려받아, 분량 제한 안에서 작성해 주세요.',
+        '최종 제출은 **PDF** 파일만 가능합니다. Word, HWP 파일은 접수되지 않습니다.',
+        '기재한 연락처로 합격 여부와 면접 일정을 안내합니다. 제출 전에 번호를 한 번 더 확인해 주세요.',
+        '문의는 [카카오톡 채널](https://pf.kakao.com/_hLbxeb)로 보내주세요.',
+    ],
+
+
+    /* ────────── 지원서 제출 폼 ────────── */
+    form: {
+        // 지원서 양식 다운로드 주소 (구글 문서 주소 끝에 /export?format=docx 를 붙이면 바로 다운로드됩니다)
+        templateUrl: 'https://docs.google.com/document/d/1Kve6OYu3iI6fCsT7NbVKLL1D3neSMXkR/export?format=docx',
+
+        maxFileMB: 10,   // 올릴 수 있는 파일 최대 크기 (MB, 숫자만)
+
+        // SPARK를 알게 된 경로 (여기 적은 글자가 그대로 구글 시트에 저장됩니다)
+        routes: [
+            '인스타그램',
+            '네이버 카페',
+            '에브리타임',
+            'LinkedIn',
+            '지인 소개',
+            '기타',
+        ],
+
+        // 개인정보 수집·이용 동의문 (폼 항목을 바꾸면 '수집 항목'도 같이 바꿔 주세요)
+        privacy: `
+            1. 수집 항목: 이름, 학교·학과, 학번, 연락처, 지원서 파일
+            2. 수집 목적: 신입 지원자 선발 심사, 면접 운영 및 결과 안내
+            3. 보유 기간: 해당 기수 선발 과정 종료 후 14일 이내 파기
+            4. 제3자 제공: 없음 (운영진 내부 심사 용도로만 사용)
+            * 동의를 거부할 권리가 있으나, 동의하지 않으면 지원서 접수가 불가합니다.
+        `,
+
+        // 제출 완료 후 보이는 안내 (날짜가 들어 있으니 모집 절차를 바꾸면 같이 수정하세요)
+        successText: `
+            1차 결과와 면접 일정은 기재하신 연락처로 안내드립니다.
+            9월 8일 발표 전까지 공지사항도 함께 확인해 주세요.
+        `,
+    },
+
+
+    /* ────────── 연락처 · 링크 ────────── */
+    email:    'officialspark@spark2021.com',
+    logo:     'logo.png',
+    homePage: 'index.html',
+
+
+    /* ────────── ⚠️ 지원서 저장 주소 (구글 Apps Script) ──────────
+       제출된 지원서가 저장되는 구글 드라이브·시트 연결 주소입니다.
+       Apps Script를 새로 배포해서 주소가 바뀐 경우에만 교체하세요.
+       한 글자라도 틀리면 지원서가 저장되지 않습니다. */
+    sheetUrl: 'https://script.google.com/macros/s/AKfycbzrUAV0oP4MqN452g5L0e-R13RlpaGRKUrsTtfyf1MRBj3T1s8Rb8UeczSKWBpeIH4Nfg/exec',
+
+
+    /* ────────── 색상 ────────── */
+    colors: {
+        main:      '#15674c',
+        mainDark:  '#0f4d38',
+        mainLight: '#eef3f0',
+    },
+
+};
+</script>
+<!-- ════════════════ ✏️ 수정 구역 끝 ════════════════ -->
+
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     ⛔ 여기부터 아래는 수정하지 않아도 됩니다 (디자인·동작 코드)
+═══════════════════════════════════════════════════════════════ -->
+
+<script>
+/* 위에서 정한 색상을 디자인에 적용 */
+(function () {
+    if (typeof SITE === 'undefined' || !SITE.colors) return;
+    var root = document.documentElement.style, c = SITE.colors;
+    if (c.main)      root.setProperty('--accent', c.main);
+    if (c.mainDark)  root.setProperty('--accent-deep', c.mainDark);
+    if (c.mainLight) root.setProperty('--accent-wash', c.mainLight);
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+
 <style>
 /* ══════════════════════════════════════════════
    SPARK 신입부원 모집 — index.html과 동일한 보드 시스템
+   ※ 대표 색상은 [수정 구역 2]의 colors 에서 바꿉니다.
 ══════════════════════════════════════════════ */
 
 :root {
@@ -52,6 +262,19 @@ body {
 
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* ── 설정 오류 경고 ───────────────────────── */
+#config-error {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 10001;
+    background: #b3261e;
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+#config-error[hidden] { display: none; }
 
 /* ── 헤더 ─────────────────────────────────── */
 header {
@@ -123,7 +346,6 @@ header {
 }
 .hero-desc { font-size: 1.02rem; color: var(--ink-mid); max-width: 44em; }
 
-/* 모집 절차 트랙 */
 .process {
     margin-top: 40px;
     background: var(--paper);
@@ -145,7 +367,8 @@ header {
 
 .process-track {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
     list-style: none;
 }
 .step {
@@ -183,7 +406,7 @@ header {
 .step.now .step-label { color: var(--ink); font-weight: 500; }
 
 @media (max-width: 860px) {
-    .process-track { grid-template-columns: 1fr; }
+    .process-track { grid-auto-flow: row; grid-template-columns: 1fr; }
     .step {
         border-right: none;
         border-top: none;
@@ -198,12 +421,10 @@ header {
     .step:last-child { border-bottom: none; }
     .step.now { border-left-color: var(--accent); }
     .step-no { grid-column: 1 / -1; margin-bottom: 2px; }
-    .step-date { font-size: 1rem; }
+    .step-date { font-size: 1rem; grid-row: 2 / span 2; }
     .step-label, .step-note { grid-column: 2; }
-    .step-date { grid-row: 2 / span 2; }
 }
 
-/* 히어로 등장 — 페이지당 한 번 */
 .hero-kicker, .hero h1, .hero-desc, .process {
     opacity: 0;
     transform: translateY(14px);
@@ -241,7 +462,6 @@ header {
     margin-bottom: 20px;
 }
 
-/* 공지 */
 .callout {
     padding: 16px 18px;
     border-radius: 2px;
@@ -251,7 +471,7 @@ header {
     background: #f5f6f4;
 }
 .callout + .callout { margin-top: 12px; }
-.callout strong {
+.callout > strong {
     display: block;
     font-family: var(--serif);
     font-size: 1rem;
@@ -259,8 +479,9 @@ header {
     color: var(--ink);
     margin-bottom: 4px;
 }
+.callout a { color: var(--accent); font-weight: 500; }
 .callout.is-alert { background: var(--alert-wash); }
-.callout.is-alert strong { color: var(--alert); }
+.callout.is-alert > strong { color: var(--alert); }
 .callout .fee {
     font-family: var(--serif);
     font-size: 1.3rem;
@@ -270,7 +491,6 @@ header {
     margin-bottom: 6px;
 }
 
-/* 활동 일정 */
 .card-sub { font-size: 0.88rem; color: var(--ink-soft); margin: -8px 0 16px; }
 .schedule-list { list-style: none; }
 .schedule-item {
@@ -315,7 +535,6 @@ header {
     .place dd { margin-bottom: 8px; }
 }
 
-/* 안내 */
 .guide-list { list-style: none; display: flex; flex-direction: column; gap: 13px; }
 .guide-item {
     display: grid;
@@ -383,7 +602,7 @@ header {
     font-weight: 500;
     color: var(--accent);
     text-decoration: none;
-    border: 1px solid rgba(21,103,76,.4);
+    border: 1px solid var(--accent);
     border-radius: 2px;
     padding: 7px 13px;
     transition: background .18s ease, color .18s ease;
@@ -487,7 +706,9 @@ select.form-input:invalid { color: #9aa3ad; }
     background: var(--paper);
     border: 1px solid var(--rule);
     border-radius: 2px;
+    white-space: pre-line;
 }
+.privacy-scroll strong { color: var(--ink); }
 .privacy-scroll::-webkit-scrollbar { width: 4px; }
 .privacy-scroll::-webkit-scrollbar-thumb { background: var(--rule-strong); }
 .checkbox-label {
@@ -526,7 +747,6 @@ select.form-input:invalid { color: #9aa3ad; }
 
 #form-msg { text-align: center; font-size: 0.86rem; margin-top: 14px; min-height: 20px; font-weight: 500; }
 
-/* 제출 완료 */
 #success-view { display: none; padding: 8px 0 12px; }
 .state-mark {
     width: 46px; height: 46px;
@@ -540,7 +760,7 @@ select.form-input:invalid { color: #9aa3ad; }
 }
 .state-mark svg { width: 22px; height: 22px; }
 #success-view h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; margin-bottom: 10px; }
-#success-view p { font-size: 0.92rem; color: var(--ink-mid); line-height: 1.85; }
+#success-view p { font-size: 0.92rem; color: var(--ink-mid); line-height: 1.85; white-space: pre-line; }
 
 /* ── 토스트 ───────────────────────────────── */
 #toast {
@@ -587,61 +807,41 @@ footer a:hover { color: #fff; text-decoration: underline; }
 </head>
 <body>
 
+<!--
+  ⛔ 아래 HTML은 '틀'입니다. 글자는 [수정 구역 2]에서 자동으로 채워집니다.
+     여기에 직접 글을 써도 반영되지 않으니 위쪽 SITE 설정을 고쳐 주세요.
+-->
+
+<div id="config-error" hidden>
+    ⚠️ 페이지 내용 설정(SITE)에 오류가 있어 내용을 불러오지 못했습니다.
+    최근에 고친 곳에서 쉼표( , ), 따옴표( ' ), 괄호( { } [ ] )가 빠지거나 남지 않았는지 확인해 주세요.
+    (PC에서 F12 → Console 탭을 열면 오류가 난 줄 번호가 보입니다.)
+</div>
+
 <div id="toast"></div>
 
 <header>
     <div class="header-inner">
-        <a href="index.html" aria-label="SPARK 홈"><img src="logo.png" alt="SPARK" class="header-logo"></a>
+        <a class="home-link" aria-label="홈으로"><img id="logo" class="header-logo" alt=""></a>
         <div class="header-divider"></div>
         <span class="header-title">신입 기수 모집</span>
-        <a href="index.html" class="back-home">메인으로</a>
+        <a class="home-link back-home">메인으로</a>
     </div>
 </header>
 
-<!-- ── 히어로 ── -->
+<!-- 히어로 -->
 <section class="hero">
     <div class="hero-inner">
-        <p class="hero-kicker">Recruiting the 11th Cohort</p>
-        <h1>SPARK와 함께할 11기 신입 부원을 기다립니다</h1>
-        <p class="hero-desc">
-            최신 바이오 연구를 함께 읽는 논문 스터디부터, 한 학기의 성장을 공유하는 정기 학술 포스터 세션까지.
-            SPARK에서 생명과학의 더 넓은 가능성을 경험해 보세요.
-        </p>
+        <p class="hero-kicker" id="hero-kicker"></p>
+        <h1 id="hero-title"></h1>
+        <p class="hero-desc" id="hero-desc"></p>
 
         <div class="process">
             <div class="process-head">
-                <h2>11기 모집 절차</h2>
-                <p id="process-status">지원서 제출은 9월 5일 23:59:59에 마감됩니다.</p>
+                <h2 id="process-title"></h2>
+                <p id="process-status"></p>
             </div>
-            <ol class="process-track">
-                <li class="step" data-start="2026-08-19" data-end="2026-09-05">
-                    <span class="step-no">1</span>
-                    <span class="step-date">8월 19일 – 9월 5일</span>
-                    <span class="step-label">지원서 제출</span>
-                    <span class="step-note">9월 5일 23:59:59 마감</span>
-                </li>
-                <li class="step" data-start="2026-09-08" data-end="2026-09-08">
-                    <span class="step-no">2</span>
-                    <span class="step-date">9월 8일</span>
-                    <span class="step-label">1차 합격자 발표</span>
-                    <span class="step-note">면접 일정 개별 안내</span>
-                </li>
-                <li class="step" data-start="2026-09-11" data-end="2026-09-13">
-                    <span class="step-no">3</span>
-                    <span class="step-date">9월 11일 – 13일</span>
-                    <span class="step-label">비대면 면접</span>
-                </li>
-                <li class="step" data-start="2026-09-14" data-end="2026-09-14">
-                    <span class="step-no">4</span>
-                    <span class="step-date">9월 14일</span>
-                    <span class="step-label">최종 합격자 발표</span>
-                </li>
-                <li class="step" data-start="2026-09-17" data-end="2026-09-17">
-                    <span class="step-no">5</span>
-                    <span class="step-date">9월 17일</span>
-                    <span class="step-label">추가 합격자 발표 마감</span>
-                </li>
-            </ol>
+            <ol class="process-track" id="process-track"></ol>
         </div>
     </div>
 </section>
@@ -649,72 +849,22 @@ footer a:hover { color: #fff; text-decoration: underline; }
 <main class="page-wrap">
 
     <aside class="info-side">
-
         <div class="panel info-card">
             <h2 class="card-head">공지사항</h2>
-
-            <div class="callout is-alert">
-                <strong>지원서 접수 마감 안내</strong>
-                9월 5일에서 6일로 넘어가는 자정에 제출 폼이 닫힙니다. 형평성을 위해 추가 지원은 받지 않습니다.
-                이 페이지에서 제출한 최종 PDF만 인정되며, 마감 직전에는 접속이 몰릴 수 있으니 여유를 두고 제출해 주세요.
-            </div>
-
-            <div class="callout">
-                <strong>회비</strong>
-                <span class="fee">45,000원</span>
-                9월 16일(수) 이후에는 추가 합격자 인계가 어려워 회비 환불이 불가합니다.
-                최종 합격자는 가입 전에 개인 일정을 반드시 확인해 주세요.
-            </div>
+            <div id="notice-list"></div>
         </div>
 
         <div class="panel info-card">
-            <h2 class="card-head">11기 활동 일정</h2>
-            <p class="card-sub">아래 일정은 모두 전원 필참입니다.</p>
-            <ul class="schedule-list" id="activity-list">
-                <li class="schedule-item" data-date="2026-09-19">
-                    <div class="schedule-date">9월 19일<small>13:00 – 18:00</small></div>
-                    <div class="schedule-body">대면 OT</div>
-                </li>
-                <li class="schedule-item" data-date="2026-10-31">
-                    <div class="schedule-date">10월 31일<small>13:00 – 18:00</small></div>
-                    <div class="schedule-body">1차 대면 세미나</div>
-                </li>
-                <li class="schedule-item" data-date="2026-12-19">
-                    <div class="schedule-date">12월 19일<small>13:00 – 18:00</small></div>
-                    <div class="schedule-body">2차 대면 세미나</div>
-                </li>
-                <li class="schedule-item" data-date="2027-01-23">
-                    <div class="schedule-date">1월 23일<small>13:00 – 18:00</small></div>
-                    <div class="schedule-body">3차 대면 세미나</div>
-                </li>
-                <li class="schedule-item" data-date="2027-02-03">
-                    <div class="schedule-date">2월 3일<small>19:00 – 21:00</small></div>
-                    <div class="schedule-body">포스터 세션</div>
-                </li>
-                <li class="schedule-item" data-date="2027-02-13">
-                    <div class="schedule-date">2월 13일<small>16:00 – 18:00</small></div>
-                    <div class="schedule-body">수료식</div>
-                </li>
-            </ul>
-
-            <dl class="place">
-                <dt>정기 모임</dt>
-                <dd>이화여자대학교 학관, ECC (OT·세미나, 변동 가능)</dd>
-                <dt>포스터 세션</dt>
-                <dd>추후 공지</dd>
-            </dl>
+            <h2 class="card-head" id="activity-title"></h2>
+            <p class="card-sub" id="activity-sub"></p>
+            <ul class="schedule-list" id="activity-list"></ul>
+            <dl class="place" id="place-list"></dl>
         </div>
 
         <div class="panel info-card">
             <h2 class="card-head">지원 안내</h2>
-            <ol class="guide-list">
-                <li class="guide-item"><span class="guide-no">1</span><span>제공된 서식을 복사하거나 내려받아, 분량 제한 안에서 작성해 주세요.</span></li>
-                <li class="guide-item"><span class="guide-no">2</span><span>최종 제출은 <strong>PDF</strong> 파일만 가능합니다. Word, HWP 파일은 접수되지 않습니다.</span></li>
-                <li class="guide-item"><span class="guide-no">3</span><span>기재한 연락처로 합격 여부와 면접 일정을 안내합니다. 제출 전에 번호를 한 번 더 확인해 주세요.</span></li>
-                <li class="guide-item"><span class="guide-no">4</span><span>문의는 <a href="https://pf.kakao.com/_hLbxeb" target="_blank" rel="noopener">카카오톡 채널</a>로 보내주세요.</span></li>
-            </ol>
+            <ol class="guide-list" id="guide-list"></ol>
         </div>
-
     </aside>
 
     <section class="form-side">
@@ -730,7 +880,7 @@ footer a:hover { color: #fff; text-decoration: underline; }
 
                 <div class="download-box">
                     <p>아직 서식이 없으신가요?</p>
-                    <a href="https://docs.google.com/document/d/1Kve6OYu3iI6fCsT7NbVKLL1D3neSMXkR/export?format=docx" class="btn-download">
+                    <a id="template-link" class="btn-download">
                         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v8M4.5 6.5L8 10l3.5-3.5M3 13.5h10"/></svg>
                         지원서 양식 받기
                     </a>
@@ -739,8 +889,8 @@ footer a:hover { color: #fff; text-decoration: underline; }
                 <form id="spark-apply-form">
                     <div class="form-group">
                         <label class="form-label" for="inp-file">지원서 업로드 (PDF)<span class="req">*</span></label>
-                        <input type="file" id="inp-file" accept=".pdf" required class="form-input">
-                        <p class="hint">10MB 이하 PDF 파일</p>
+                        <input type="file" id="inp-file" accept=".pdf,application/pdf" required class="form-input">
+                        <p class="hint" id="file-hint"></p>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="inp-name">이름<span class="req">*</span></label>
@@ -760,18 +910,10 @@ footer a:hover { color: #fff; text-decoration: underline; }
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="inp-route">SPARK를 알게 된 경로<span class="req">*</span></label>
-                        <select id="inp-route" name="user_route" required class="form-input">
-                            <option value="" disabled selected>선택해 주세요</option>
-                            <option value="인스타그램">인스타그램</option>
-                            <option value="네이버 카페">네이버 카페</option>
-                            <option value="에브리타임">에브리타임</option>
-                            <option value="LinkedIn">LinkedIn</option>
-                            <option value="지인 소개">지인 소개</option>
-                            <option value="기타">기타</option>
-                        </select>
+                        <select id="inp-route" name="user_route" required class="form-input"></select>
                     </div>
                     <div class="form-group">
-                        <span class="form-label">10기 포스터 세션 참여 여부<span class="req">*</span></span>
+                        <span class="form-label"><span id="poster-question"></span><span class="req">*</span></span>
                         <div class="radio-group">
                             <div class="radio-item">
                                 <input type="radio" id="poster-yes" name="poster_join" value="참여함" required>
@@ -786,13 +928,7 @@ footer a:hover { color: #fff; text-decoration: underline; }
 
                     <div class="form-group privacy-box">
                         <span class="form-label">개인정보 수집·이용 동의<span class="req">*</span></span>
-                        <div class="privacy-scroll" tabindex="0">
-                            1. 수집 항목: 이름, 학교·학과, 학번, 연락처, 지원서 파일<br>
-                            2. 수집 목적: 신입 지원자 선발 심사, 면접 운영 및 결과 안내<br>
-                            3. 보유 기간: 해당 기수 선발 과정 종료 후 14일 이내 파기<br>
-                            4. 제3자 제공: 없음 (운영진 내부 심사 용도로만 사용)<br>
-                            * 동의를 거부할 권리가 있으나, 동의하지 않으면 지원서 접수가 불가합니다.
-                        </div>
+                        <div class="privacy-scroll" id="privacy-text" tabindex="0"></div>
                         <label class="checkbox-label">
                             <input type="checkbox" name="privacy_agree" id="privacy_agree" required>
                             <span>위 내용을 확인했으며 이에 동의합니다.</span>
@@ -809,10 +945,7 @@ footer a:hover { color: #fff; text-decoration: underline; }
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
                 </div>
                 <h3>지원서가 접수되었습니다</h3>
-                <p>
-                    1차 결과와 면접 일정은 기재하신 연락처로 안내드립니다.<br>
-                    9월 8일 발표 전까지 공지사항도 함께 확인해 주세요.
-                </p>
+                <p id="success-text"></p>
             </div>
 
         </div>
@@ -821,86 +954,173 @@ footer a:hover { color: #fff; text-decoration: underline; }
 </main>
 
 <footer>
-    <p>&copy; 2026 SPARK &nbsp;|&nbsp; <a href="mailto:officialspark@spark2021.com">officialspark@spark2021.com</a></p>
+    <p id="footer-text"></p>
 </footer>
 
 <script>
+/* ══════════════════════════════════════════════
+   ⛔ 동작 코드 — 수정하지 않아도 됩니다.
+   [수정 구역 2]의 SITE 내용을 읽어 화면에 채워 넣습니다.
+══════════════════════════════════════════════ */
 (function () {
     'use strict';
 
-    /* ── 지원 기간 (메인과 동일) ────────────── */
-    const CONFIG = {
-        START_DATE: new Date('2026-08-19T00:00:00+09:00'),
-        END_DATE:   new Date('2026-09-06T00:00:00+09:00')
+    if (typeof SITE === 'undefined') {
+        document.getElementById('config-error').hidden = false;
+        return;
+    }
+
+    /* ── 도우미 함수 ────────────────────────── */
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+    const parts = d => String(d).split('-').map(Number);                   // [년, 월, 일]
+    const md    = d => { const p = parts(d); return p[1] + '월 ' + p[2] + '일'; };
+    const range = (s, e) => {                                              // 날짜 범위 표시
+        if (!e || e === s) return md(s);
+        const a = parts(s), b = parts(e);
+        return a[1] === b[1] ? md(s) + ' – ' + b[2] + '일' : md(s) + ' – ' + md(e);
+    };
+    const kst   = (d, endOfDay) => new Date(d + (endOfDay ? 'T23:59:59' : 'T00:00:00') + '+09:00');
+    const ordinal = n => {                                                 // 11 → 11th
+        const v = n % 100;
+        if (v >= 11 && v <= 13) return n + 'th';
+        return n + ({ 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] || 'th');
     };
 
-    const APPLY_API_URL = 'https://script.google.com/macros/s/AKfycbzrUAV0oP4MqN452g5L0e-R13RlpaGRKUrsTtfyf1MRBj3T1s8Rb8UeczSKWBpeIH4Nfg/exec';
+    const GEN  = SITE.generation;
+    const fill = s => String(s == null ? '' : s)
+        .replace(/\{기수\}/g, GEN)
+        .replace(/\{이전기수\}/g, GEN - 1)
+        .replace(/\{마감일\}/g, md(SITE.apply.end));
+    const tidy = s => fill(s).split('\n').map(l => l.trim()).join('\n').trim();
+    const rich = s => esc(tidy(s))
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
 
-    /* ── 토스트 ─────────────────────────────── */
+    /* ── 접수 기간 (한국시간) ────────────────── */
+    const START_AT = kst(SITE.apply.start, false);
+    const END_AT   = kst(SITE.apply.end, true);
+    const now0     = new Date();
+
+    /* ── 헤더 · 히어로 ──────────────────────── */
+    document.querySelectorAll('.home-link').forEach(a => a.href = SITE.homePage);
+    $('logo').src = SITE.logo;
+    $('logo').alt = 'SPARK';
+    $('hero-kicker').textContent = 'Recruiting the ' + ordinal(GEN) + ' Cohort';
+    $('hero-title').innerHTML    = rich(SITE.hero.title);
+    $('hero-desc').innerHTML     = rich(SITE.hero.intro);
+
+    /* ── 모집 절차 ──────────────────────────── */
+    $('process-title').textContent = GEN + '기 모집 절차';
+    const steps = [{
+        start: SITE.apply.start,
+        end:   SITE.apply.end,
+        label: '지원서 제출',
+        note:  md(SITE.apply.end) + ' 23:59:59 마감'
+    }].concat(SITE.process);
+
+    let current = -1, isNow = false;
+    const stepState = steps.map((s, i) => {
+        const sAt = kst(s.start, false), eAt = kst(s.end || s.start, true);
+        if (now0 > eAt) return 'done';
+        if (current < 0 && now0 >= sAt) { current = i; isNow = true; return 'now'; }
+        return '';
+    });
+    if (current < 0) {                                  // 진행 중 단계가 없으면 다가오는 단계 표시
+        current = stepState.indexOf('');
+        if (current >= 0) stepState[current] = 'now';
+    }
+
+    $('process-track').innerHTML = steps.map((s, i) =>
+        '<li class="step ' + stepState[i] + '">' +
+            '<span class="step-no">' + (i + 1) + '</span>' +
+            '<span class="step-date">' + range(s.start, s.end) + '</span>' +
+            '<span class="step-label">' + esc(fill(s.label)) + '</span>' +
+            (s.note ? '<span class="step-note">' + esc(fill(s.note)) + '</span>' : '') +
+        '</li>'
+    ).join('');
+
+    if (current < 0) {
+        $('process-status').textContent = GEN + '기 모집 절차가 모두 끝났습니다.';
+    } else {
+        const s = steps[current];
+        $('process-status').innerHTML = (isNow ? '지금은 <b>' : '다음 단계: <b>') +
+            esc(fill(s.label)) + '</b> (' + range(s.start, s.end) + ')';
+    }
+
+    /* ── 공지사항 ───────────────────────────── */
+    $('notice-list').innerHTML = SITE.notices.map(n =>
+        '<div class="callout' + (n.alert ? ' is-alert' : '') + '">' +
+            '<strong>' + esc(fill(n.title)) + '</strong>' +
+            (n.big ? '<span class="fee">' + esc(fill(n.big)) + '</span>' : '') +
+            rich(n.text) +
+        '</div>'
+    ).join('');
+
+    /* ── 활동 일정 ──────────────────────────── */
+    $('activity-title').textContent = GEN + '기 활동 일정';
+    $('activity-sub').textContent   = fill(SITE.activity.subtitle);
+    let nextFound = false;
+    $('activity-list').innerHTML = SITE.activity.events.map(ev => {
+        let cls = 'schedule-item';
+        if (kst(ev.date, true) < now0) cls += ' done';
+        else if (!nextFound) { cls += ' next'; nextFound = true; }
+        return '<li class="' + cls + '">' +
+                   '<div class="schedule-date">' + md(ev.date) + (ev.time ? '<small>' + esc(ev.time) + '</small>' : '') + '</div>' +
+                   '<div class="schedule-body">' + esc(fill(ev.label)) + '</div>' +
+               '</li>';
+    }).join('');
+    $('place-list').innerHTML = SITE.activity.places.map(p =>
+        '<dt>' + esc(p.name) + '</dt><dd>' + esc(fill(p.text)) + '</dd>'
+    ).join('');
+
+    /* ── 지원 안내 ──────────────────────────── */
+    $('guide-list').innerHTML = SITE.guides.map((g, i) =>
+        '<li class="guide-item"><span class="guide-no">' + (i + 1) + '</span><span>' + rich(g) + '</span></li>'
+    ).join('');
+
+    /* ── 폼 내용 ────────────────────────────── */
+    const MAX_MB = SITE.form.maxFileMB;
+    $('template-link').href        = SITE.form.templateUrl;
+    $('file-hint').textContent     = MAX_MB + 'MB 이하 PDF 파일';
+    $('poster-question').textContent = (GEN - 1) + '기 포스터 세션 참여 여부';
+    $('inp-route').innerHTML =
+        '<option value="" disabled selected>선택해 주세요</option>' +
+        SITE.form.routes.map(r => '<option value="' + esc(r) + '">' + esc(r) + '</option>').join('');
+    $('privacy-text').innerHTML = rich(SITE.form.privacy);
+    $('success-text').innerHTML = rich(SITE.form.successText);
+
+    $('footer-text').innerHTML = '&copy; ' + now0.getFullYear() + ' SPARK &nbsp;|&nbsp; ' +
+        '<a href="mailto:' + esc(SITE.email) + '">' + esc(SITE.email) + '</a>';
+
+
+    /* ══════════ 화면 동작 ══════════ */
+
     function toast(msg, isAlert) {
-        const t = document.getElementById('toast');
+        const t = $('toast');
         t.textContent = msg;
         t.classList.toggle('alert', !!isAlert);
         t.classList.add('show');
         setTimeout(() => t.classList.remove('show'), 3000);
     }
 
-    const kst = (d, endOfDay) => new Date(d + (endOfDay ? 'T23:59:59' : 'T00:00:00') + '+09:00');
-
-    /* ── 모집 절차: 진행 단계 표시 ──────────── */
-    (function markProcess() {
-        const now = new Date();
-        const steps = [...document.querySelectorAll('.step')];
-        let marked = null;
-
-        steps.forEach(step => {
-            const s = kst(step.dataset.start, false);
-            const e = kst(step.dataset.end, true);
-            if (now > e) step.classList.add('done');
-            else if (!marked && now >= s) { step.classList.add('now'); marked = step; }
-        });
-        // 진행 중 단계가 없으면 다가오는 단계를 표시
-        if (!marked) {
-            marked = steps.find(s => !s.classList.contains('done'));
-            if (marked) marked.classList.add('now');
-        }
-
-        const status = document.getElementById('process-status');
-        if (!marked) {
-            status.textContent = '11기 모집 절차가 모두 끝났습니다.';
-        } else {
-            const label = marked.querySelector('.step-label').textContent;
-            const date  = marked.querySelector('.step-date').textContent;
-            const isNow = now >= kst(marked.dataset.start, false);
-            status.innerHTML = (isNow ? '지금은 <b>' : '다음 단계: <b>') + label + '</b> (' + date + ')';
-        }
-    })();
-
-    /* ── 활동 일정: 지난 일정 / 다음 일정 ───── */
-    (function markActivity() {
-        const now = new Date();
-        let found = false;
-        document.querySelectorAll('#activity-list .schedule-item').forEach(item => {
-            if (kst(item.dataset.date, true) < now) item.classList.add('done');
-            else if (!found) { item.classList.add('next'); found = true; }
-        });
-    })();
-
-    /* ── 전화번호 자동 하이픈 ───────────────── */
-    const phoneInput = document.getElementById('inp-phone');
+    /* 전화번호 자동 하이픈 */
+    const phoneInput = $('inp-phone');
     phoneInput.addEventListener('input', () => {
         const v = phoneInput.value.replace(/\D/g, '');
         if (v.length <= 3)      phoneInput.value = v;
-        else if (v.length <= 7) phoneInput.value = v.slice(0,3) + '-' + v.slice(3);
-        else                    phoneInput.value = v.slice(0,3) + '-' + v.slice(3,7) + '-' + v.slice(7,11);
+        else if (v.length <= 7) phoneInput.value = v.slice(0, 3) + '-' + v.slice(3);
+        else                    phoneInput.value = v.slice(0, 3) + '-' + v.slice(3, 7) + '-' + v.slice(7, 11);
     });
 
-    const applyForm = document.getElementById('spark-apply-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const msgArea   = document.getElementById('form-msg');
-    const phaseNote = document.getElementById('phase-note');
+    const applyForm = $('spark-apply-form');
+    const submitBtn = $('submit-btn');
+    const msgArea   = $('form-msg');
+    const phaseNote = $('phase-note');
 
-    /* ── 지원 기간 체크 ─────────────────────── */
+    /* 접수 기간 확인 → 폼 열기/잠그기 */
     function setFormLocked(locked) {
         applyForm.querySelectorAll('input, select').forEach(el => { el.disabled = locked; });
     }
@@ -908,20 +1128,22 @@ footer a:hover { color: #fff; text-decoration: underline; }
     function checkApplyPeriod() {
         const now = new Date();
 
-        if (now < CONFIG.START_DATE) {
+        if (now < START_AT) {
             submitBtn.disabled = true;
-            submitBtn.textContent = '8월 19일에 접수가 시작됩니다';
+            submitBtn.textContent = md(SITE.apply.start) + '에 접수가 시작됩니다';
             phaseNote.className = 'phase-note';
-            phaseNote.innerHTML = '<strong>아직 접수 기간이 아닙니다</strong>8월 19일 00:00부터 제출할 수 있습니다. 서식은 미리 내려받아 작성해 두세요.';
+            phaseNote.innerHTML = '<strong>아직 접수 기간이 아닙니다</strong>' + md(SITE.apply.start) +
+                ' 00:00부터 제출할 수 있습니다. 서식은 미리 내려받아 작성해 두세요.';
             phaseNote.style.display = 'block';
             setFormLocked(true);
             return false;
         }
-        if (now > CONFIG.END_DATE) {
+        if (now > END_AT) {
             submitBtn.disabled = true;
             submitBtn.textContent = '모집이 마감되었습니다';
             phaseNote.className = 'phase-note is-closed';
-            phaseNote.innerHTML = '<strong>11기 서류 접수가 마감되었습니다</strong>지원해 주신 모든 분께 감사드립니다. 다음 기수 모집 소식은 인스타그램과 카카오톡 채널로 안내합니다.';
+            phaseNote.innerHTML = '<strong>' + GEN + '기 서류 접수가 마감되었습니다</strong>' +
+                '지원해 주신 모든 분께 감사드립니다. 다음 기수 모집 소식은 인스타그램과 카카오톡 채널로 안내합니다.';
             phaseNote.style.display = 'block';
             setFormLocked(true);
             return false;
@@ -939,25 +1161,28 @@ footer a:hover { color: #fff; text-decoration: underline; }
         checkApplyPeriod();
     }
 
-    /* ── 제출 ───────────────────────────────── */
+    /* 제출 */
     applyForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        if (!checkApplyPeriod()) return;
+        if (!checkApplyPeriod()) { toast('접수 기간이 아닙니다.', true); return; }
 
-        const file = document.getElementById('inp-file').files[0];
+        const file = $('inp-file').files[0];
         if (!file) { toast('지원서 PDF 파일을 선택해 주세요.', true); return; }
-        if (file.size > 10 * 1024 * 1024) { toast('파일은 10MB 이하만 올릴 수 있습니다.', true); return; }
+        if (!/\.pdf$/i.test(file.name) && file.type !== 'application/pdf') {
+            toast('PDF 파일만 제출할 수 있습니다.', true); return;
+        }
+        if (file.size > MAX_MB * 1024 * 1024) { toast('파일은 ' + MAX_MB + 'MB 이하만 올릴 수 있습니다.', true); return; }
 
         if (!/^010-\d{4}-\d{4}$/.test(phoneInput.value)) {
             toast('연락처를 010-0000-0000 형식으로 입력해 주세요.', true);
             return;
         }
 
-        const routeVal = document.getElementById('inp-route').value;
+        const routeVal = $('inp-route').value;
         if (!routeVal) { toast('SPARK를 알게 된 경로를 선택해 주세요.', true); return; }
 
         const posterEl = document.querySelector('input[name="poster_join"]:checked');
-        if (!posterEl) { toast('10기 포스터 세션 참여 여부를 선택해 주세요.', true); return; }
+        if (!posterEl) { toast((GEN - 1) + '기 포스터 세션 참여 여부를 선택해 주세요.', true); return; }
 
         submitBtn.disabled = true;
         submitBtn.textContent = '제출 중';
@@ -966,24 +1191,26 @@ footer a:hover { color: #fff; text-decoration: underline; }
 
         const reader = new FileReader();
         reader.onload = function () {
+            // ※ 아래 항목 이름(fileBase64, name …)은 구글 스크립트와 맞춰져 있으므로 바꾸지 마세요.
             const payload = {
                 fileBase64: reader.result.split(',')[1],
                 fileName:   file.name,
-                mimeType:   file.type,
-                name:       document.getElementById('inp-name').value.trim(),
-                school:     document.getElementById('inp-school').value.trim(),
-                studentId:  document.getElementById('inp-studentid').value.trim(),
+                mimeType:   file.type || 'application/pdf',
+                name:       $('inp-name').value.trim(),
+                school:     $('inp-school').value.trim(),
+                studentId:  $('inp-studentid').value.trim(),
                 route:      routeVal,
                 poster:     posterEl.value,
                 phone:      phoneInput.value.trim()
             };
 
-            fetch(APPLY_API_URL, { method: 'POST', body: JSON.stringify(payload) })
+            fetch(SITE.sheetUrl, { method: 'POST', body: JSON.stringify(payload) })
                 .then(res => res.json())
                 .then(data => {
                     if (data.result === 'success') {
-                        document.getElementById('form-view').style.display = 'none';
-                        document.getElementById('success-view').style.display = 'block';
+                        $('form-view').style.display = 'none';
+                        $('success-view').style.display = 'block';
+                        msgArea.textContent = '';
                     } else { throw new Error(); }
                 })
                 .catch(() => {
